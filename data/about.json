@@ -1,0 +1,47 @@
+{
+  "tagline": "A 20-season CFB 27 online dynasty.",
+  "hero": "Thirty coaches. Twenty seasons. One belt.",
+  "intro": "Campus Kings is a long-haul online dynasty built around strategic gameplay, recruiting battles, and the thrill of college football. It's competitive without being joyless — the games matter, the group chat matters, and everybody's chasing the same thing.",
+
+  "at_a_glance": [
+    { "figure": "30", "label": "Active coaches" },
+    { "figure": "20", "label": "Accredited seasons" },
+    { "figure": "24h", "label": "Advance schedule" },
+    { "figure": "7-12", "label": "Gaming hours ET" }
+  ],
+
+  "pillars": [
+    {
+      "num": "01",
+      "title": "The Belt is the prize",
+      "body": "The Campus King Belt goes to whoever racks up the most national championships across the 20 accredited seasons. Rings matter most. That part doesn't change."
+    },
+    {
+      "num": "02",
+      "title": "Playoff Points reward the climb",
+      "body": "A parallel points race tracks the whole cycle — making the bracket, winning playoff games, reaching the Final Four, taking your conference. Being one of the five best coaches over 20 seasons should mean something too."
+    },
+    {
+      "num": "03",
+      "title": "Nobody holds up the league",
+      "body": "We advance on a 24-hour schedule at 8 PM ET. You need to be able to play between 7 PM and midnight ET. Games get scheduled in user chats, and admins rule on anything that stalls."
+    },
+    {
+      "num": "04",
+      "title": "Everything gets streamed",
+      "body": "User games and CPU games alike. It keeps things transparent, keeps everybody honest, and gives the rest of the league something to watch on a Tuesday night."
+    }
+  ],
+
+  "how_it_works": [
+    { "step": "Advance", "text": "The league advances every 24 hours at 8 PM ET. Know whether you have a game." },
+    { "step": "Schedule", "text": "User chats get created for each matchup. Lead with your availability, be specific about time zones, tag your opponent." },
+    { "step": "Play", "text": "Heisman difficulty, 5-minute quarters, default settings. Stream it. CPU games are simmed unless you want to play them." },
+    { "step": "Report", "text": "Scores get logged, the site updates, and the recap and power rankings follow." }
+  ],
+
+  "join": {
+    "title": "Getting in",
+    "body": "New coaches need approval from LT or Curt. Team selections go through the league board to keep things competitively balanced. Bring good comms and a willingness to grind a rebuild — the rest sorts itself out."
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "content": [
+    {
+      "title": "Mid-Season Power Rankings",
+      "kind": "Power Rankings",
+      "season": 2,
+      "date": "2026-08-02",
+      "file": "campus_kings_midseason_power_rankings.png",
+      "blurb": "All 30 active teams ranked, with the poll's top 19 broken out."
+    },
+    {
+      "title": "Weeks 3-7 Recap",
+      "kind": "Recap",
+      "season": 2,
+      "date": "2026-08-02",
+      "file": "campus_kings_week3-7_recap.png",
+      "blurb": "Five weeks, two upsets, and the most argued-about finish of the year."
+    },
+    {
+      "title": "Weeks 2-3 Recap",
+      "kind": "Recap",
+      "season": 2,
+      "date": "2026-07-29",
+      "file": "campus_kings_week2-3_recap.png",
+      "blurb": "The LSU auction, a formation ban, and a rivalry rewritten in Provo."
+    },
+    {
+      "title": "Season One Final Power Rankings",
+      "kind": "Power Rankings",
+      "season": 1,
+      "date": "2026-07-26",
+      "file": "campus_kings_power_rankings.png",
+      "blurb": "Where all 28 teams finished after Oklahoma's title run."
+    }
+  ]
+}

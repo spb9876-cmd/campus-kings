@@ -1,0 +1,46 @@
+{
+  "season": 1,
+  "status": "complete",
+  "champion": "Oklahoma",
+  "runner_up": "Clemson",
+
+  "regular_season_records": {
+    "Notre Dame": "12-0", "Clemson": "12-0", "Ohio State": "11-1", "Texas Tech": "11-1",
+    "Penn State": "11-1", "Texas": "12-1", "Oklahoma": "11-2", "Tennessee": "10-2",
+    "Auburn": "10-2", "LSU": "10-2", "Michigan": "10-2", "Washington": "10-2",
+    "SMU": "10-2", "Missouri": "10-2", "Oregon": "9-3", "Miami": "9-3",
+    "BYU": "9-3", "Alabama": "8-4", "Florida": "8-4", "Kansas": "8-4",
+    "Texas A&M": "7-5", "Ole Miss": "7-5", "Indiana": "7-5", "Florida State": "6-6",
+    "Georgia": "6-6", "South Carolina": "5-7", "USC": "5-7"
+  },
+
+  "conference_championships": [
+    { "conference": "ACC",   "winner": "Clemson",    "loser": "SMU",  "score": [42, 0] },
+    { "conference": "SEC",   "winner": "Texas",      "loser": "Oklahoma", "score": [52, 49] },
+    { "conference": "B1G",   "winner": "Michigan",   "loser": "Ohio State", "score": [45, 7] },
+    { "conference": "BIG12", "winner": "Texas Tech", "loser": "BYU",  "score": [24, 21] }
+  ],
+
+  "playoff_seeds": {
+    "1": "Texas", "2": "Clemson", "3": "Notre Dame", "4": "Penn State",
+    "5": "Ohio State", "6": "Michigan", "7": "Texas Tech", "8": "Oklahoma",
+    "9": "Auburn", "10": "Tennessee", "11": "Missouri", "12": "Memphis"
+  },
+
+  "playoffs": [
+    { "round": "R1", "winner": "Oklahoma",   "loser": "Auburn",     "score": [42, 7] },
+    { "round": "R1", "winner": "Tennessee",  "loser": "Texas Tech", "score": [45, 7] },
+    { "round": "R1", "winner": "Michigan",   "loser": "Missouri",   "score": [34, 14] },
+    { "round": "R1", "winner": "Ohio State", "loser": "Memphis",    "score": [28, 14] },
+
+    { "round": "QF", "bowl": "Rose",   "winner": "Ohio State", "loser": "Penn State", "score": [24, 23], "note": "OT" },
+    { "round": "QF", "bowl": "Peach",  "winner": "Oklahoma",   "loser": "Texas",      "score": [56, 34] },
+    { "round": "QF", "bowl": "Cotton", "winner": "Michigan",   "loser": "Notre Dame", "score": [31, 7] },
+    { "round": "QF", "bowl": "Fiesta", "winner": "Clemson",    "loser": "Tennessee",  "score": [35, 31] },
+
+    { "round": "SF", "winner": "Oklahoma", "loser": "Ohio State", "score": [34, 10] },
+    { "round": "SF", "winner": "Clemson",  "loser": "Michigan",   "score": [52, 34] },
+
+    { "round": "NC", "site": "Las Vegas, NV", "winner": "Oklahoma", "loser": "Clemson", "score": [42, 28] }
+  ]
+}
