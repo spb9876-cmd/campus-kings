@@ -150,6 +150,26 @@ td.s{font-family:'Anton',Impact,sans-serif;color:var(--gold);white-space:nowrap}
 
 footer{border-top:1px solid var(--rule);padding:26px 0 34px;font-size:10.5px;letter-spacing:2px;
   color:var(--muted2);text-transform:uppercase;text-align:center;line-height:1.9}
+.ticker{position:relative;overflow:hidden;background:#0b0b0d;border-bottom:1px solid var(--rule);
+  height:42px;display:flex;align-items:center}
+.ticker::before{content:"Latest";position:absolute;left:0;top:0;bottom:0;z-index:3;
+  display:flex;align-items:center;padding:0 14px;background:var(--gold);color:#0b0b0d;
+  font-family:'Anton',Impact,sans-serif;font-size:11.5px;letter-spacing:2px;text-transform:uppercase}
+.ticker::after{content:"";position:absolute;right:0;top:0;bottom:0;width:60px;z-index:2;
+  background:linear-gradient(90deg,transparent,#0b0b0d);pointer-events:none}
+.ticker .track{display:flex;align-items:center;gap:0;white-space:nowrap;
+  padding-left:96px;animation:slide 52s linear infinite;will-change:transform}
+.ticker:hover .track{animation-play-state:paused}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tk{display:inline-flex;align-items:center;gap:9px;padding:0 20px;font-size:12.5px;
+  border-right:1px solid var(--rule)}
+.tk .wk{font-size:9.5px;letter-spacing:1.4px;color:var(--muted2);text-transform:uppercase}
+.tk .a{font-weight:700}
+.tk .b{color:var(--muted)}
+.tk .sc{font-family:'Anton',Impact,sans-serif;color:var(--gold);letter-spacing:.5px}
+.tk .gw{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#0b0b0d;
+  background:var(--golddim);border-radius:2px;padding:2px 5px}
+@media(prefers-reduced-motion:reduce){.ticker .track{animation:none}}
 @media(max-width:720px){.rulegrid{grid-template-columns:1fr}.toc{display:none}}
 """
 
@@ -171,7 +191,31 @@ FIELD = ('<svg class="field" width="100%" height="100%" preserveAspectRatio="non
          + "</svg>")
 
 
-def shell(title, active, body, hero=None):
+def ticker(season_data, limit=14):
+    """Scrolling scorebug of the most recent results.
+
+    The item list is emitted twice so the CSS translateX(-50%) loop is seamless.
+    """
+    results = season_data.get("results", [])
+    if not results:
+        return ""
+    recent = sorted(results, key=lambda r: -r["week"])[:limit]
+
+    items = []
+    for r in recent:
+        sc = "%d&ndash;%d" % tuple(r["score"]) if r["score"] else "TBD"
+        gw = '<span class="gw">GOTW</span>' if r.get("gotw") else ""
+        items.append(
+            f'<span class="tk"><span class="wk">W{r["week"]}</span>'
+            f'<span class="a">{r["winner"]}</span>'
+            f'<span class="sc">{sc}</span>'
+            f'<span class="b">{r["loser"]}</span>{gw}</span>'
+        )
+    strip = "".join(items)
+    return f'<div class="ticker"><div class="track">{strip}{strip}</div></div>'
+
+
+def shell(title, active, body, hero=None, bug=""):
     nav = ""
     for href, label in [("index.html", "Overview"), ("standings.html", "Standings"),
                         ("rules.html", "Rules"), ("history.html", "History")]:
@@ -182,11 +226,15 @@ def shell(title, active, body, hero=None):
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{title} — Campus Kings</title>
 <meta name="description" content="Campus Kings — a 20-season CFB 27 online dynasty league.">
+<meta property="og:title" content="Campus Kings">
+<meta property="og:description" content="A 20-season CFB 27 online dynasty. Thirty coaches. One belt.">
+<meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>{CSS}</style></head><body>
 <div class="navbar"><div class="inner">
 <a class="brand" href="index.html">{CROWN}<span class="name">Campus <span>Kings</span></span></a>
 <nav>{nav}</nav></div></div>
+{bug}
 {hero or ""}
 <div class="wrap">{body}</div>
 <footer>Campus Kings &middot; CFB 27 Online Dynasty<br>Updated {date.today().isoformat()}</footer>
@@ -216,7 +264,7 @@ def league_records(season_data, league, season_no):
     return out
 
 
-def build_index(league, s1, s2, content, pts, about):
+def build_index(league, s1, s2, content, pts, about, bug=""):
     hero = (f'<div class="hero">{FIELD}<div class="glow"></div><div class="inner">'
             f'<div class="eyebrow">Campus Kings &middot; Season '
             f'{league["league"]["current_season"]} in progress</div>'
@@ -272,10 +320,10 @@ The belt goes to the coach with the most titles across
 <p style="font-size:14.5px;color:var(--muted);line-height:1.7;max-width:660px;margin:0">
 {about['join']['body']}</p></div>""")
 
-    return shell("Overview", "index.html", "\n".join(b), hero)
+    return shell("Overview", "index.html", "\n".join(b), hero, bug)
 
 
-def build_rules(rules):
+def build_rules(rules, bug=""):
     toc = "".join("<a href='#%s'>%s</a>" % (s["id"], s["title"]) for s in rules["sections"])
     body = []
     for s in rules["sections"]:
@@ -303,10 +351,10 @@ def build_rules(rules):
              f'<p class="psub">{rules["preamble"]}</p></div>'
              f'<div class="section"><div class="rulegrid"><div class="toc">{toc}</div>'
              f'<div>{"".join(body)}</div></div></div>')
-    return shell("Rules", "rules.html", inner)
+    return shell("Rules", "rules.html", inner, None, bug)
 
 
-def build_standings(league, s2, pts):
+def build_standings(league, s2, pts, bug=""):
     recs = league_records(s2, league, 2)
     b = [f"""<div class="pagehead"><h1 class="page">Season Two <em>Standings</em></h1>
 <p class="psub">Through week {s2.get('current_week', 0)}. League games only &mdash;
@@ -342,10 +390,10 @@ CPU results aren't tracked, so these won't match the in-game poll.</p></div>"""]
                  f"<td style='color:var(--muted)'>{r['team']}</td>"
                  f"<td class='s'>{r['points']}</td></tr>")
     b.append("</table></div>")
-    return shell("Standings", "standings.html", "\n".join(b))
+    return shell("Standings", "standings.html", "\n".join(b), None, bug)
 
 
-def build_history(league, s1):
+def build_history(league, s1, bug=""):
     nc = next(g for g in s1["playoffs"] if g["round"] == "NC")
     b = [f"""<div class="pagehead"><h1 class="page">League <em>History</em></h1>
 <p class="psub">Champions, brackets, and how every coach got where they are.</p></div>
@@ -379,13 +427,14 @@ def build_history(league, s1):
                  f"<td class='s' style='font-size:13px'>{t['from']}</td>"
                  f"<td style='color:var(--muted);font-size:12.5px'>{t['note']}</td></tr>")
     b.append("</table></div>")
-    return shell("History", "history.html", "\n".join(b))
+    return shell("History", "history.html", "\n".join(b), None, bug)
 
 
 def main():
     league, s1, s2 = load("league.json"), load("season_01.json"), load("season_02.json")
     content, about, rules = load("content.json"), load("about.json"), load("rules.json")
     pts = compute(league, s1)
+    bug = ticker(s2)
 
     SITE.mkdir(exist_ok=True)
     (SITE / "media").mkdir(exist_ok=True)
@@ -398,10 +447,10 @@ def main():
             shutil.copy(src, SITE / "media" / c["file"])
             copied += 1
 
-    (SITE / "index.html").write_text(build_index(league, s1, s2, content, pts, about))
-    (SITE / "standings.html").write_text(build_standings(league, s2, pts))
-    (SITE / "rules.html").write_text(build_rules(rules))
-    (SITE / "history.html").write_text(build_history(league, s1))
+    (SITE / "index.html").write_text(build_index(league, s1, s2, content, pts, about, bug))
+    (SITE / "standings.html").write_text(build_standings(league, s2, pts, bug))
+    (SITE / "rules.html").write_text(build_rules(rules, bug))
+    (SITE / "history.html").write_text(build_history(league, s1, bug))
     print("Built 4 pages, copied %d/%d media -> %s" % (copied, len(content["content"]), SITE))
 
 
