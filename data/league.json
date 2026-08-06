@@ -109,22 +109,6 @@
     ],
     "INDEPENDENT": [
       "Notre Dame"
-    ],
-    "AAC": [
-      "Memphis",
-      "Tulane",
-      "Navy",
-      "South Florida",
-      "UTSA",
-      "Rice",
-      "East Carolina",
-      "Temple",
-      "Charlotte",
-      "Florida Atlantic",
-      "North Texas",
-      "Tulsa",
-      "UAB",
-      "Army"
     ]
   },
   "coaches": [
@@ -507,7 +491,7 @@
     "jarvis": 4,
     "dre": 2,
     "kj": 2,
-    "lt": 2,
+    "lt": 3,
     "pat": 2,
     "bowzer": 1
   },
