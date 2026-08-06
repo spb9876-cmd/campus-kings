@@ -34,15 +34,6 @@
   },
   "conference_championships": [
     {
-      "conference": "ACC",
-      "winner": "Clemson",
-      "loser": "SMU",
-      "score": [
-        42,
-        0
-      ]
-    },
-    {
       "conference": "SEC",
       "winner": "Texas",
       "loser": "Oklahoma",
@@ -58,6 +49,15 @@
       "score": [
         45,
         7
+      ]
+    },
+    {
+      "conference": "ACC",
+      "winner": "Clemson",
+      "loser": "SMU",
+      "score": [
+        35,
+        10
       ]
     },
     {

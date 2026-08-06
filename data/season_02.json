@@ -533,6 +533,34 @@
         38,
         21
       ]
+    },
+    {
+      "week": 11,
+      "winner": "Clemson",
+      "loser": "Texas Tech",
+      "score": [
+        48,
+        11
+      ]
+    },
+    {
+      "week": 11,
+      "winner": "Tennessee",
+      "loser": "South Carolina",
+      "score": [
+        42,
+        3
+      ]
+    },
+    {
+      "week": 11,
+      "winner": "Notre Dame",
+      "loser": "Texas",
+      "score": [
+        38,
+        35
+      ],
+      "gotw": true
     }
   ],
   "poll_snapshot": {
