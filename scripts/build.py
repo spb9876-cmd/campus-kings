@@ -48,11 +48,17 @@ nav a:hover{color:var(--ink)}
 nav a.on{color:var(--gold);border-bottom-color:var(--gold)}
 
 .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--rule);
-  background:linear-gradient(180deg,var(--turf) 0%,var(--bg) 78%)}
-.hero .field{position:absolute;inset:0;opacity:.5}
-.hero .glow{position:absolute;inset:0;
-  background:radial-gradient(ellipse 760px 320px at 50% 0,rgba(223,168,57,.18),transparent 70%)}
-.hero .inner{position:relative;max-width:1000px;margin:0 auto;padding:44px 24px 34px;text-align:center}
+  background:var(--turf)}
+/* layer 1 - the photo. cover fills the box, center keeps the crest in frame */
+.hero .banner{position:absolute;inset:-20px;background:url('media/hero-banner.jpg') center/cover no-repeat;
+  /* blur kills the banner's own lettering so it can't compete with our headline;
+     inset:-20px hides the soft edge the blur creates */
+  filter:blur(7px) saturate(1.05)}
+/* layer 2 - the scrim. without this the text is unreadable over the photo */
+.hero .scrim{position:absolute;inset:0;background:
+  linear-gradient(180deg,rgba(8,8,10,.70) 0%,rgba(8,8,10,.82) 58%,var(--bg) 100%),
+  radial-gradient(ellipse 700px 300px at 50% 8%,rgba(223,168,57,.16),transparent 72%)}
+.hero .inner{position:relative;max-width:1000px;margin:0 auto;padding:86px 24px 40px;text-align:center}
 .hero .crest{width:118px;height:118px;display:block;margin:0 auto 22px;border-radius:50%;
   box-shadow:0 0 44px rgba(223,168,57,.22)}
 .scrollcue{display:flex;flex-direction:column;align-items:center;gap:7px;margin-top:26px;
@@ -300,10 +306,11 @@ def league_records(season_data, league, season_no):
 
 
 def build_index(league, s1, s2, content, pts, about, bug=""):
-    hero = (f'<div class="hero">{FIELD}<div class="glow"></div><div class="inner">'
+    hero = (f'<div class="hero">'
+            f'<div class="banner"></div><div class="scrim"></div>'
+            f'<div class="inner">'
             f'<div class="eyebrow">Campus Kings &middot; Season '
             f'{league["league"]["current_season"]} in progress</div>'
-            f'<img class="crest" src="media/logo.png" alt="Campus Kings">'
             f'<h1>Thirty coaches.<br>Twenty seasons.<br><em>One belt.</em></h1>'
             f'<p class="lede">{about["intro"]}</p>'
             f'<div class="scrollcue">Scroll'
@@ -488,7 +495,7 @@ def main():
     (SITE / "media").mkdir(exist_ok=True)
     # Tell GitHub Pages to serve these files as-is instead of running Jekyll
     (SITE / ".nojekyll").write_text("", encoding="utf-8")
-    LOGO_FILES = ("logo.png", "logo-mark.png", "favicon.png")
+    LOGO_FILES = ("logo.png", "logo-mark.png", "favicon.png", "hero-banner.jpg")
     for f in LOGO_FILES:
         src = MEDIA_SRC / f
         if src.exists():
