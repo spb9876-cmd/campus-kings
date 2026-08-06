@@ -16,7 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 SITE = ROOT / "docs"
-MEDIA_SRC = Path("/mnt/user-data/outputs")
+MEDIA_SRC = ROOT / "media_src"   # drop new recap PNGs here
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from points import compute, coach_for
@@ -443,11 +443,20 @@ def main():
     # Tell GitHub Pages to serve these files as-is instead of running Jekyll
     (SITE / ".nojekyll").write_text("")
     copied = 0
+    missing = []
     for c in content["content"]:
+        dest = SITE / "media" / c["file"]
         src = MEDIA_SRC / c["file"]
         if src.exists():
-            shutil.copy(src, SITE / "media" / c["file"])
+            shutil.copy(src, dest)
             copied += 1
+        elif dest.exists():
+            copied += 1          # already published in a previous build
+        else:
+            missing.append(c["file"])
+    if missing:
+        print("  WARNING missing image(s): %s" % ", ".join(missing))
+        print("  Put them in %s/ or docs/media/" % MEDIA_SRC.name)
 
     (SITE / "index.html").write_text(build_index(league, s1, s2, content, pts, about, bug))
     (SITE / "standings.html").write_text(build_standings(league, s2, pts, bug))
