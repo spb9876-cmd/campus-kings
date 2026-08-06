@@ -141,6 +141,32 @@ a.clink:hover{color:var(--gold);border-bottom-color:var(--gold)}
 .card .bl{font-size:12.5px;color:var(--muted);line-height:1.5}
 .card .dte{font-size:10.5px;color:var(--muted2);margin-top:9px;letter-spacing:.5px}
 
+/* --- long-form write-ups --- */
+.poster{display:block;margin:0 0 40px;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.poster img{width:100%;display:block}
+.poster .cap{padding:10px 14px;font-size:10.5px;letter-spacing:1.6px;text-transform:uppercase;
+  color:var(--muted2);border-top:1px solid var(--rule);background:var(--card)}
+.poster:hover .cap{color:var(--gold)}
+.article{max-width:660px}
+.article h2{font-family:'Anton',Impact,sans-serif;font-size:26px;text-transform:uppercase;
+  letter-spacing:.8px;margin:44px 0 16px;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+.article h3{font-size:16.5px;font-weight:700;letter-spacing:.2px;margin:30px 0 12px;color:var(--gold)}
+.article p{font-size:15px;color:var(--muted);line-height:1.78;margin:0 0 18px}
+.article strong{color:var(--ink);font-weight:700}
+.article em{color:var(--ink);font-style:italic}
+.article a{color:var(--gold);border-bottom:1px dotted var(--golddim)}
+.article ul{margin:0 0 18px;padding-left:0;list-style:none}
+.article li{position:relative;padding:7px 0 7px 20px;font-size:14px;color:var(--muted);line-height:1.7}
+.article li::before{content:"";position:absolute;left:0;top:15px;width:6px;height:6px;
+  border:1.5px solid var(--golddim);border-radius:1px}
+.article li strong{color:var(--ink)}
+.article hr{border:none;border-top:1px solid var(--rule);margin:36px 0}
+.article > *:first-child{margin-top:0}
+.byline{font-size:11px;letter-spacing:2.4px;text-transform:uppercase;color:var(--muted2);
+  margin:0 0 34px;padding-bottom:16px;border-bottom:1px solid var(--rule)}
+.backlink{padding-top:34px;margin-top:34px;border-top:1px solid var(--rule);font-size:13px}
+.backlink a{color:var(--gold)}
+
 .rulegrid{display:grid;grid-template-columns:200px 1fr;gap:40px;align-items:start}
 .toc{position:sticky;top:78px;font-size:12.5px}
 .toc a{display:block;padding:7px 0 7px 12px;color:var(--muted);border-left:1px solid var(--rule);line-height:1.4}
@@ -187,7 +213,7 @@ footer{border-top:1px solid var(--rule);padding:26px 0 34px;font-size:10.5px;let
 </style></head><body>
 <div class="navbar"><div class="inner">
 <a class="brand" href="index.html"><img class="mark" src="media/logo-mark.png" alt=""><span class="name">Campus <span>Kings</span></span></a>
-<nav><a href='index.html' class='on'>Overview</a><a href='standings.html'>Standings</a><a href='coaches.html'>Coaches</a><a href='rules.html'>Rules</a><a href='history.html'>History</a></nav></div></div>
+<nav><a href='index.html' class='on'>Overview</a><a href='standings.html'>Standings</a><a href='coaches.html'>Coaches</a><a href='content.html'>Archive</a><a href='rules.html'>Rules</a><a href='history.html'>History</a></nav></div></div>
 <div class="ticker"><div class="track"><span class="tk"><span class="wk">W11</span><span class="a">Ole Miss</span><span class="sc">38&ndash;21</span><span class="b">Texas A&M</span></span><span class="tk"><span class="wk">W10</span><span class="a">Tennessee</span><span class="sc">38&ndash;7</span><span class="b">Notre Dame</span></span><span class="tk"><span class="wk">W10</span><span class="a">Miami</span><span class="sc">44&ndash;0</span><span class="b">SMU</span></span><span class="tk"><span class="wk">W10</span><span class="a">Florida</span><span class="sc">24&ndash;14</span><span class="b">Georgia</span></span><span class="tk"><span class="wk">W10</span><span class="a">Oregon</span><span class="sc">43&ndash;36</span><span class="b">Penn State</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W10</span><span class="a">South Carolina</span><span class="sc">41&ndash;35</span><span class="b">Texas</span></span><span class="tk"><span class="wk">W10</span><span class="a">Texas A&M</span><span class="sc">35&ndash;28</span><span class="b">LSU</span></span><span class="tk"><span class="wk">W10</span><span class="a">Texas Tech</span><span class="sc">57&ndash;56</span><span class="b">TCU</span></span><span class="tk"><span class="wk">W9</span><span class="a">Penn State</span><span class="sc">45&ndash;0</span><span class="b">Indiana</span></span><span class="tk"><span class="wk">W9</span><span class="a">Ole Miss</span><span class="sc">46&ndash;44</span><span class="b">Auburn</span></span><span class="tk"><span class="wk">W9</span><span class="a">Ohio State</span><span class="sc">45&ndash;7</span><span class="b">USC</span></span><span class="tk"><span class="wk">W9</span><span class="a">Florida</span><span class="sc">38&ndash;35</span><span class="b">Alabama</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W9</span><span class="a">Clemson</span><span class="sc">37&ndash;20</span><span class="b">Miami</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W9</span><span class="a">Oregon</span><span class="sc">55&ndash;14</span><span class="b">UCLA</span></span><span class="tk"><span class="wk">W11</span><span class="a">Ole Miss</span><span class="sc">38&ndash;21</span><span class="b">Texas A&M</span></span><span class="tk"><span class="wk">W10</span><span class="a">Tennessee</span><span class="sc">38&ndash;7</span><span class="b">Notre Dame</span></span><span class="tk"><span class="wk">W10</span><span class="a">Miami</span><span class="sc">44&ndash;0</span><span class="b">SMU</span></span><span class="tk"><span class="wk">W10</span><span class="a">Florida</span><span class="sc">24&ndash;14</span><span class="b">Georgia</span></span><span class="tk"><span class="wk">W10</span><span class="a">Oregon</span><span class="sc">43&ndash;36</span><span class="b">Penn State</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W10</span><span class="a">South Carolina</span><span class="sc">41&ndash;35</span><span class="b">Texas</span></span><span class="tk"><span class="wk">W10</span><span class="a">Texas A&M</span><span class="sc">35&ndash;28</span><span class="b">LSU</span></span><span class="tk"><span class="wk">W10</span><span class="a">Texas Tech</span><span class="sc">57&ndash;56</span><span class="b">TCU</span></span><span class="tk"><span class="wk">W9</span><span class="a">Penn State</span><span class="sc">45&ndash;0</span><span class="b">Indiana</span></span><span class="tk"><span class="wk">W9</span><span class="a">Ole Miss</span><span class="sc">46&ndash;44</span><span class="b">Auburn</span></span><span class="tk"><span class="wk">W9</span><span class="a">Ohio State</span><span class="sc">45&ndash;7</span><span class="b">USC</span></span><span class="tk"><span class="wk">W9</span><span class="a">Florida</span><span class="sc">38&ndash;35</span><span class="b">Alabama</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W9</span><span class="a">Clemson</span><span class="sc">37&ndash;20</span><span class="b">Miami</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W9</span><span class="a">Oregon</span><span class="sc">55&ndash;14</span><span class="b">UCLA</span></span></div></div>
 <div class="hero"><div class="banner"></div><div class="scrim"></div><div class="inner"><div class="eyebrow">Campus Kings &middot; Season 2 in progress</div><h1>Thirty coaches.<br>Twenty seasons.<br><em>One belt.</em></h1><p class="lede">Campus Kings is a long-haul online dynasty built around strategic gameplay, recruiting battles, and the thrill of college football. It's competitive without being joyless — the games matter, the group chat matters, and everybody's chasing the same thing.</p><div class="scrollcue">Scroll<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#dfa839" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></div></div></div><div class="quick"><a href="standings.html"><div class="qk">Standings <span>&rarr;</span></div><div class="qd">Records, weekly results, points race</div></a><a href="coaches.html"><div class="qk">Coaches <span>&rarr;</span></div><div class="qd">Profiles, rings, full game logs</div></a><a href="rules.html"><div class="qk">Rules <span>&rarr;</span></div><div class="qd">Settings, bans, scheduling</div></a><a href="history.html"><div class="qk">History <span>&rarr;</span></div><div class="qd">Champions, brackets, moves</div></a></div><div class="glance"><div class="inner"><div class='cell'><div class='fig'>30</div><div class='lab'>Active coaches</div></div><div class='cell'><div class='fig'>20</div><div class='lab'>Accredited seasons</div></div><div class='cell'><div class='fig'>24h</div><div class='lab'>Advance schedule</div></div><div class='cell'><div class='fig'>7-12</div><div class='lab'>Gaming hours ET</div></div></div></div>
 <div class="wrap"><div class="section"><h2 class="sec">Who we are</h2><div class="pillars"><div class='pillar'><div class='n'>01</div><h3>The Belt is the prize</h3><p>The Campus King Belt goes to whoever racks up the most national championships across the 20 accredited seasons. Rings matter most. That part doesn't change.</p></div><div class='pillar'><div class='n'>02</div><h3>Playoff Points reward the climb</h3><p>A parallel points race tracks the whole cycle — making the bracket, winning playoff games, reaching the Final Four, taking your conference. Being one of the five best coaches over 20 seasons should mean something too.</p></div><div class='pillar'><div class='n'>03</div><h3>Nobody holds up the league</h3><p>We advance on a 24-hour schedule at 8 PM ET. You need to be able to play between 7 PM and midnight ET. Games get scheduled in user chats, and admins rule on anything that stalls.</p></div><div class='pillar'><div class='n'>04</div><h3>Games get streamed</h3><p>User games get streamed. It keeps things transparent, keeps everybody honest, and gives the rest of the league something to watch on a Tuesday night.</p></div></div></div>
@@ -233,27 +259,13 @@ The belt goes to the coach with the most titles across
 <span class="rt">3 pts</span></div>
 <div class="dt" style="padding-top:16px"><a href="standings.html" style="color:var(--gold)">Full standings &rarr;</a></div></div>
 <div class="section"><h2 class="sec">Latest content</h2><div class="grid">
-<a class="card" href="media/campus_kings_week8-10_recap.png">
-<img src="media/campus_kings_week8-10_recap.png" alt="Weeks 8-10 Recap" loading="lazy">
-<div class="body"><div class="kind">Recap &middot; S2</div>
-<div class="ttl">Weeks 8-10 Recap</div><div class="bl">Two undefeateds fall, Nas walks out, and Florida State sells for $175.</div>
-<div class="dte">2026-08-06</div></div></a>
-<a class="card" href="media/campus_kings_midseason_power_rankings.png">
-<img src="media/campus_kings_midseason_power_rankings.png" alt="Mid-Season Power Rankings" loading="lazy">
-<div class="body"><div class="kind">Power Rankings &middot; S2</div>
-<div class="ttl">Mid-Season Power Rankings</div><div class="bl">All 30 active teams ranked, with the poll's top 19 broken out.</div>
-<div class="dte">2026-08-02</div></div></a>
-<a class="card" href="media/campus_kings_week3-7_recap.png">
-<img src="media/campus_kings_week3-7_recap.png" alt="Weeks 3-7 Recap" loading="lazy">
-<div class="body"><div class="kind">Recap &middot; S2</div>
-<div class="ttl">Weeks 3-7 Recap</div><div class="bl">Five weeks, two upsets, and the most argued-about finish of the year.</div>
-<div class="dte">2026-08-02</div></div></a>
-<a class="card" href="media/campus_kings_week2-3_recap.png">
-<img src="media/campus_kings_week2-3_recap.png" alt="Weeks 2-3 Recap" loading="lazy">
-<div class="body"><div class="kind">Recap &middot; S2</div>
-<div class="ttl">Weeks 2-3 Recap</div><div class="bl">The LSU auction, a formation ban, and a rivalry rewritten in Provo.</div>
-<div class="dte">2026-07-29</div></div></a>
-</div></div>
+<a class="card" href="post-weeks-8-10-recap.html"><img src="media/campus_kings_week8-10_recap.png" alt="Weeks 8-10 Recap" loading="lazy"><div class="body"><div class="kind">Recap &middot; S2</div><div class="ttl">Weeks 8-10 Recap<span class="tag">Write-up</span></div><div class="bl">Eighteen games, all finals confirmed. Two undefeateds fall, a 57-56 triple-OT, and Florida State sells for $175.</div><div class="dte">2026-08-06</div></div></a>
+<a class="card" href="media/campus_kings_midseason_power_rankings.png"><img src="media/campus_kings_midseason_power_rankings.png" alt="Mid-Season Power Rankings" loading="lazy"><div class="body"><div class="kind">Power Rankings &middot; S2</div><div class="ttl">Mid-Season Power Rankings</div><div class="bl">All 30 active teams ranked, with the poll's top 19 broken out.</div><div class="dte">2026-08-02</div></div></a>
+<a class="card" href="media/campus_kings_week3-7_recap.png"><img src="media/campus_kings_week3-7_recap.png" alt="Weeks 3-7 Recap" loading="lazy"><div class="body"><div class="kind">Recap &middot; S2</div><div class="ttl">Weeks 3-7 Recap</div><div class="bl">Five weeks, two upsets, and the most argued-about finish of the year.</div><div class="dte">2026-08-02</div></div></a>
+<a class="card" href="media/campus_kings_week2-3_recap.png"><img src="media/campus_kings_week2-3_recap.png" alt="Weeks 2-3 Recap" loading="lazy"><div class="body"><div class="kind">Recap &middot; S2</div><div class="ttl">Weeks 2-3 Recap</div><div class="bl">The LSU auction, a formation ban, and a rivalry rewritten in Provo.</div><div class="dte">2026-07-29</div></div></a>
+</div>
+<div class="dt" style="padding-top:18px"><a href="content.html" style="color:var(--gold)">Full archive &rarr;</a></div>
+</div>
 <div class="section"><h2 class="sec">Getting in</h2>
 <p style="font-size:14.5px;color:var(--muted);line-height:1.7;max-width:660px;margin:0">
 New coaches need approval from LT or Curt. Team selections go through the league board to keep things competitively balanced. Bring good comms and a willingness to grind a rebuild — the rest sorts itself out.</p></div></div>

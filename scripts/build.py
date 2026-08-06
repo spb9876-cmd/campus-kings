@@ -6,7 +6,9 @@
 Writes docs/*.html and copies media into docs/media/. Everything is derived
 from data/ — never edit the generated HTML by hand.
 """
+import html
 import json
+import re
 import shutil
 import sys
 from collections import defaultdict
@@ -15,6 +17,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
+ARTICLES = DATA / "articles"   # long-form write-ups, Markdown
 SITE = ROOT / "docs"
 MEDIA_SRC = ROOT / "media_src"   # drop new recap PNGs here
 
@@ -154,6 +157,32 @@ a.clink:hover{color:var(--gold);border-bottom-color:var(--gold)}
 .card .bl{font-size:12.5px;color:var(--muted);line-height:1.5}
 .card .dte{font-size:10.5px;color:var(--muted2);margin-top:9px;letter-spacing:.5px}
 
+/* --- long-form write-ups --- */
+.poster{display:block;margin:0 0 40px;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.poster img{width:100%;display:block}
+.poster .cap{padding:10px 14px;font-size:10.5px;letter-spacing:1.6px;text-transform:uppercase;
+  color:var(--muted2);border-top:1px solid var(--rule);background:var(--card)}
+.poster:hover .cap{color:var(--gold)}
+.article{max-width:660px}
+.article h2{font-family:'Anton',Impact,sans-serif;font-size:26px;text-transform:uppercase;
+  letter-spacing:.8px;margin:44px 0 16px;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+.article h3{font-size:16.5px;font-weight:700;letter-spacing:.2px;margin:30px 0 12px;color:var(--gold)}
+.article p{font-size:15px;color:var(--muted);line-height:1.78;margin:0 0 18px}
+.article strong{color:var(--ink);font-weight:700}
+.article em{color:var(--ink);font-style:italic}
+.article a{color:var(--gold);border-bottom:1px dotted var(--golddim)}
+.article ul{margin:0 0 18px;padding-left:0;list-style:none}
+.article li{position:relative;padding:7px 0 7px 20px;font-size:14px;color:var(--muted);line-height:1.7}
+.article li::before{content:"";position:absolute;left:0;top:15px;width:6px;height:6px;
+  border:1.5px solid var(--golddim);border-radius:1px}
+.article li strong{color:var(--ink)}
+.article hr{border:none;border-top:1px solid var(--rule);margin:36px 0}
+.article > *:first-child{margin-top:0}
+.byline{font-size:11px;letter-spacing:2.4px;text-transform:uppercase;color:var(--muted2);
+  margin:0 0 34px;padding-bottom:16px;border-bottom:1px solid var(--rule)}
+.backlink{padding-top:34px;margin-top:34px;border-top:1px solid var(--rule);font-size:13px}
+.backlink a{color:var(--gold)}
+
 .rulegrid{display:grid;grid-template-columns:200px 1fr;gap:40px;align-items:start}
 .toc{position:sticky;top:78px;font-size:12.5px}
 .toc a{display:block;padding:7px 0 7px 12px;color:var(--muted);border-left:1px solid var(--rule);line-height:1.4}
@@ -241,7 +270,7 @@ def ticker(season_data, limit=14):
 def shell(title, active, body, hero=None, bug=""):
     nav = ""
     for href, label in [("index.html", "Overview"), ("standings.html", "Standings"),
-                        ("coaches.html", "Coaches"),
+                        ("coaches.html", "Coaches"), ("content.html", "Archive"),
                         ("rules.html", "Rules"), ("history.html", "History")]:
         on = " class='on'" if href == active else ""
         nav += "<a href='%s'%s>%s</a>" % (href, on, label)
@@ -270,6 +299,80 @@ def shell(title, active, body, hero=None, bug=""):
 
 def load(n):
     return json.loads((DATA / n).read_text(encoding="utf-8"))
+
+
+def slug(text):
+    """URL-safe stem for an article page: 'Weeks 8-10 Recap' -> 'weeks-8-10-recap'."""
+    s = re.sub(r"[^a-z0-9]+", "-", text.lower())
+    return s.strip("-")
+
+
+def _inline(t):
+    """Bold, italic, code and links inside a line of prose. HTML is escaped first."""
+    t = html.escape(t, quote=False)
+    t = re.sub(r"\[([^\]]+)\]\((https?://[^\s)]+)\)", r'<a href="\2">\1</a>', t)
+    t = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", t)
+    t = re.sub(r"(?<!\*)\*([^*\n]+)\*(?!\*)", r"<em>\1</em>", t)
+    t = re.sub(r"`([^`]+)`", r"<code>\1</code>", t)
+    return t
+
+
+def markdown(text):
+    """Render the small Markdown subset the write-ups actually use.
+
+    Supported: ## and ### headings, --- rules, - bullet lists, blank-line
+    paragraphs, and inline bold / italic / code / links. Deliberately not a
+    full parser — anything fancier should be written as plain paragraphs.
+    """
+    out, para, items = [], [], []
+
+    def flush_para():
+        if para:
+            out.append("<p>%s</p>" % _inline(" ".join(para)))
+            para.clear()
+
+    def flush_list():
+        if items:
+            out.append("<ul>%s</ul>" % "".join("<li>%s</li>" % _inline(i) for i in items))
+            items.clear()
+
+    for raw in text.replace("\r\n", "\n").split("\n"):
+        line = raw.rstrip()
+        stripped = line.strip()
+        if not stripped:
+            flush_para()
+            flush_list()
+        elif stripped.startswith("### "):
+            flush_para(); flush_list()
+            out.append("<h3>%s</h3>" % _inline(stripped[4:]))
+        elif stripped.startswith("## "):
+            flush_para(); flush_list()
+            out.append("<h2>%s</h2>" % _inline(stripped[3:]))
+        elif stripped.startswith("# "):
+            flush_para(); flush_list()
+            out.append("<h2>%s</h2>" % _inline(stripped[2:]))
+        elif set(stripped) == {"-"} and len(stripped) >= 3:
+            flush_para(); flush_list()
+            out.append("<hr>")
+        elif stripped.startswith("- "):
+            flush_para()
+            items.append(stripped[2:])
+        elif items and raw.startswith("  "):
+            items[-1] += " " + stripped        # continuation of the last bullet
+        else:
+            flush_list()
+            para.append(stripped)
+
+    flush_para()
+    flush_list()
+    return "\n".join(out)
+
+
+def article_path(entry):
+    """The page this manifest entry links to: its write-up if it has one, else the raw image."""
+    if entry.get("article"):
+        return "post-%s.html" % slug(entry.get("slug") or entry["title"])
+    return "media/%s" % entry["file"]
 
 
 def cname(league, cid):
@@ -388,18 +491,69 @@ The belt goes to the coach with the most titles across
 
     b.append('<div class="section"><h2 class="sec">Latest content</h2><div class="grid">')
     for c in content["content"][:4]:
-        b.append(f"""<a class="card" href="media/{c['file']}">
-<img src="media/{c['file']}" alt="{c['title']}" loading="lazy">
-<div class="body"><div class="kind">{c['kind']} &middot; S{c['season']}</div>
-<div class="ttl">{c['title']}</div><div class="bl">{c['blurb']}</div>
-<div class="dte">{c['date']}</div></div></a>""")
-    b.append("</div></div>")
+        b.append(content_card(c))
+    b.append("</div>")
+    if len(content["content"]) > 4:
+        b.append('<div class="dt" style="padding-top:18px">'
+                 '<a href="content.html" style="color:var(--gold)">'
+                 'Full archive &rarr;</a></div>')
+    b.append("</div>")
 
     b.append(f"""<div class="section"><h2 class="sec">{about['join']['title']}</h2>
 <p style="font-size:14.5px;color:var(--muted);line-height:1.7;max-width:660px;margin:0">
 {about['join']['body']}</p></div>""")
 
     return shell("Overview", "index.html", "\n".join(b), hero, bug)
+
+
+def content_card(c):
+    """One card in a content grid. Links to the write-up when there is one."""
+    tag = '<span class="tag">Write-up</span>' if c.get("article") else ""
+    return (f'<a class="card" href="{article_path(c)}">'
+            f'<img src="media/{c["file"]}" alt="{html.escape(c["title"], quote=True)}" loading="lazy">'
+            f'<div class="body"><div class="kind">{c["kind"]} &middot; S{c["season"]}</div>'
+            f'<div class="ttl">{c["title"]}{tag}</div><div class="bl">{c["blurb"]}</div>'
+            f'<div class="dte">{c["date"]}</div></div></a>')
+
+
+def build_content(content, bug=""):
+    """Full archive of every published graphic and write-up, newest season first."""
+    items = content["content"]
+    by_season = defaultdict(list)
+    for c in items:
+        by_season[c["season"]].append(c)
+
+    n_posts = sum(1 for c in items if c.get("article"))
+    b = [f"""<div class="pagehead"><h1 class="page">The <em>Archive</em></h1>
+<p class="psub">Every recap, power ranking, and graphic published so far &mdash;
+{len(items)} in total, {n_posts} with a full write-up. Nothing falls off this page.</p></div>"""]
+
+    for season in sorted(by_season, reverse=True):
+        b.append(f'<div class="section"><h2 class="sec">Season {season}</h2><div class="grid">')
+        for c in sorted(by_season[season], key=lambda c: c["date"], reverse=True):
+            b.append(content_card(c))
+        b.append("</div></div>")
+    return shell("Archive", "content.html", "\n".join(b), None, bug)
+
+
+def build_article(c, body_md, bug=""):
+    """A single write-up: graphic on top, prose below."""
+    hero = (f'<div class="hero" style="padding:0;background:var(--bg)">'
+            f'<div class="inner" style="padding:56px 24px 40px;text-align:left;max-width:1000px">'
+            f'<div class="eyebrow">{c["kind"]} &middot; Season {c["season"]}</div>'
+            f'<h1 style="font-size:clamp(30px,5vw,52px)">{c["title"]}</h1>'
+            f'<p class="lede" style="margin:0;max-width:620px">{c["blurb"]}</p>'
+            f'</div></div>')
+
+    b = [f'<div class="section" style="border-bottom:none">',
+         f'<div class="byline">Published {c["date"]}</div>',
+         f'<a class="poster" href="media/{c["file"]}">'
+         f'<img src="media/{c["file"]}" alt="{html.escape(c["title"], quote=True)}" loading="lazy">'
+         f'<div class="cap">Open the full graphic &rarr;</div></a>',
+         f'<div class="article">{markdown(body_md)}</div>',
+         f'<div class="backlink"><a href="content.html">&larr; All content</a></div>',
+         f'</div>']
+    return shell(c["title"], "content.html", "\n".join(b), hero, bug)
 
 
 def build_rules(rules, bug=""):
@@ -574,6 +728,15 @@ def main():
         print("  WARNING missing image(s): %s" % ", ".join(missing))
         print("  Put them in %s/ or docs/media/" % MEDIA_SRC.name)
 
+    # Resolve write-ups before writing any page, so a card can never link to a
+    # post that wasn't generated (same reason PROFILED is computed up front).
+    for c in content["content"]:
+        if c.get("article") and not (ARTICLES / c["article"]).exists():
+            print("  WARNING missing article: %s (referenced by %r) — "
+                  "card will link to the image instead"
+                  % (c["article"], c["title"]))
+            c.pop("article")
+
     # Work out who gets a profile first, so coach names can link everywhere.
     prof = profiles.gather(league, [s1, s2])
     cur = league["league"]["current_season"]
@@ -591,12 +754,24 @@ def main():
     (SITE / "history.html").write_text(build_history(league, s1, bug), encoding="utf-8")
     (SITE / "coaches.html").write_text(
         profiles.index_page(league, prof, shell, bug, cur), encoding="utf-8")
+    (SITE / "content.html").write_text(build_content(content, bug), encoding="utf-8")
     for cid in roster:
         (SITE / ("coach-%s.html" % cid)).write_text(
             profiles.coach_page(league, cid, prof, shell, bug, cur), encoding="utf-8")
+
+    # Long-form write-ups: one page per manifest entry that names an article file
+    posts = 0
+    for c in content["content"]:
+        if not c.get("article"):
+            continue
+        body = (ARTICLES / c["article"]).read_text(encoding="utf-8")
+        (SITE / article_path(c)).write_text(
+            build_article(c, body, bug), encoding="utf-8")
+        posts += 1
+
     n = len(roster)
-    print("Built %d pages (%d coach profiles), copied %d/%d media -> %s"
-          % (5 + n, n, copied, len(content["content"]), SITE))
+    print("Built %d pages (%d coach profiles, %d write-ups), copied %d/%d media -> %s"
+          % (6 + n + posts, n, posts, copied, len(content["content"]), SITE))
 
 
 if __name__ == "__main__":
