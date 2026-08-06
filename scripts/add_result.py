@@ -64,10 +64,10 @@ def main():
     ap.add_argument("--note", default=None)
     args = ap.parse_args()
 
-    with open(DATA / "league.json") as f:
+    with open(DATA / "league.json", encoding="utf-8") as f:
         league = json.load(f)
     path = DATA / ("season_%02d.json" % args.season)
-    with open(path) as f:
+    with open(path, encoding="utf-8") as f:
         season = json.load(f)
 
     teams = all_teams(league)
@@ -98,7 +98,7 @@ def main():
     season["results"].sort(key=lambda r: r["week"])
     season["current_week"] = max(season.get("current_week", 0), args.week)
 
-    with open(path, "w") as f:
+    with open(path, "w", encoding="utf-8") as f:
         json.dump(season, f, indent=2)
         f.write("\n")
 

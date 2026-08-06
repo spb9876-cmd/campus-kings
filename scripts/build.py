@@ -130,6 +130,9 @@ th{text-align:left;font-size:10.5px;letter-spacing:1.6px;text-transform:uppercas
 td{padding:11px 10px 11px 0;border-bottom:1px solid var(--rule)}
 td.w{font-weight:700}
 td.s{font-family:'Anton',Impact,sans-serif;color:var(--gold);white-space:nowrap}
+a.clink{color:inherit;border-bottom:1px dotted var(--muted2);transition:color .12s,border-color .12s}
+a.clink:hover{color:var(--gold);border-bottom-color:var(--gold)}
+.tm a.clink{border-bottom-color:var(--rule)}
 .tag{font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:var(--golddim);
   border:1px solid var(--rule);border-radius:2px;padding:2px 6px;margin-left:8px;white-space:nowrap}
 .wklabel{font-size:10.5px;color:var(--golddim);letter-spacing:2.2px;text-transform:uppercase;margin:24px 0 7px}
@@ -260,11 +263,26 @@ def shell(title, active, body, hero=None, bug=""):
 
 
 def load(n):
-    return json.loads((DATA / n).read_text())
+    return json.loads((DATA / n).read_text(encoding="utf-8"))
 
 
 def cname(league, cid):
     return next(c["name"] for c in league["coaches"] if c["id"] == cid)
+
+
+# Populated in main() with the ids that actually get a profile page, so we
+# never emit a link to a page that wasn't generated.
+PROFILED = set()
+
+
+def clink(league, cid, text=None):
+    """Coach name, linked to their profile when one exists."""
+    if not cid:
+        return text or "CPU"
+    label = text or cname(league, cid)
+    if cid not in PROFILED:
+        return label
+    return ("<a href='coach-%s.html' class='clink'>%s</a>" % (cid, label))
 
 
 def league_records(season_data, league, season_no):
@@ -324,14 +342,14 @@ def build_index(league, s1, s2, content, pts, about, bug=""):
 
     b.append(f"""<div class="section"><h2 class="sec">The Campus King Belt</h2>
 <div class="belt"><div class="lbl">Current leader</div>
-<div class="who">{cname(league, leader)}</div>
+<div class="who">{clink(league, leader)}</div>
 <div class="meta">{titles} national championship{'s' if titles != 1 else ''} &middot;
 The belt goes to the coach with the most titles across
 {league['league']['accredited_seasons']} accredited seasons. Rings matter most.</div></div>
 <h2 class="sec" style="margin-top:36px">Playoff Points &middot; all time</h2>""")
     for r in pts[:8]:
         b.append(f"""<div class="row"><span class="num">{r['rank']}</span><div class="bd">
-<span class="tm">{cname(league, r['coach'])}</span><span class="co">{r['team']}</span>
+<span class="tm">{clink(league, r['coach'])}</span><span class="co">{r['team']}</span>
 <div class="dt">{', '.join(r['breakdown'])}</div></div>
 <span class="rt">{r['points']} pts</span></div>""")
     b.append('<div class="dt" style="padding-top:16px">'
@@ -394,7 +412,7 @@ CPU results aren't tracked, so these won't match the in-game poll.</p></div>"""]
              '<th>#</th><th>Team</th><th>Coach</th><th>W&ndash;L</th></tr>')
     for i, r in enumerate(recs, 1):
         b.append(f"<tr><td>{i}</td><td class='w'>{r['team']}</td>"
-                 f"<td style='color:var(--muted)'>{cname(league, r['coach'])}</td>"
+                 f"<td style='color:var(--muted)'>{clink(league, r['coach'])}</td>"
                  f"<td class='s'>{r['w']}&ndash;{r['l']}</td></tr>")
     b.append("</table></div>")
 
@@ -416,7 +434,7 @@ CPU results aren't tracked, so these won't match the in-game poll.</p></div>"""]
     b.append('<div class="section"><h2 class="sec">Playoff Points &middot; all time</h2><table><tr>'
              '<th>#</th><th>Coach</th><th>Team</th><th>Pts</th></tr>')
     for r in pts:
-        b.append(f"<tr><td>{r['rank']}</td><td class='w'>{cname(league, r['coach'])}</td>"
+        b.append(f"<tr><td>{r['rank']}</td><td class='w'>{clink(league, r['coach'])}</td>"
                  f"<td style='color:var(--muted)'>{r['team']}</td>"
                  f"<td class='s'>{r['points']}</td></tr>")
     b.append("</table></div>")
@@ -428,8 +446,8 @@ def build_history(league, s1, bug=""):
     b = [f"""<div class="pagehead"><h1 class="page">League <em>History</em></h1>
 <p class="psub">Champions, brackets, and how every coach got where they are.</p></div>
 <div class="section"><div class="belt"><div class="lbl">Season One champion</div>
-<div class="who">{s1['champion']} &middot; {cname(league, coach_for(league, s1['champion'], 1))}</div>
-<div class="meta">Beat {s1['runner_up']} ({cname(league, coach_for(league, s1['runner_up'], 1))})
+<div class="who">{s1['champion']} &middot; {clink(league, coach_for(league, s1['champion'], 1))}</div>
+<div class="meta">Beat {s1['runner_up']} ({clink(league, coach_for(league, s1['runner_up'], 1))})
 {nc['score'][0]}&ndash;{nc['score'][1]} in {nc.get('site', 'the final')} &mdash; as an 8 seed.</div>
 </div></div>"""]
 
@@ -453,7 +471,7 @@ def build_history(league, s1, bug=""):
         if not t.get("note"):
             continue
         b.append(f"<tr><td class='w'>{t['team']}</td>"
-                 f"<td style='color:var(--muted)'>{cname(league, t['coach'])}</td>"
+                 f"<td style='color:var(--muted)'>{clink(league, t['coach'])}</td>"
                  f"<td class='s' style='font-size:13px'>{t['from']}</td>"
                  f"<td style='color:var(--muted);font-size:12.5px'>{t['note']}</td></tr>")
     b.append("</table></div>")
@@ -469,7 +487,7 @@ def main():
     SITE.mkdir(exist_ok=True)
     (SITE / "media").mkdir(exist_ok=True)
     # Tell GitHub Pages to serve these files as-is instead of running Jekyll
-    (SITE / ".nojekyll").write_text("")
+    (SITE / ".nojekyll").write_text("", encoding="utf-8")
     LOGO_FILES = ("logo.png", "logo-mark.png", "favicon.png")
     for f in LOGO_FILES:
         src = MEDIA_SRC / f
@@ -492,24 +510,27 @@ def main():
         print("  WARNING missing image(s): %s" % ", ".join(missing))
         print("  Put them in %s/ or docs/media/" % MEDIA_SRC.name)
 
-    (SITE / "index.html").write_text(build_index(league, s1, s2, content, pts, about, bug))
-    (SITE / "standings.html").write_text(build_standings(league, s2, pts, bug))
-    (SITE / "rules.html").write_text(build_rules(rules, bug))
-    (SITE / "history.html").write_text(build_history(league, s1, bug))
-
+    # Work out who gets a profile first, so coach names can link everywhere.
     prof = profiles.gather(league, [s1, s2])
     cur = league["league"]["current_season"]
+    legacy = league.get("legacy_championships", {})
+    roster = [c["id"] for c in league["coaches"]
+              if profiles.current_team(league, c["id"], cur)
+              or legacy.get(c["id"]) or prof.get(c["id"])]
+    PROFILED.update(roster)
+    profiles.PROFILED = PROFILED
+    profiles.clink = clink
+
+    (SITE / "index.html").write_text(build_index(league, s1, s2, content, pts, about, bug), encoding="utf-8")
+    (SITE / "standings.html").write_text(build_standings(league, s2, pts, bug), encoding="utf-8")
+    (SITE / "rules.html").write_text(build_rules(rules, bug), encoding="utf-8")
+    (SITE / "history.html").write_text(build_history(league, s1, bug), encoding="utf-8")
     (SITE / "coaches.html").write_text(
-        profiles.index_page(league, prof, shell, bug, cur))
-    n = 0
-    hist = league.get("legacy_championships", {})
-    for c in league["coaches"]:
-        cid = c["id"]
-        if not (profiles.current_team(league, cid, cur) or hist.get(cid) or prof.get(cid)):
-            continue
+        profiles.index_page(league, prof, shell, bug, cur), encoding="utf-8")
+    for cid in roster:
         (SITE / ("coach-%s.html" % cid)).write_text(
-            profiles.coach_page(league, cid, prof, shell, bug, cur))
-        n += 1
+            profiles.coach_page(league, cid, prof, shell, bug, cur), encoding="utf-8")
+    n = len(roster)
     print("Built %d pages (%d coach profiles), copied %d/%d media -> %s"
           % (5 + n, n, copied, len(content["content"]), SITE))
 

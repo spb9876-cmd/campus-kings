@@ -55,7 +55,7 @@ def main():
     if not args.sheet:
         sys.exit("No Sheet URL. Pass --sheet \"<url>\" or set SHEET_URL.")
 
-    league = json.loads((DATA / "league.json").read_text())
+    league = json.loads((DATA / "league.json").read_text(encoding="utf-8"))
     teams = all_teams(league)
     lookup = {t.lower(): t for t in teams}
 
@@ -133,13 +133,13 @@ def main():
     for season, results in sorted(by_season.items()):
         path = DATA / ("season_%02d.json" % season)
         if path.exists():
-            data = json.loads(path.read_text())
+            data = json.loads(path.read_text(encoding="utf-8"))
         else:
             data = {"season": season, "status": "in_progress"}
         results.sort(key=lambda r: r["week"])
         data["results"] = results
         data["current_week"] = max(r["week"] for r in results)
-        path.write_text(json.dumps(data, indent=2) + "\n")
+        path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
         print("S%d: %d games through week %d -> %s"
               % (season, len(results), data["current_week"], path.name))
 

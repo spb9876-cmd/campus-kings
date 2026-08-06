@@ -15,7 +15,7 @@ ROUND_ORDER = ["R1", "QF", "SF", "NC"]
 
 
 def load(name):
-    with open(DATA / name) as f:
+    with open(DATA / name, encoding="utf-8") as f:
         return json.load(f)
 
 

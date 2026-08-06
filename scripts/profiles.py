@@ -8,6 +8,9 @@ from collections import defaultdict
 
 from points import coach_for
 
+PROFILED = set()
+clink = None   # injected by build.py
+
 
 def _cname(league, cid):
     return next(c["name"] for c in league["coaches"] if c["id"] == cid)
@@ -65,6 +68,7 @@ def gather(league, seasons):
                     "season": sn, "week": r["week"], "team": team,
                     "won": won, "opp": opp,
                     "opp_coach": _cname(league, opp_cid) if opp_cid else None,
+                    "opp_cid": opp_cid,
                     "score": r["score"], "gotw": bool(r.get("gotw")),
                     "kind": "reg",
                 })
@@ -87,6 +91,7 @@ def gather(league, seasons):
                     "season": sn, "week": labels.get(g["round"], g["round"]),
                     "team": team, "won": won, "opp": opp,
                     "opp_coach": _cname(league, opp_cid) if opp_cid else None,
+                    "opp_cid": opp_cid,
                     "score": g["score"], "gotw": False,
                     "kind": "playoff", "bowl": g.get("bowl"),
                 })
@@ -201,7 +206,9 @@ def coach_page(league, cid, prof, shell, bug, season):
                                  else tuple(reversed(g["score"]))) if g["score"] else "TBD"
             opp = g["opp"]
             if g["opp_coach"]:
-                opp += f" <span style='color:var(--muted2)'>({g['opp_coach']})</span>"
+                nm = (clink(league, g.get("opp_cid"), g["opp_coach"])
+                      if clink else g["opp_coach"])
+                opp += f" <span style='color:var(--muted2)'>({nm})</span>"
             else:
                 opp += " <span class='tag'>CPU</span>"
             tags = ""
