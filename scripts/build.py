@@ -19,7 +19,7 @@ SITE = ROOT / "docs"
 MEDIA_SRC = ROOT / "media_src"   # drop new recap PNGs here
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from points import compute, coach_for
+from points import compute, compute_all, completed_seasons, belt_leaders, coach_for
 import profiles
 
 CSS = """
@@ -305,7 +305,22 @@ def league_records(season_data, league, season_no):
     return out
 
 
-def build_index(league, s1, s2, content, pts, about, bug=""):
+def career_line(r):
+    """Short résumé under a coach's name on the points leaderboard."""
+    bits = []
+    if r.get("titles"):
+        bits.append("%d title%s" % (r["titles"], "" if r["titles"] == 1 else "s"))
+    if r.get("runner_up"):
+        bits.append("%d runner-up" % r["runner_up"])
+    n = r.get("seasons", 0)
+    bits.append("%d playoff appearance%s" % (n, "" if n == 1 else "s"))
+    if len(r.get("teams", [])) > 1:
+        bits.append("with " + ", ".join(r["teams"]))
+    return ", ".join(bits)
+
+
+def build_index(league, s1, s2, content, pts, about, bug="",
+                belt=None, belt_titles=0, n_seasons=1):
     hero = (f'<div class="hero">'
             f'<div class="banner"></div><div class="scrim"></div>'
             f'<div class="inner">'
@@ -333,9 +348,6 @@ def build_index(league, s1, s2, content, pts, about, bug=""):
                       for g in about["at_a_glance"])
             + "</div></div>")
 
-    champs = defaultdict(int)
-    champs[coach_for(league, s1["champion"], 1)] += 1
-    leader, titles = max(champs.items(), key=lambda kv: kv[1])
 
     b = ['<div class="section"><h2 class="sec">Who we are</h2><div class="pillars">'
          + "".join(f"<div class='pillar'><div class='n'>{p['num']}</div>"
@@ -347,17 +359,29 @@ def build_index(league, s1, s2, content, pts, about, bug=""):
                        f"<p>{s['text']}</p></div>" for s in about["how_it_works"])
              + "</div></div>")
 
+    if belt:
+        belt_names = " &middot; ".join(clink(league, r["coach"]) for r in belt)
+        belt_line = "%d national championship%s" % (belt_titles,
+                                                   "" if belt_titles == 1 else "s")
+        if len(belt) > 1:
+            belt_line += " each"
+    else:
+        belt_names = "Up for grabs"
+        belt_line = "No titles awarded yet"
+    pts_label = ("season one" if n_seasons == 1
+                 else "through %d seasons" % n_seasons)
+
     b.append(f"""<div class="section"><h2 class="sec">The Campus King Belt</h2>
 <div class="belt"><div class="lbl">Current leader</div>
-<div class="who">{clink(league, leader)}</div>
-<div class="meta">{titles} national championship{'s' if titles != 1 else ''} &middot;
+<div class="who">{belt_names}</div>
+<div class="meta">{belt_line} &middot;
 The belt goes to the coach with the most titles across
 {league['league']['accredited_seasons']} accredited seasons. Rings matter most.</div></div>
-<h2 class="sec" style="margin-top:36px">Playoff Points &middot; all time</h2>""")
+<h2 class="sec" style="margin-top:36px">Playoff Points &middot; {pts_label}</h2>""")
     for r in pts[:8]:
         b.append(f"""<div class="row"><span class="num">{r['rank']}</span><div class="bd">
 <span class="tm">{clink(league, r['coach'])}</span><span class="co">{r['team']}</span>
-<div class="dt">{', '.join(r['breakdown'])}</div></div>
+<div class="dt">{career_line(r)}</div></div>
 <span class="rt">{r['points']} pts</span></div>""")
     b.append('<div class="dt" style="padding-top:16px">'
              '<a href="standings.html" style="color:var(--gold)">Full standings &rarr;</a></div></div>')
@@ -409,7 +433,7 @@ def build_rules(rules, bug=""):
     return shell("Rules", "rules.html", inner, None, bug)
 
 
-def build_standings(league, s2, pts, bug=""):
+def build_standings(league, s2, pts, bug="", n_seasons=1):
     recs = league_records(s2, league, 2)
     b = [f"""<div class="pagehead"><h1 class="page">Season Two <em>Standings</em></h1>
 <p class="psub">Through week {s2.get('current_week', 0)}. League games only &mdash;
@@ -438,11 +462,27 @@ CPU results aren't tracked, so these won't match the in-game poll.</p></div>"""]
         b.append("</table>")
     b.append("</div>")
 
-    b.append('<div class="section"><h2 class="sec">Playoff Points &middot; all time</h2><table><tr>'
-             '<th>#</th><th>Coach</th><th>Team</th><th>Pts</th></tr>')
+    snap = s2.get("poll_snapshot")
+    if snap and snap.get("records"):
+        b.append('<div class="section"><h2 class="sec">Official records &middot; in-game poll</h2>'
+                 '<p class="dt" style="margin:-8px 0 16px">As of week %s, from the %s. '
+                 'These count CPU games, so they differ from the league-only records above.</p>'
+                 '<table><tr><th>Team</th><th>Coach</th><th>W&ndash;L</th></tr>'
+                 % (snap.get("as_of_week", "?"), snap.get("source", "in-game poll")))
+        for team, rec in snap["records"].items():
+            cid = coach_for(league, team, 2)
+            who = clink(league, cid) if cid else "<span style='color:var(--muted2)'>CPU</span>"
+            b.append("<tr><td class='w'>%s</td><td style='color:var(--muted)'>%s</td>"
+                     "<td class='s'>%s</td></tr>" % (team, who, rec.replace("-", "&ndash;")))
+        b.append("</table></div>")
+
+    b.append('<div class="section"><h2 class="sec">Playoff Points &middot; %s</h2><table><tr>'
+             '<th>#</th><th>Coach</th><th>Team</th><th>Titles</th><th>Pts</th></tr>'
+             % ("season one" if n_seasons == 1 else "through %d seasons" % n_seasons))
     for r in pts:
         b.append(f"<tr><td>{r['rank']}</td><td class='w'>{clink(league, r['coach'])}</td>"
                  f"<td style='color:var(--muted)'>{r['team']}</td>"
+                 f"<td style='color:var(--muted)'>{r.get('titles', 0) or '—'}</td>"
                  f"<td class='s'>{r['points']}</td></tr>")
     b.append("</table></div>")
     return shell("Standings", "standings.html", "\n".join(b), None, bug)
@@ -472,6 +512,21 @@ def build_history(league, s1, bug=""):
         b.append("</table>")
     b.append("</div>")
 
+    recs = s1.get("regular_season_records") or {}
+    if recs:
+        def _wl(v):
+            w, l = v.split("-")
+            return (-int(w), int(l))
+        b.append('<div class="section"><h2 class="sec">Season One final standings</h2>'
+                 '<table><tr><th>#</th><th>Team</th><th>Coach</th><th>W&ndash;L</th></tr>')
+        for i, (team, rec) in enumerate(sorted(recs.items(), key=lambda kv: _wl(kv[1])), 1):
+            cid = coach_for(league, team, 1)
+            who = clink(league, cid) if cid else "<span style='color:var(--muted2)'>CPU</span>"
+            b.append("<tr><td>%d</td><td class='w'>%s</td>"
+                     "<td style='color:var(--muted)'>%s</td><td class='s'>%s</td></tr>"
+                     % (i, team, who, rec.replace("-", "&ndash;")))
+        b.append("</table></div>")
+
     b.append('<div class="section"><h2 class="sec">Coaching moves</h2><table><tr>'
              '<th>Team</th><th>Coach</th><th>From</th><th>Note</th></tr>')
     for t in league["tenures"]:
@@ -488,7 +543,9 @@ def build_history(league, s1, bug=""):
 def main():
     league, s1, s2 = load("league.json"), load("season_01.json"), load("season_02.json")
     content, about, rules = load("content.json"), load("about.json"), load("rules.json")
-    pts = compute(league, s1)
+    seasons = completed_seasons(league)
+    pts = compute_all(league, seasons)
+    belt, belt_titles = belt_leaders(pts)
     bug = ticker(s2)
 
     SITE.mkdir(exist_ok=True)
@@ -528,8 +585,8 @@ def main():
     profiles.PROFILED = PROFILED
     profiles.clink = clink
 
-    (SITE / "index.html").write_text(build_index(league, s1, s2, content, pts, about, bug), encoding="utf-8")
-    (SITE / "standings.html").write_text(build_standings(league, s2, pts, bug), encoding="utf-8")
+    (SITE / "index.html").write_text(build_index(league, s1, s2, content, pts, about, bug, belt, belt_titles, len(seasons)), encoding="utf-8")
+    (SITE / "standings.html").write_text(build_standings(league, s2, pts, bug, len(seasons)), encoding="utf-8")
     (SITE / "rules.html").write_text(build_rules(rules, bug), encoding="utf-8")
     (SITE / "history.html").write_text(build_history(league, s1, bug), encoding="utf-8")
     (SITE / "coaches.html").write_text(

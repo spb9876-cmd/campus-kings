@@ -139,7 +139,7 @@ def main():
 
         key = (season, week, frozenset([w, l]))
         if key in seen:
-            errors.append("line %d: duplicate matchup %s vs %s in S%dW%d" % (i, w, l, season, week))
+            errors.append("line %d: duplicate matchup %s vs %s in S%sW%s" % (i, w, l, season, week))
             continue
         seen.add(key)
 

@@ -131,7 +131,89 @@ def compute(league, season_data):
     return rows
 
 
+def completed_seasons(league):
+    """Every season file that actually has a bracket to score."""
+    out = []
+    for n in range(1, league["league"]["accredited_seasons"] + 1):
+        f = DATA / ("season_%02d.json" % n)
+        if not f.exists():
+            continue
+        d = json.loads(f.read_text(encoding="utf-8"))
+        if d.get("playoffs"):
+            out.append(d)
+    return out
+
+
+def compute_all(league, seasons):
+    """Career Playoff Points: per-season totals summed by coach.
+
+    Points are attributed to the coach who held the team that season, so a
+    coach keeps what he earned even after switching programs.
+    """
+    career = {}
+    for sdata in seasons:
+        for r in compute(league, sdata):
+            c = career.setdefault(r["coach"], {
+                "coach": r["coach"], "points": 0, "teams": [],
+                "titles": 0, "runner_up": 0, "seasons": 0,
+            })
+            c["points"] += r["points"]
+            c["seasons"] += 1
+            if r["team"] not in c["teams"]:
+                c["teams"].append(r["team"])
+        # titles / runner-up straight from the bracket
+        for g in sdata.get("playoffs", []):
+            if g["round"] != "NC":
+                continue
+            for team, won in ((g["winner"], True), (g["loser"], False)):
+                cid = coach_for(league, team, sdata["season"])
+                if not cid:
+                    continue
+                c = career.setdefault(cid, {
+                    "coach": cid, "points": 0, "teams": [team],
+                    "titles": 0, "runner_up": 0, "seasons": 0,
+                })
+                c["titles" if won else "runner_up"] += 1
+
+    rows = sorted(career.values(),
+                  key=lambda r: (-r["points"], -r["titles"], -r["runner_up"], r["coach"]))
+    rank, last = 0, None
+    for i, r in enumerate(rows, start=1):
+        key = (r["points"], r["titles"], r["runner_up"])
+        if key != last:
+            rank, last = i, key
+        r["rank"] = rank
+        r["team"] = r["teams"][-1]      # most recent team, for display
+    return rows
+
+
+def belt_leaders(rows):
+    """Coaches tied for the most accredited-cycle championships."""
+    if not rows:
+        return [], 0
+    best = max(r["titles"] for r in rows)
+    if best == 0:
+        return [], 0
+    return [r for r in rows if r["titles"] == best], best
+
+
 def main():
+    league = load("league.json")
+    seasons = completed_seasons(league)
+    rows = compute_all(league, seasons)
+    print("PLAYOFF POINTS — %d completed season(s)" % len(seasons))
+    print("-" * 62)
+    for r in rows:
+        print("%3s  %-10s %-14s %3d pts  (%d title%s, %d RU, %d appearance%s)" % (
+            r["rank"], r["coach"], r["team"], r["points"],
+            r["titles"], "" if r["titles"] == 1 else "s",
+            r["runner_up"], r["seasons"], "" if r["seasons"] == 1 else "s"))
+    leaders, n = belt_leaders(rows)
+    print("\nBelt: %s (%d)" % (", ".join(l["coach"] for l in leaders) or "nobody yet", n))
+    return rows
+
+
+def _legacy_main():
     league = load("league.json")
     season = load("season_01.json")
     rows = compute(league, season)
