@@ -6,6 +6,8 @@
 <meta property="og:title" content="Campus Kings">
 <meta property="og:description" content="A 20-season CFB 27 online dynasty. Thirty coaches. One belt.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="media/logo.png">
+<link rel="icon" href="media/favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -24,6 +26,7 @@ a{color:inherit;text-decoration:none}
 .navbar .inner{max-width:1000px;margin:0 auto;padding:16px 24px;display:flex;
   align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:11px}
+.brand .mark{width:30px;height:30px;display:block;border-radius:50%}
 .brand .name{font-family:'Anton',Impact,sans-serif;font-size:20px;letter-spacing:1.5px;text-transform:uppercase}
 .brand .name span{color:var(--gold)}
 nav{display:flex;gap:20px;font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted)}
@@ -36,7 +39,22 @@ nav a.on{color:var(--gold);border-bottom-color:var(--gold)}
 .hero .field{position:absolute;inset:0;opacity:.5}
 .hero .glow{position:absolute;inset:0;
   background:radial-gradient(ellipse 760px 320px at 50% 0,rgba(223,168,57,.18),transparent 70%)}
-.hero .inner{position:relative;max-width:1000px;margin:0 auto;padding:76px 24px 64px;text-align:center}
+.hero .inner{position:relative;max-width:1000px;margin:0 auto;padding:44px 24px 34px;text-align:center}
+.hero .crest{width:118px;height:118px;display:block;margin:0 auto 22px;border-radius:50%;
+  box-shadow:0 0 44px rgba(223,168,57,.22)}
+.scrollcue{display:flex;flex-direction:column;align-items:center;gap:7px;margin-top:26px;
+  font-size:9.5px;letter-spacing:2.4px;text-transform:uppercase;color:var(--muted2)}
+.scrollcue svg{animation:bob 1.9s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+@media(prefers-reduced-motion:reduce){.scrollcue svg{animation:none}}
+.quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+  background:var(--rule);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.quick a{background:var(--card);padding:17px 18px;display:block;transition:background .15s}
+.quick a:hover{background:var(--card2)}
+.quick .qk{font-family:'Anton',Impact,sans-serif;font-size:14px;text-transform:uppercase;
+  letter-spacing:1px;margin-bottom:3px}
+.quick .qd{font-size:11.5px;color:var(--muted);line-height:1.45}
+.quick .qk span{color:var(--gold)}
 .eyebrow{font-size:11px;letter-spacing:3.5px;text-transform:uppercase;color:var(--golddim);margin-bottom:20px}
 .hero h1{font-family:'Anton',Impact,sans-serif;font-size:clamp(38px,6.4vw,68px);line-height:.97;
   text-transform:uppercase;margin:0 0 18px;letter-spacing:1px}
@@ -99,6 +117,9 @@ th{text-align:left;font-size:10.5px;letter-spacing:1.6px;text-transform:uppercas
 td{padding:11px 10px 11px 0;border-bottom:1px solid var(--rule)}
 td.w{font-weight:700}
 td.s{font-family:'Anton',Impact,sans-serif;color:var(--gold);white-space:nowrap}
+a.clink{color:inherit;border-bottom:1px dotted var(--muted2);transition:color .12s,border-color .12s}
+a.clink:hover{color:var(--gold);border-bottom-color:var(--gold)}
+.tm a.clink{border-bottom-color:var(--rule)}
 .tag{font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:var(--golddim);
   border:1px solid var(--rule);border-radius:2px;padding:2px 6px;margin-left:8px;white-space:nowrap}
 .wklabel{font-size:10.5px;color:var(--golddim);letter-spacing:2.2px;text-transform:uppercase;margin:24px 0 7px}
@@ -159,15 +180,15 @@ footer{border-top:1px solid var(--rule);padding:26px 0 34px;font-size:10.5px;let
 @media(max-width:720px){.rulegrid{grid-template-columns:1fr}.toc{display:none}}
 </style></head><body>
 <div class="navbar"><div class="inner">
-<a class="brand" href="index.html"><svg width="24" height="19" viewBox="0 0 34 26" fill="none"><path d="M2 22L4 8L11 14L17 4L23 14L30 8L32 22H2Z" stroke="#dfa839" stroke-width="2" stroke-linejoin="round"/><line x1="2" y1="22" x2="32" y2="22" stroke="#dfa839" stroke-width="2"/></svg><span class="name">Campus <span>Kings</span></span></a>
+<a class="brand" href="index.html"><img class="mark" src="media/logo-mark.png" alt=""><span class="name">Campus <span>Kings</span></span></a>
 <nav><a href='index.html'>Overview</a><a href='standings.html'>Standings</a><a href='coaches.html'>Coaches</a><a href='rules.html'>Rules</a><a href='history.html' class='on'>History</a></nav></div></div>
 <div class="ticker"><div class="track"><span class="tk"><span class="wk">W10</span><span class="a">Tennessee</span><span class="sc">38&ndash;7</span><span class="b">Notre Dame</span></span><span class="tk"><span class="wk">W10</span><span class="a">Miami</span><span class="sc">44&ndash;0</span><span class="b">SMU</span></span><span class="tk"><span class="wk">W10</span><span class="a">Florida</span><span class="sc">24&ndash;14</span><span class="b">Georgia</span></span><span class="tk"><span class="wk">W10</span><span class="a">Oregon</span><span class="sc">43&ndash;36</span><span class="b">Penn State</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W10</span><span class="a">South Carolina</span><span class="sc">41&ndash;35</span><span class="b">Texas</span></span><span class="tk"><span class="wk">W10</span><span class="a">Texas A&M</span><span class="sc">35&ndash;28</span><span class="b">LSU</span></span><span class="tk"><span class="wk">W10</span><span class="a">Texas Tech</span><span class="sc">57&ndash;56</span><span class="b">TCU</span></span><span class="tk"><span class="wk">W9</span><span class="a">Penn State</span><span class="sc">45&ndash;0</span><span class="b">Indiana</span></span><span class="tk"><span class="wk">W9</span><span class="a">Ole Miss</span><span class="sc">46&ndash;44</span><span class="b">Auburn</span></span><span class="tk"><span class="wk">W9</span><span class="a">Ohio State</span><span class="sc">45&ndash;7</span><span class="b">USC</span></span><span class="tk"><span class="wk">W9</span><span class="a">Florida</span><span class="sc">38&ndash;35</span><span class="b">Alabama</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W9</span><span class="a">Clemson</span><span class="sc">37&ndash;20</span><span class="b">Miami</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W9</span><span class="a">Oregon</span><span class="sc">55&ndash;14</span><span class="b">UCLA</span></span><span class="tk"><span class="wk">W8</span><span class="a">Georgia</span><span class="sc">38&ndash;35</span><span class="b">South Carolina</span></span><span class="tk"><span class="wk">W10</span><span class="a">Tennessee</span><span class="sc">38&ndash;7</span><span class="b">Notre Dame</span></span><span class="tk"><span class="wk">W10</span><span class="a">Miami</span><span class="sc">44&ndash;0</span><span class="b">SMU</span></span><span class="tk"><span class="wk">W10</span><span class="a">Florida</span><span class="sc">24&ndash;14</span><span class="b">Georgia</span></span><span class="tk"><span class="wk">W10</span><span class="a">Oregon</span><span class="sc">43&ndash;36</span><span class="b">Penn State</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W10</span><span class="a">South Carolina</span><span class="sc">41&ndash;35</span><span class="b">Texas</span></span><span class="tk"><span class="wk">W10</span><span class="a">Texas A&M</span><span class="sc">35&ndash;28</span><span class="b">LSU</span></span><span class="tk"><span class="wk">W10</span><span class="a">Texas Tech</span><span class="sc">57&ndash;56</span><span class="b">TCU</span></span><span class="tk"><span class="wk">W9</span><span class="a">Penn State</span><span class="sc">45&ndash;0</span><span class="b">Indiana</span></span><span class="tk"><span class="wk">W9</span><span class="a">Ole Miss</span><span class="sc">46&ndash;44</span><span class="b">Auburn</span></span><span class="tk"><span class="wk">W9</span><span class="a">Ohio State</span><span class="sc">45&ndash;7</span><span class="b">USC</span></span><span class="tk"><span class="wk">W9</span><span class="a">Florida</span><span class="sc">38&ndash;35</span><span class="b">Alabama</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W9</span><span class="a">Clemson</span><span class="sc">37&ndash;20</span><span class="b">Miami</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W9</span><span class="a">Oregon</span><span class="sc">55&ndash;14</span><span class="b">UCLA</span></span><span class="tk"><span class="wk">W8</span><span class="a">Georgia</span><span class="sc">38&ndash;35</span><span class="b">South Carolina</span></span></div></div>
 
 <div class="wrap"><div class="pagehead"><h1 class="page">League <em>History</em></h1>
 <p class="psub">Champions, brackets, and how every coach got where they are.</p></div>
 <div class="section"><div class="belt"><div class="lbl">Season One champion</div>
-<div class="who">Oklahoma &middot; Stew</div>
-<div class="meta">Beat Clemson (LT)
+<div class="who">Oklahoma &middot; <a href='coach-stew.html' class='clink'>Stew</a></div>
+<div class="meta">Beat Clemson (<a href='coach-lt.html' class='clink'>LT</a>)
 42&ndash;28 in Las Vegas, NV &mdash; as an 8 seed.</div>
 </div></div>
 <div class="section"><h2 class="sec">Season One playoff bracket</h2>
@@ -192,17 +213,17 @@ footer{border-top:1px solid var(--rule);padding:26px 0 34px;font-size:10.5px;let
 </table>
 </div>
 <div class="section"><h2 class="sec">Coaching moves</h2><table><tr><th>Team</th><th>Coach</th><th>From</th><th>Note</th></tr>
-<tr><td class='w'>Missouri</td><td style='color:var(--muted)'>Ice Man</td><td class='s' style='font-size:13px'>S1W0</td><td style='color:var(--muted);font-size:12.5px'>auctioned mid-S1; moved to Georgia for S2</td></tr>
-<tr><td class='w'>Auburn</td><td style='color:var(--muted)'>Cell</td><td class='s' style='font-size:13px'>S1W0</td><td style='color:var(--muted);font-size:12.5px'>left for LSU after winning $250 auction</td></tr>
-<tr><td class='w'>LSU</td><td style='color:var(--muted)'>Cell</td><td class='s' style='font-size:13px'>S2W2</td><td style='color:var(--muted);font-size:12.5px'>won LSU auction, $250</td></tr>
-<tr><td class='w'>LSU</td><td style='color:var(--muted)'>Quan</td><td class='s' style='font-size:13px'>S1W0</td><td style='color:var(--muted);font-size:12.5px'>vacated LSU, moved to Cal</td></tr>
-<tr><td class='w'>Kansas</td><td style='color:var(--muted)'>Nas</td><td class='s' style='font-size:13px'>S1W0</td><td style='color:var(--muted);font-size:12.5px'>moved to Florida State</td></tr>
-<tr><td class='w'>Florida State</td><td style='color:var(--muted)'>Nas</td><td class='s' style='font-size:13px'>S2W1</td><td style='color:var(--muted);font-size:12.5px'>replaced TB, who quit</td></tr>
-<tr><td class='w'>Nebraska</td><td style='color:var(--muted)'>Jarvis</td><td class='s' style='font-size:13px'>S2W1</td><td style='color:var(--muted);font-size:12.5px'>joined league; returning from hiatus</td></tr>
-<tr><td class='w'>TCU</td><td style='color:var(--muted)'>KJ</td><td class='s' style='font-size:13px'>S2W1</td><td style='color:var(--muted);font-size:12.5px'>new team added</td></tr>
-<tr><td class='w'>UCLA</td><td style='color:var(--muted)'>TV</td><td class='s' style='font-size:13px'>S2W4</td><td style='color:var(--muted);font-size:12.5px'>previously CPU</td></tr>
+<tr><td class='w'>Missouri</td><td style='color:var(--muted)'><a href='coach-iceman.html' class='clink'>Ice Man</a></td><td class='s' style='font-size:13px'>S1W0</td><td style='color:var(--muted);font-size:12.5px'>auctioned mid-S1; moved to Georgia for S2</td></tr>
+<tr><td class='w'>Auburn</td><td style='color:var(--muted)'><a href='coach-cell.html' class='clink'>Cell</a></td><td class='s' style='font-size:13px'>S1W0</td><td style='color:var(--muted);font-size:12.5px'>left for LSU after winning $250 auction</td></tr>
+<tr><td class='w'>LSU</td><td style='color:var(--muted)'><a href='coach-cell.html' class='clink'>Cell</a></td><td class='s' style='font-size:13px'>S2W2</td><td style='color:var(--muted);font-size:12.5px'>won LSU auction, $250</td></tr>
+<tr><td class='w'>LSU</td><td style='color:var(--muted)'><a href='coach-quan.html' class='clink'>Quan</a></td><td class='s' style='font-size:13px'>S1W0</td><td style='color:var(--muted);font-size:12.5px'>vacated LSU, moved to Cal</td></tr>
+<tr><td class='w'>Kansas</td><td style='color:var(--muted)'><a href='coach-nas.html' class='clink'>Nas</a></td><td class='s' style='font-size:13px'>S1W0</td><td style='color:var(--muted);font-size:12.5px'>moved to Florida State</td></tr>
+<tr><td class='w'>Florida State</td><td style='color:var(--muted)'><a href='coach-nas.html' class='clink'>Nas</a></td><td class='s' style='font-size:13px'>S2W1</td><td style='color:var(--muted);font-size:12.5px'>replaced TB, who quit</td></tr>
+<tr><td class='w'>Nebraska</td><td style='color:var(--muted)'><a href='coach-jarvis.html' class='clink'>Jarvis</a></td><td class='s' style='font-size:13px'>S2W1</td><td style='color:var(--muted);font-size:12.5px'>joined league; returning from hiatus</td></tr>
+<tr><td class='w'>TCU</td><td style='color:var(--muted)'><a href='coach-kj.html' class='clink'>KJ</a></td><td class='s' style='font-size:13px'>S2W1</td><td style='color:var(--muted);font-size:12.5px'>new team added</td></tr>
+<tr><td class='w'>UCLA</td><td style='color:var(--muted)'><a href='coach-tv.html' class='clink'>TV</a></td><td class='s' style='font-size:13px'>S2W4</td><td style='color:var(--muted);font-size:12.5px'>previously CPU</td></tr>
 <tr><td class='w'>Utah</td><td style='color:var(--muted)'>Champ</td><td class='s' style='font-size:13px'>S2W1</td><td style='color:var(--muted);font-size:12.5px'>quit</td></tr>
 <tr><td class='w'>Baylor</td><td style='color:var(--muted)'>X</td><td class='s' style='font-size:13px'>S2W1</td><td style='color:var(--muted);font-size:12.5px'>replaced by Cozy</td></tr>
 </table></div></div>
-<footer>Campus Kings &middot; CFB 27 Online Dynasty<br>Updated 2026-08-06</footer>
+<footer>Campus Kings &middot; CFB 27 Online Dynasty<br>Updated 2026-08-05</footer>
 </body></html>

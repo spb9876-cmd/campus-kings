@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rules — Campus Kings</title>
+<meta name="description" content="Campus Kings — a 20-season CFB 27 online dynasty league.">
+<meta property="og:title" content="Campus Kings">
+<meta property="og:description" content="A 20-season CFB 27 online dynasty. Thirty coaches. One belt.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="media/logo.png">
+<link rel="icon" href="media/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08080a; --ink:#f4f2ea; --muted:#8d8b82; --muted2:#5a5852;
+  --gold:#dfa839; --golddim:#a9863f; --rule:#212120; --card:#101012; --card2:#141416;
+  --turf:#0d1410;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg)}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+
+.navbar{border-bottom:1px solid var(--rule);position:sticky;top:0;z-index:20;
+  background:rgba(8,8,10,.92);backdrop-filter:blur(8px)}
+.navbar .inner{max-width:1000px;margin:0 auto;padding:16px 24px;display:flex;
+  align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:11px}
+.brand .mark{width:30px;height:30px;display:block;border-radius:50%}
+.brand .name{font-family:'Anton',Impact,sans-serif;font-size:20px;letter-spacing:1.5px;text-transform:uppercase}
+.brand .name span{color:var(--gold)}
+nav{display:flex;gap:20px;font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted)}
+nav a{padding:4px 0;border-bottom:1.5px solid transparent}
+nav a:hover{color:var(--ink)}
+nav a.on{color:var(--gold);border-bottom-color:var(--gold)}
+
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--rule);
+  background:linear-gradient(180deg,var(--turf) 0%,var(--bg) 78%)}
+.hero .field{position:absolute;inset:0;opacity:.5}
+.hero .glow{position:absolute;inset:0;
+  background:radial-gradient(ellipse 760px 320px at 50% 0,rgba(223,168,57,.18),transparent 70%)}
+.hero .inner{position:relative;max-width:1000px;margin:0 auto;padding:44px 24px 34px;text-align:center}
+.hero .crest{width:118px;height:118px;display:block;margin:0 auto 22px;border-radius:50%;
+  box-shadow:0 0 44px rgba(223,168,57,.22)}
+.scrollcue{display:flex;flex-direction:column;align-items:center;gap:7px;margin-top:26px;
+  font-size:9.5px;letter-spacing:2.4px;text-transform:uppercase;color:var(--muted2)}
+.scrollcue svg{animation:bob 1.9s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+@media(prefers-reduced-motion:reduce){.scrollcue svg{animation:none}}
+.quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+  background:var(--rule);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.quick a{background:var(--card);padding:17px 18px;display:block;transition:background .15s}
+.quick a:hover{background:var(--card2)}
+.quick .qk{font-family:'Anton',Impact,sans-serif;font-size:14px;text-transform:uppercase;
+  letter-spacing:1px;margin-bottom:3px}
+.quick .qd{font-size:11.5px;color:var(--muted);line-height:1.45}
+.quick .qk span{color:var(--gold)}
+.eyebrow{font-size:11px;letter-spacing:3.5px;text-transform:uppercase;color:var(--golddim);margin-bottom:20px}
+.hero h1{font-family:'Anton',Impact,sans-serif;font-size:clamp(38px,6.4vw,68px);line-height:.97;
+  text-transform:uppercase;margin:0 0 18px;letter-spacing:1px}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero p.lede{max-width:620px;margin:0 auto;color:var(--muted);font-size:15.5px;line-height:1.65}
+.hero .cta{margin-top:32px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{font-size:12px;letter-spacing:1.6px;text-transform:uppercase;padding:11px 22px;
+  border:1px solid var(--golddim);color:var(--gold);border-radius:2px;transition:.15s}
+.btn:hover{background:var(--gold);color:#111}
+.btn.ghost{border-color:var(--rule);color:var(--muted)}
+.btn.ghost:hover{border-color:var(--muted);color:var(--ink)}
+
+.glance{border-bottom:1px solid var(--rule);background:var(--card)}
+.glance .inner{max-width:1000px;margin:0 auto;padding:0 24px;display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+.glance .cell{padding:24px 8px;text-align:center;border-left:1px solid var(--rule)}
+.glance .cell:first-child{border-left:none}
+.glance .fig{font-family:'Anton',Impact,sans-serif;font-size:32px;color:var(--gold);line-height:1}
+.glance .lab{font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);margin-top:8px}
+
+.section{padding:56px 0;border-bottom:1px solid var(--rule)}
+.section:last-of-type{border-bottom:none}
+h2.sec{display:flex;align-items:center;gap:14px;font-size:11.5px;letter-spacing:3px;
+  font-weight:600;color:var(--gold);text-transform:uppercase;margin:0 0 26px}
+h2.sec::after{content:"";flex:1;height:1px;background:var(--rule)}
+h1.page{font-family:'Anton',Impact,sans-serif;font-size:clamp(32px,5vw,46px);line-height:1.03;
+  text-transform:uppercase;margin:0 0 12px;letter-spacing:1px}
+h1.page em{font-style:normal;color:var(--gold)}
+.psub{color:var(--muted);font-size:15px;font-style:italic;margin:0;line-height:1.6;max-width:700px}
+.pagehead{padding:52px 0 34px;border-bottom:1px solid var(--rule)}
+
+.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--rule)}
+.pillar{background:var(--card);padding:26px 24px}
+.pillar .n{font-family:'Anton',Impact,sans-serif;font-size:13px;color:var(--golddim);letter-spacing:2px}
+.pillar h3{font-size:16px;margin:10px 0 9px;letter-spacing:.2px}
+.pillar p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.62}
+
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px}
+.step{border-top:2px solid var(--golddim);padding-top:16px}
+.step .k{font-family:'Anton',Impact,sans-serif;font-size:15px;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px}
+.step p{margin:0;font-size:13px;color:var(--muted);line-height:1.6}
+
+.belt{background:linear-gradient(135deg,var(--card2),var(--card));
+  border:1px solid var(--rule);border-left:3px solid var(--gold);border-radius:3px;padding:26px 28px}
+.belt .lbl{font-size:10.5px;letter-spacing:2.8px;color:var(--golddim);text-transform:uppercase}
+.belt .who{font-family:'Anton',Impact,sans-serif;font-size:34px;margin:9px 0 5px;text-transform:uppercase;letter-spacing:.5px}
+.belt .meta{font-size:13px;color:var(--muted);line-height:1.6;max-width:560px}
+
+.row{display:flex;align-items:flex-start;gap:18px;padding:13px 4px;border-bottom:1px solid var(--rule)}
+.row:last-child{border-bottom:none}
+.num{font-family:'Anton',Impact,sans-serif;font-size:23px;color:var(--gold);width:38px;flex-shrink:0;line-height:1.15}
+.bd{flex:1;min-width:0}
+.tm{font-size:15px;font-weight:700}
+.co{font-size:11px;color:var(--muted2);text-transform:uppercase;letter-spacing:.6px;margin-left:8px}
+.dt{font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.5}
+.rt{font-family:'Anton',Impact,sans-serif;font-size:15px;color:var(--golddim);flex-shrink:0;white-space:nowrap;padding-top:4px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:10.5px;letter-spacing:1.6px;text-transform:uppercase;
+  color:var(--muted2);font-weight:600;padding:0 10px 10px 0;border-bottom:1px solid var(--rule)}
+td{padding:11px 10px 11px 0;border-bottom:1px solid var(--rule)}
+td.w{font-weight:700}
+td.s{font-family:'Anton',Impact,sans-serif;color:var(--gold);white-space:nowrap}
+a.clink{color:inherit;border-bottom:1px dotted var(--muted2);transition:color .12s,border-color .12s}
+a.clink:hover{color:var(--gold);border-bottom-color:var(--gold)}
+.tm a.clink{border-bottom-color:var(--rule)}
+.tag{font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:var(--golddim);
+  border:1px solid var(--rule);border-radius:2px;padding:2px 6px;margin-left:8px;white-space:nowrap}
+.wklabel{font-size:10.5px;color:var(--golddim);letter-spacing:2.2px;text-transform:uppercase;margin:24px 0 7px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:3px;overflow:hidden;
+  display:block;transition:border-color .15s,transform .15s}
+.card:hover{border-color:var(--golddim);transform:translateY(-2px)}
+.card img{width:100%;display:block;border-bottom:1px solid var(--rule);height:142px;object-fit:cover;object-position:top}
+.card .body{padding:14px 16px}
+.card .kind{font-size:10px;letter-spacing:2px;color:var(--golddim);text-transform:uppercase}
+.card .ttl{font-size:14.5px;font-weight:700;margin:6px 0 5px}
+.card .bl{font-size:12.5px;color:var(--muted);line-height:1.5}
+.card .dte{font-size:10.5px;color:var(--muted2);margin-top:9px;letter-spacing:.5px}
+
+.rulegrid{display:grid;grid-template-columns:200px 1fr;gap:40px;align-items:start}
+.toc{position:sticky;top:78px;font-size:12.5px}
+.toc a{display:block;padding:7px 0 7px 12px;color:var(--muted);border-left:1px solid var(--rule);line-height:1.4}
+.toc a:hover{color:var(--gold);border-left-color:var(--golddim)}
+.rule{padding:0 0 34px;margin-bottom:34px;border-bottom:1px solid var(--rule)}
+.rule:last-child{border-bottom:none;margin-bottom:0}
+.rule h3{font-family:'Anton',Impact,sans-serif;font-size:21px;text-transform:uppercase;
+  letter-spacing:.8px;margin:0 0 14px;scroll-margin-top:90px}
+.rule p{font-size:14px;color:var(--muted);line-height:1.7;margin:0 0 14px}
+.rule ul{margin:0 0 14px;padding-left:0;list-style:none}
+.rule li{position:relative;padding:8px 0 8px 20px;font-size:13.5px;color:var(--ink);
+  line-height:1.6;border-bottom:1px solid var(--rule)}
+.rule li:last-child{border-bottom:none}
+.rule li::before{content:"";position:absolute;left:0;top:15px;width:7px;height:7px;
+  border:1.5px solid var(--golddim);border-radius:1px}
+.flag{background:rgba(223,168,57,.08);border:1px solid var(--golddim);border-radius:2px;
+  padding:11px 14px;font-size:12.5px;color:var(--gold);margin-bottom:16px;line-height:1.55}
+.foot-note{font-size:12.5px;color:var(--muted2);line-height:1.65;font-style:italic;margin:14px 0 0}
+.rt-tables{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px;margin-bottom:16px}
+
+footer{border-top:1px solid var(--rule);padding:26px 0 34px;font-size:10.5px;letter-spacing:2px;
+  color:var(--muted2);text-transform:uppercase;text-align:center;line-height:1.9}
+.ticker{position:relative;overflow:hidden;background:#0b0b0d;border-bottom:1px solid var(--rule);
+  height:42px;display:flex;align-items:center}
+.ticker::before{content:"Latest";position:absolute;left:0;top:0;bottom:0;z-index:3;
+  display:flex;align-items:center;padding:0 14px;background:var(--gold);color:#0b0b0d;
+  font-family:'Anton',Impact,sans-serif;font-size:11.5px;letter-spacing:2px;text-transform:uppercase}
+.ticker::after{content:"";position:absolute;right:0;top:0;bottom:0;width:60px;z-index:2;
+  background:linear-gradient(90deg,transparent,#0b0b0d);pointer-events:none}
+.ticker .track{display:flex;align-items:center;gap:0;white-space:nowrap;
+  padding-left:96px;animation:slide 52s linear infinite;will-change:transform}
+.ticker:hover .track{animation-play-state:paused}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tk{display:inline-flex;align-items:center;gap:9px;padding:0 20px;font-size:12.5px;
+  border-right:1px solid var(--rule)}
+.tk .wk{font-size:9.5px;letter-spacing:1.4px;color:var(--muted2);text-transform:uppercase}
+.tk .a{font-weight:700}
+.tk .b{color:var(--muted)}
+.tk .sc{font-family:'Anton',Impact,sans-serif;color:var(--gold);letter-spacing:.5px}
+.tk .gw{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#0b0b0d;
+  background:var(--golddim);border-radius:2px;padding:2px 5px}
+@media(prefers-reduced-motion:reduce){.ticker .track{animation:none}}
+@media(max-width:720px){.rulegrid{grid-template-columns:1fr}.toc{display:none}}
+</style></head><body>
+<div class="navbar"><div class="inner">
+<a class="brand" href="index.html"><img class="mark" src="media/logo-mark.png" alt=""><span class="name">Campus <span>Kings</span></span></a>
+<nav><a href='index.html'>Overview</a><a href='standings.html'>Standings</a><a href='coaches.html'>Coaches</a><a href='rules.html' class='on'>Rules</a><a href='history.html'>History</a></nav></div></div>
+<div class="ticker"><div class="track"><span class="tk"><span class="wk">W10</span><span class="a">Tennessee</span><span class="sc">38&ndash;7</span><span class="b">Notre Dame</span></span><span class="tk"><span class="wk">W10</span><span class="a">Miami</span><span class="sc">44&ndash;0</span><span class="b">SMU</span></span><span class="tk"><span class="wk">W10</span><span class="a">Florida</span><span class="sc">24&ndash;14</span><span class="b">Georgia</span></span><span class="tk"><span class="wk">W10</span><span class="a">Oregon</span><span class="sc">43&ndash;36</span><span class="b">Penn State</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W10</span><span class="a">South Carolina</span><span class="sc">41&ndash;35</span><span class="b">Texas</span></span><span class="tk"><span class="wk">W10</span><span class="a">Texas A&M</span><span class="sc">35&ndash;28</span><span class="b">LSU</span></span><span class="tk"><span class="wk">W10</span><span class="a">Texas Tech</span><span class="sc">57&ndash;56</span><span class="b">TCU</span></span><span class="tk"><span class="wk">W9</span><span class="a">Penn State</span><span class="sc">45&ndash;0</span><span class="b">Indiana</span></span><span class="tk"><span class="wk">W9</span><span class="a">Ole Miss</span><span class="sc">46&ndash;44</span><span class="b">Auburn</span></span><span class="tk"><span class="wk">W9</span><span class="a">Ohio State</span><span class="sc">45&ndash;7</span><span class="b">USC</span></span><span class="tk"><span class="wk">W9</span><span class="a">Florida</span><span class="sc">38&ndash;35</span><span class="b">Alabama</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W9</span><span class="a">Clemson</span><span class="sc">37&ndash;20</span><span class="b">Miami</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W9</span><span class="a">Oregon</span><span class="sc">55&ndash;14</span><span class="b">UCLA</span></span><span class="tk"><span class="wk">W8</span><span class="a">Georgia</span><span class="sc">38&ndash;35</span><span class="b">South Carolina</span></span><span class="tk"><span class="wk">W10</span><span class="a">Tennessee</span><span class="sc">38&ndash;7</span><span class="b">Notre Dame</span></span><span class="tk"><span class="wk">W10</span><span class="a">Miami</span><span class="sc">44&ndash;0</span><span class="b">SMU</span></span><span class="tk"><span class="wk">W10</span><span class="a">Florida</span><span class="sc">24&ndash;14</span><span class="b">Georgia</span></span><span class="tk"><span class="wk">W10</span><span class="a">Oregon</span><span class="sc">43&ndash;36</span><span class="b">Penn State</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W10</span><span class="a">South Carolina</span><span class="sc">41&ndash;35</span><span class="b">Texas</span></span><span class="tk"><span class="wk">W10</span><span class="a">Texas A&M</span><span class="sc">35&ndash;28</span><span class="b">LSU</span></span><span class="tk"><span class="wk">W10</span><span class="a">Texas Tech</span><span class="sc">57&ndash;56</span><span class="b">TCU</span></span><span class="tk"><span class="wk">W9</span><span class="a">Penn State</span><span class="sc">45&ndash;0</span><span class="b">Indiana</span></span><span class="tk"><span class="wk">W9</span><span class="a">Ole Miss</span><span class="sc">46&ndash;44</span><span class="b">Auburn</span></span><span class="tk"><span class="wk">W9</span><span class="a">Ohio State</span><span class="sc">45&ndash;7</span><span class="b">USC</span></span><span class="tk"><span class="wk">W9</span><span class="a">Florida</span><span class="sc">38&ndash;35</span><span class="b">Alabama</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W9</span><span class="a">Clemson</span><span class="sc">37&ndash;20</span><span class="b">Miami</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W9</span><span class="a">Oregon</span><span class="sc">55&ndash;14</span><span class="b">UCLA</span></span><span class="tk"><span class="wk">W8</span><span class="a">Georgia</span><span class="sc">38&ndash;35</span><span class="b">South Carolina</span></span></div></div>
+
+<div class="wrap"><div class="pagehead"><h1 class="page">Rules &amp; <em>Regulations</em></h1><p class="psub">The Campus Kings NCAA 27 Online Dynasty aims to create an enjoyable and engaging experience for all participants. This league emphasizes strategic gameplay, recruitment battles, and the thrill of college football. You are responsible for knowing the rules.</p></div><div class="section"><div class="rulegrid"><div class="toc"><a href='#objective'>League objective</a><a href='#settings'>Gameplay settings</a><a href='#banned'>Banned formations and tactics</a><a href='#exploits'>Exploits and glitches</a><a href='#positions'>Roster position changes</a><a href='#scheduling'>Scheduling games</a><a href='#cpu'>CPU games</a><a href='#restarts'>Restarts, lagouts, and quitting</a><a href='#streaming'>Streaming requirement</a><a href='#teams'>Team selection and approval</a><a href='#points'>Playoff Points</a></div><div><div class="rule"><h3 id="objective">League objective</h3><p>The primary objective is an enjoyable, engaging experience for everyone involved. While much of the schedule is played against computer-controlled teams, user-versus-user matchups are encouraged wherever they occur — especially in conference play. This league is built for casual enjoyment with a real emphasis on strategy, recruiting, and competition.</p></div><div class="rule"><h3 id="settings">Gameplay settings</h3><ul><li>Difficulty: Heisman</li><li>Quarter length: 5 minutes</li><li>All other settings: Default</li></ul></div><div class="rule"><h3 id="banned">Banned formations and tactics</h3><div class="flag">Effective immediately</div><ul><li>Power I Hulk</li><li>Gun Power I Tight</li><li>All Wildcat formations outside the red zone — Wildcat may only be used inside your opponent's 20-yard line</li><li>All direct-snap plays, anywhere on the field including the red zone</li><li>Calling defensive-line stunts from Field Goal Block</li></ul><p class="foot-note">Adjust your custom playbooks and play-calling before your next game.</p></div><div class="rule"><h3 id="exploits">Exploits and glitches</h3><p>The integrity of gameplay is paramount. Any suspected exploit or glitch should be reported to the league. Admins determine validity, whether a ban applies, and any consequences, in order to keep play fair across the board.</p></div><div class="rule"><h3 id="positions">Roster position changes</h3><p>Players may move freely within these defined groups and no others:</p><ul><li>Running Back: RB ↔ FB</li><li>Offensive Line: LT ↔ LG ↔ C ↔ RG ↔ RT</li><li>Defensive Line: LEDG ↔ REDG ↔ DT</li><li>Linebacker: SAM ↔ MIKE ↔ WILL</li><li>Defensive Back: CB ↔ FS ↔ SS</li><li>Specialist: K ↔ P</li></ul><p class="foot-note">ATHs may only move to EDGE or TE if they were originally grouped in Defensive Line or TE respectively, and must stay at the position you initially set for the duration of their career. No archetype exploits: moving players between groups (e.g. RB → CB → RB) to manipulate archetypes or unlock badges will drop that player's rating to 40 across the board, with possible additional penalties, fines, or removal from the league.</p></div><div class="rule"><h3 id="scheduling">Scheduling games</h3><div class="flag">You must be able to play at least 7 PM – 12 AM ET daily. If you can't, this is not the league for you.</div><ul><li>User chats are created so both players can agree on a time as soon as possible.</li><li>Games must be scheduled and played within the designated gaming hours.</li><li>If there's an issue, state your availability within gaming hours. No reason needs to be given.</li><li>If a game can't be scheduled reasonably, admins decide based on what's posted in the user chat.</li><li>Advancement will not be held up for user games — playoff games excepted.</li><li>Be time-zone specific when scheduling, and tag your opponent in every response in the game chat.</li></ul><p class="foot-note">Once a time is set there's a 15-minute grace period without comms and 30 minutes with comms. The waiting player may take the forfeit win or play the game. Don't play with people's time. No one person will hold up the league.</p></div><div class="rule"><h3 id="cpu">CPU games</h3><p>All CPU games will be simmed. You may play them if you wish. It is your responsibility to check that the sims are correct.</p></div><div class="rule"><h3 id="restarts">Restarts, lagouts, and quitting</h3><ul><li>Lagout inside the first 2 minutes: may result in a complete restart if it came from the team that's ahead. If it came from the team that's behind, a point spread may be used instead.</li><li>Lagout after the 2-minute mark: the rest of the game is played with a spread.</li><li>Two consecutive lagouts by the same team: results in a loss.</li><li>General lag-outs may be replayed with a point spread or restarted, whichever the two players agree on. If they can't agree, admins make the final call.</li><li>Quitting a user game is strongly discouraged. Play at least into the 3rd quarter before conceding. Failure to do so may result in removal.</li></ul><p class="foot-note">Failure to play playoff games results in a probationary period where you won't be eligible for the following season.</p></div><div class="rule"><h3 id="streaming">Streaming requirement</h3><p>All user-vs-user games must be streamed. This promotes transparency and accountability, and gives the rest of the league something to follow. Failure to stream could result in a loss, handled case by case.</p></div><div class="rule"><h3 id="teams">Team selection and approval</h3><ul><li>All team selections must be approved by the Campus Kings Dynasty League Board to preserve competitive balance.</li><li>New users must be approved by LT or Curt.</li><li>At the start of Campus Kings, coaches selected teams rated 2.5 stars or below to keep the playing field even.</li><li>Once you've honored your three-year commitment, you may accept an offer from a 4-star university. Contact an admin before any move.</li></ul></div><div class="rule"><h3 id="points">Playoff Points</h3><p>The Campus King Belt still goes to the coach with the most national championships over the 20 accredited seasons. Playoff Points run alongside it to track the overall top five across the full cycle.</p><div class="rt-tables"><table><tr><th>Achievement</th><th>Points</th></tr><tr><td>Make the playoffs</td><td class='s'>+1</td></tr><tr><td>Advance to Round 2</td><td class='s'>+2</td></tr><tr><td>Reach the Final Four</td><td class='s'>+3</td></tr><tr><td>Reach the National Championship</td><td class='s'>+4</td></tr><tr><td>Win the National Championship</td><td class='s'>+8</td></tr></table><table><tr><th>Finish</th><th>Total</th></tr><tr><td>National Champion</td><td class='s'>18</td></tr><tr><td>National Runner-Up</td><td class='s'>10</td></tr><tr><td>Final Four loss</td><td class='s'>6</td></tr><tr><td>Round 2 loss</td><td class='s'>3</td></tr><tr><td>First-round loss</td><td class='s'>1</td></tr></table><table><tr><th>Conference title bonus</th><th>Points</th></tr><tr><td>SEC Champion</td><td class='s'>+2</td></tr><tr><td>Big Ten Champion</td><td class='s'>+2</td></tr><tr><td>Big 12 Champion</td><td class='s'>+2</td></tr><tr><td>ACC Champion</td><td class='s'>+1</td></tr></table></div><p class="foot-note">Conference bonuses stack on top of playoff points — an SEC national champion earns 18 + 2 = 20. Tiebreakers, in order: most national championships, most championship appearances, most Final Four appearances, most total playoff appearances.</p></div></div></div></div></div>
+<footer>Campus Kings &middot; CFB 27 Online Dynasty<br>Updated 2026-08-05</footer>
+</body></html>
