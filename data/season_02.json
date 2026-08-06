@@ -1,7 +1,7 @@
 {
   "season": 2,
   "status": "in_progress",
-  "current_week": 10,
+  "current_week": 11,
   "results": [
     {
       "week": 0,
@@ -523,6 +523,15 @@
       "score": [
         57,
         56
+      ]
+    },
+    {
+      "week": 11,
+      "winner": "Ole Miss",
+      "loser": "Texas A&M",
+      "score": [
+        38,
+        21
       ]
     }
   ],
