@@ -34,6 +34,29 @@
       "blurb": "The LSU auction, a formation ban, and a rivalry rewritten in Provo."
     },
     {
+      "title": "Season One Recruiting Results",
+      "kind": "Recruiting",
+      "season": 1,
+      "date": "2026-07-27",
+      "file": "campus_kings_s1_recruiting_classes.jpg",
+      "blurb": "Class rankings, the transfer portal top 100, and regular recruiting top 100 — all three boards, backdated to the archive.",
+      "article": "s1-recruiting-results.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s1_recruiting_classes.jpg",
+          "caption": "Top 31 recruiting classes — user teams only, best to worst"
+        },
+        {
+          "file": "campus_kings_s1_transfer_portal.jpg",
+          "caption": "Top 100 transfer portal — 98 signed, 2 unsigned"
+        },
+        {
+          "file": "campus_kings_s1_regular_recruits.jpg",
+          "caption": "Top 100 regular recruits — 91 signed, 9 unsigned"
+        }
+      ]
+    },
+    {
       "title": "Season One Final Power Rankings",
       "kind": "Power Rankings",
       "season": 1,

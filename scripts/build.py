@@ -375,6 +375,35 @@ def article_path(entry):
     return "media/%s" % entry["file"]
 
 
+def entry_images(entry):
+    """Every image the article body should show, as (file, caption) pairs.
+
+    An entry's "file" is always the card thumbnail. Add a "gallery" to show more
+    than one graphic in the write-up -- either bare filenames or
+    {"file": ..., "caption": ...} objects. Without a gallery, the thumbnail is
+    the only image.
+    """
+    gallery = entry.get("gallery")
+    if not gallery:
+        return [(entry["file"], None)]
+    out = []
+    for g in gallery:
+        if isinstance(g, str):
+            out.append((g, None))
+        else:
+            out.append((g["file"], g.get("caption")))
+    return out
+
+
+def entry_files(entry):
+    """Every media file an entry needs published, thumbnail included."""
+    files = [entry["file"]]
+    for f, _ in entry_images(entry):
+        if f not in files:
+            files.append(f)
+    return files
+
+
 def cname(league, cid):
     return next(c["name"] for c in league["coaches"] if c["id"] == cid)
 
@@ -537,7 +566,7 @@ def build_content(content, bug=""):
 
 
 def build_article(c, body_md, bug=""):
-    """A single write-up: graphic on top, prose below."""
+    """A single write-up: graphic(s) on top, prose below."""
     hero = (f'<div class="hero" style="padding:0;background:var(--bg)">'
             f'<div class="inner" style="padding:56px 24px 40px;text-align:left;max-width:1000px">'
             f'<div class="eyebrow">{c["kind"]} &middot; Season {c["season"]}</div>'
@@ -545,11 +574,17 @@ def build_article(c, body_md, bug=""):
             f'<p class="lede" style="margin:0;max-width:620px">{c["blurb"]}</p>'
             f'</div></div>')
 
+    posters = []
+    for f, cap in entry_images(c):
+        label = cap or "Open the full graphic &rarr;"
+        posters.append(
+            f'<a class="poster" href="media/{f}">'
+            f'<img src="media/{f}" alt="{html.escape(cap or c["title"], quote=True)}" loading="lazy">'
+            f'<div class="cap">{label}</div></a>')
+
     b = [f'<div class="section" style="border-bottom:none">',
          f'<div class="byline">Published {c["date"]}</div>',
-         f'<a class="poster" href="media/{c["file"]}">'
-         f'<img src="media/{c["file"]}" alt="{html.escape(c["title"], quote=True)}" loading="lazy">'
-         f'<div class="cap">Open the full graphic &rarr;</div></a>',
+         "\n".join(posters),
          f'<div class="article">{markdown(body_md)}</div>',
          f'<div class="backlink"><a href="content.html">&larr; All content</a></div>',
          f'</div>']
@@ -713,17 +748,20 @@ def main():
             shutil.copy(src, SITE / "media" / f)
 
     copied = 0
+    total = 0
     missing = []
     for c in content["content"]:
-        dest = SITE / "media" / c["file"]
-        src = MEDIA_SRC / c["file"]
-        if src.exists():
-            shutil.copy(src, dest)
-            copied += 1
-        elif dest.exists():
-            copied += 1          # already published in a previous build
-        else:
-            missing.append(c["file"])
+        for f in entry_files(c):
+            total += 1
+            dest = SITE / "media" / f
+            src = MEDIA_SRC / f
+            if src.exists():
+                shutil.copy(src, dest)
+                copied += 1
+            elif dest.exists():
+                copied += 1          # already published in a previous build
+            else:
+                missing.append(f)
     if missing:
         print("  WARNING missing image(s): %s" % ", ".join(missing))
         print("  Put them in %s/ or docs/media/" % MEDIA_SRC.name)
@@ -771,7 +809,7 @@ def main():
 
     n = len(roster)
     print("Built %d pages (%d coach profiles, %d write-ups), copied %d/%d media -> %s"
-          % (6 + n + posts, n, posts, copied, len(content["content"]), SITE))
+          % (6 + n + posts, n, posts, copied, total, SITE))
 
 
 if __name__ == "__main__":
