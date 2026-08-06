@@ -22,6 +22,12 @@ from pathlib import Path
 
 DATA = Path(__file__).resolve().parent.parent / "data"
 
+# Postseason stage labels for the Sheet's optional "stage" column.
+#   blank      -> regular season, week must be a number
+#   CONF:SEC   -> conference championship (bonus points keyed off the conference)
+#   R1/QF/SF/NC-> playoff rounds
+STAGES = ("R1", "QF", "SF", "NC")
+
 
 def all_teams(league):
     teams = []
@@ -62,6 +68,8 @@ def main():
     rows = read_rows(args.sheet)
     errors = []
     by_season = defaultdict(list)
+    conf_titles = defaultdict(list)
+    playoffs = defaultdict(list)
     seen = set()
 
     for i, row in enumerate(rows, start=2):  # header is line 1
@@ -87,10 +95,28 @@ def main():
 
         try:
             season = int(row["season"])
-            week = int(row["week"])
         except (ValueError, KeyError):
-            errors.append("line %d: season and week must be numbers" % i)
+            errors.append("line %d: season must be a number" % i)
             continue
+
+        # stage routes the row: blank = regular season, otherwise postseason
+        stage = (row.get("stage") or "").strip().upper()
+        raw_week = (row.get("week") or "").strip()
+
+        if stage and stage not in STAGES and not stage.startswith("CONF"):
+            errors.append("line %d: unknown stage %r — use one of: %s, or CONF:SEC"
+                          % (i, row["stage"].strip(), ", ".join(STAGES)))
+            continue
+
+        if stage:
+            week = raw_week or stage          # postseason: week is a label
+        else:
+            try:
+                week = int(raw_week)
+            except ValueError:
+                errors.append("line %d: week must be a number for regular-season "
+                              "games (leave stage blank), got %r" % (i, raw_week))
+                continue
 
         ws, ls = (row.get("winner_score") or "").strip(), (row.get("loser_score") or "").strip()
         if ws and ls:
@@ -117,12 +143,31 @@ def main():
             continue
         seen.add(key)
 
-        entry = {"week": week, "winner": w, "loser": l, "score": score}
-        if (row.get("gotw") or "").strip().lower() in ("y", "yes", "true", "1"):
-            entry["gotw"] = True
-        if (row.get("note") or "").strip():
-            entry["note"] = row["note"].strip()
-        by_season[season].append(entry)
+        note = (row.get("note") or "").strip()
+        if stage.startswith("CONF"):
+            conf = stage.split(":", 1)[1].strip() if ":" in stage else ""
+            if not conf:
+                errors.append("line %d: conference title needs a conference, "
+                              "e.g. CONF:SEC" % i)
+                continue
+            entry = {"conference": conf, "winner": w, "loser": l, "score": score}
+            if note:
+                entry["note"] = note
+            conf_titles[season].append(entry)
+        elif stage:
+            entry = {"round": stage, "winner": w, "loser": l, "score": score}
+            if note:
+                entry["note"] = note
+            if (row.get("bowl") or "").strip():
+                entry["bowl"] = row["bowl"].strip()
+            playoffs[season].append(entry)
+        else:
+            entry = {"week": week, "winner": w, "loser": l, "score": score}
+            if (row.get("gotw") or "").strip().lower() in ("y", "yes", "true", "1"):
+                entry["gotw"] = True
+            if note:
+                entry["note"] = note
+            by_season[season].append(entry)
 
     if errors:
         print("Spreadsheet has %d problem(s):\n" % len(errors), file=sys.stderr)
@@ -130,18 +175,30 @@ def main():
             print("  " + e, file=sys.stderr)
         sys.exit(1)
 
-    for season, results in sorted(by_season.items()):
+    order = {s: n for n, s in enumerate(STAGES)}
+    all_seasons = set(by_season) | set(conf_titles) | set(playoffs)
+    for season in sorted(all_seasons):
         path = DATA / ("season_%02d.json" % season)
         if path.exists():
             data = json.loads(path.read_text(encoding="utf-8"))
         else:
             data = {"season": season, "status": "in_progress"}
-        results.sort(key=lambda r: r["week"])
-        data["results"] = results
-        data["current_week"] = max(r["week"] for r in results)
+
+        results = by_season.get(season, [])
+        if results:
+            results.sort(key=lambda r: r["week"])
+            data["results"] = results
+            data["current_week"] = max(r["week"] for r in results)
+        if conf_titles.get(season):
+            data["conference_championships"] = conf_titles[season]
+        if playoffs.get(season):
+            playoffs[season].sort(key=lambda g: order.get(g["round"], 9))
+            data["playoffs"] = playoffs[season]
+
         path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
-        print("S%d: %d games through week %d -> %s"
-              % (season, len(results), data["current_week"], path.name))
+        print("S%d: %d regular, %d conf title(s), %d playoff -> %s"
+              % (season, len(results), len(conf_titles.get(season, [])),
+                 len(playoffs.get(season, [])), path.name))
 
 
 if __name__ == "__main__":

@@ -57,3 +57,28 @@ Standings, records, and Playoff Points all recalculate themselves.
 - Season Two records are league games only, so they won't match the in-game
   poll. That's labeled on the page.
 - Keep the site PG. The uncensored chat graphics stay in Discord.
+
+## Coach profiles
+
+`data/league.json` → `legacy_championships` holds titles won **before** the
+20-season accredited cycle. Profile pages display legacy + any titles won
+inside the cycle, so lifetime ring counts increment automatically as seasons
+are added — you never edit that block again.
+
+The Campus King Belt and the Playoff Points race count accredited-cycle titles
+only, derived from the bracket data.
+
+Profile pages are generated automatically for every coach with a current team,
+a ring count, or any tracked games. Records, GOTW appearances, playoff results,
+and the game log (including the opposing coach) are all derived from season
+data — nothing is entered by hand.
+
+## Known limits on score entry
+
+- Duplicate guard catches the same matchup in the same week. It does **not**
+  catch the same matchup entered under two different weeks, because legitimate
+  rematches exist.
+- Team names are case- and whitespace-insensitive but must be the full official
+  name. `Ohio St` is rejected with a suggestion; `ohio state` is fine.
+- A plausible-but-wrong score (45-28 instead of 45-29) cannot be detected.
+  Proofread the Sheet.
