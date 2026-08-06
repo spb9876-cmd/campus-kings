@@ -55,11 +55,11 @@ def gather(league, seasons):
         # Regular-season / league games
         for r in sdata.get("results", []):
             for team, won in ((r["winner"], True), (r["loser"], False)):
-                cid = coach_for(league, team, sn)
+                cid = coach_for(league, team, sn, r["week"])
                 if not cid:
                     continue
                 opp = r["loser"] if won else r["winner"]
-                opp_cid = coach_for(league, opp, sn)
+                opp_cid = coach_for(league, opp, sn, r["week"])
                 p = prof[cid]
                 p["w" if won else "l"] += 1
                 if r.get("gotw"):

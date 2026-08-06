@@ -41,19 +41,44 @@ def team_conference(league, team):
     return None
 
 
-def coach_for(league, team, season):
-    """Resolve which coach held a team during a given season."""
+def coach_for(league, team, season, week=None):
+    """Resolve which coach held a team during a given season.
+
+    Pass `week` to resolve at week granularity instead. Stamps are treated as
+    from-inclusive / to-exclusive, matching how moves are recorded: Cell's
+    Auburn tenure ends S2W2 and his LSU tenure begins S2W2, so week 2 belongs
+    to LSU. Without a week, a tenure counts for the whole season it ends in --
+    which is what the points race wants, but it credits a coach with games his
+    old team played as a CPU after he left, so the game logs pass a week.
+
+    Returns None when nobody held the team then (CPU-controlled).
+    """
+    if week is None:
+        matches = []
+        for t in league["tenures"]:
+            if t["team"] != team:
+                continue
+            start = stamp(t["from"])[0]
+            end = stamp(t["to"])[0] if t.get("to") else 99
+            if start <= season <= end:
+                matches.append(t)
+        if not matches:
+            return None
+        # Prefer the tenure that starts latest but still covers the season
+        return sorted(matches, key=lambda t: stamp(t["from"]))[-1]["coach"]
+
+    # Postseason weeks arrive as round labels ("NC", "Semifinal"); treat them
+    # as falling at the very end of the season.
+    wk = week if isinstance(week, int) else 99
+    when = (season, wk)
     matches = []
     for t in league["tenures"]:
         if t["team"] != team:
             continue
-        start = stamp(t["from"])[0]
-        end = stamp(t["to"])[0] if t.get("to") else 99
-        if start <= season <= end:
+        if stamp(t["from"]) <= when and (not t.get("to") or when < stamp(t["to"])):
             matches.append(t)
     if not matches:
         return None
-    # Prefer the tenure that starts latest but still covers the season
     return sorted(matches, key=lambda t: stamp(t["from"]))[-1]["coach"]
 
 
