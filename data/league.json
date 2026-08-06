@@ -5,7 +5,6 @@
     "accredited_seasons": 20,
     "current_season": 2
   },
-
   "rules": {
     "playoff_points": {
       "make_playoffs": 1,
@@ -32,98 +31,481 @@
       "over_seasons": 20
     }
   },
-
   "conferences": {
-    "SEC": ["Alabama", "Auburn", "Florida", "Georgia", "Kentucky", "LSU", "Missouri", "Mississippi State", "Ole Miss", "Oklahoma", "South Carolina", "Tennessee", "Texas", "Texas A&M", "Vanderbilt", "Arkansas"],
-    "B1G": ["Illinois", "Indiana", "Iowa", "Maryland", "Michigan", "Michigan State", "Minnesota", "Nebraska", "Northwestern", "Ohio State", "Oregon", "Penn State", "Purdue", "Rutgers", "UCLA", "USC", "Washington", "Wisconsin"],
-    "BIG12": ["Arizona", "Arizona State", "Baylor", "BYU", "Cincinnati", "Colorado", "Houston", "Iowa State", "Kansas", "Kansas State", "Oklahoma State", "TCU", "Texas Tech", "UCF", "Utah", "West Virginia"],
-    "ACC": ["Boston College", "Cal", "Clemson", "Duke", "Florida State", "Georgia Tech", "Louisville", "Miami", "NC State", "North Carolina", "Pitt", "SMU", "Stanford", "Syracuse", "Virginia", "Virginia Tech", "Wake Forest"],
-    "INDEPENDENT": ["Notre Dame"]
+    "SEC": [
+      "Alabama",
+      "Auburn",
+      "Florida",
+      "Georgia",
+      "Kentucky",
+      "LSU",
+      "Missouri",
+      "Mississippi State",
+      "Ole Miss",
+      "Oklahoma",
+      "South Carolina",
+      "Tennessee",
+      "Texas",
+      "Texas A&M",
+      "Vanderbilt",
+      "Arkansas"
+    ],
+    "B1G": [
+      "Illinois",
+      "Indiana",
+      "Iowa",
+      "Maryland",
+      "Michigan",
+      "Michigan State",
+      "Minnesota",
+      "Nebraska",
+      "Northwestern",
+      "Ohio State",
+      "Oregon",
+      "Penn State",
+      "Purdue",
+      "Rutgers",
+      "UCLA",
+      "USC",
+      "Washington",
+      "Wisconsin"
+    ],
+    "BIG12": [
+      "Arizona",
+      "Arizona State",
+      "Baylor",
+      "BYU",
+      "Cincinnati",
+      "Colorado",
+      "Houston",
+      "Iowa State",
+      "Kansas",
+      "Kansas State",
+      "Oklahoma State",
+      "TCU",
+      "Texas Tech",
+      "UCF",
+      "Utah",
+      "West Virginia"
+    ],
+    "ACC": [
+      "Boston College",
+      "Cal",
+      "Clemson",
+      "Duke",
+      "Florida State",
+      "Georgia Tech",
+      "Louisville",
+      "Miami",
+      "NC State",
+      "North Carolina",
+      "Pitt",
+      "SMU",
+      "Stanford",
+      "Syracuse",
+      "Virginia",
+      "Virginia Tech",
+      "Wake Forest"
+    ],
+    "INDEPENDENT": [
+      "Notre Dame"
+    ]
   },
-
   "coaches": [
-    { "id": "lt",       "name": "LT",       "role": "commissioner" },
-    { "id": "curt",     "name": "Curt",     "aliases": ["OG", "King Curt"], "role": "admin" },
-    { "id": "stew",     "name": "Stew" },
-    { "id": "tayne",    "name": "Tayne" },
-    { "id": "states",   "name": "States",   "aliases": ["MrMichiganState"] },
-    { "id": "jason",    "name": "Jason" },
-    { "id": "lute",     "name": "Lute" },
-    { "id": "polo",     "name": "Polo",     "aliases": ["GOHPoloRed"] },
-    { "id": "bowzer",   "name": "Bowzer",   "role": "media" },
-    { "id": "dre",      "name": "Dre" },
-    { "id": "purp",     "name": "Purp" },
-    { "id": "jarvis",   "name": "Jarvis" },
-    { "id": "kj",       "name": "KJ" },
-    { "id": "cell",     "name": "Cell",     "aliases": ["Sickle Cell"] },
-    { "id": "frank",    "name": "Frank",    "aliases": ["BFW", "blkfrankwhite"] },
-    { "id": "iceman",   "name": "Ice Man" },
-    { "id": "teeric",   "name": "Teeric" },
-    { "id": "bhog",     "name": "Bhog",     "aliases": ["Bdhogan0980"] },
-    { "id": "pat",      "name": "Pat",      "role": "content" },
-    { "id": "cozy",     "name": "Cozy" },
-    { "id": "work",     "name": "Work",     "aliases": ["TakeThisWork", "imxwork"] },
-    { "id": "nas",      "name": "Nas" },
-    { "id": "silingi",  "name": "Silingi" },
-    { "id": "bawce",    "name": "Bawce",    "aliases": ["TM_Bawce"] },
-    { "id": "gooch",    "name": "Gooch" },
-    { "id": "tv",       "name": "TV" },
-    { "id": "zbo",      "name": "ZBO" },
-    { "id": "thrash",   "name": "Thrash" },
-    { "id": "tbo",      "name": "TBO",      "aliases": ["tbotime734"] },
-    { "id": "quan",     "name": "Quan",     "aliases": ["FN Quan", "ForevaQ_"] },
-    { "id": "brick",    "name": "Brick",    "status": "departed" },
-    { "id": "champ",    "name": "Champ",    "status": "departed" },
-    { "id": "x",        "name": "X",        "status": "departed" }
+    {
+      "id": "lt",
+      "name": "LT",
+      "role": "commissioner"
+    },
+    {
+      "id": "curt",
+      "name": "Curt",
+      "aliases": [
+        "OG",
+        "King Curt"
+      ],
+      "role": "admin"
+    },
+    {
+      "id": "stew",
+      "name": "Stew"
+    },
+    {
+      "id": "tayne",
+      "name": "Tayne"
+    },
+    {
+      "id": "states",
+      "name": "States",
+      "aliases": [
+        "MrMichiganState"
+      ]
+    },
+    {
+      "id": "jason",
+      "name": "Jason"
+    },
+    {
+      "id": "lute",
+      "name": "Lute"
+    },
+    {
+      "id": "polo",
+      "name": "Polo",
+      "aliases": [
+        "GOHPoloRed"
+      ]
+    },
+    {
+      "id": "bowzer",
+      "name": "Bowzer",
+      "role": "media"
+    },
+    {
+      "id": "dre",
+      "name": "Dre"
+    },
+    {
+      "id": "purp",
+      "name": "Purp"
+    },
+    {
+      "id": "jarvis",
+      "name": "Jarvis"
+    },
+    {
+      "id": "kj",
+      "name": "KJ"
+    },
+    {
+      "id": "cell",
+      "name": "Cell",
+      "aliases": [
+        "Sickle Cell"
+      ]
+    },
+    {
+      "id": "frank",
+      "name": "Frank",
+      "aliases": [
+        "BFW",
+        "blkfrankwhite"
+      ]
+    },
+    {
+      "id": "iceman",
+      "name": "Ice Man"
+    },
+    {
+      "id": "teeric",
+      "name": "Teeric"
+    },
+    {
+      "id": "bhog",
+      "name": "Bhog",
+      "aliases": [
+        "Bdhogan0980"
+      ]
+    },
+    {
+      "id": "pat",
+      "name": "Pat",
+      "role": "content"
+    },
+    {
+      "id": "cozy",
+      "name": "Cozy"
+    },
+    {
+      "id": "work",
+      "name": "Work",
+      "aliases": [
+        "TakeThisWork",
+        "imxwork"
+      ]
+    },
+    {
+      "id": "nas",
+      "name": "Nas"
+    },
+    {
+      "id": "silingi",
+      "name": "Silingi"
+    },
+    {
+      "id": "bawce",
+      "name": "Bawce",
+      "aliases": [
+        "TM_Bawce"
+      ]
+    },
+    {
+      "id": "gooch",
+      "name": "Gooch"
+    },
+    {
+      "id": "tv",
+      "name": "TV"
+    },
+    {
+      "id": "zbo",
+      "name": "ZBO"
+    },
+    {
+      "id": "thrash",
+      "name": "Thrash"
+    },
+    {
+      "id": "tbo",
+      "name": "TBO",
+      "aliases": [
+        "tbotime734"
+      ]
+    },
+    {
+      "id": "quan",
+      "name": "Quan",
+      "aliases": [
+        "FN Quan",
+        "ForevaQ_"
+      ]
+    },
+    {
+      "id": "brick",
+      "name": "Brick",
+      "status": "departed"
+    },
+    {
+      "id": "champ",
+      "name": "Champ",
+      "status": "departed"
+    },
+    {
+      "id": "x",
+      "name": "X",
+      "status": "departed"
+    }
   ],
-
   "tenures": [
-    { "team": "Clemson",        "coach": "lt",      "from": "S1W0" },
-    { "team": "Ohio State",     "coach": "curt",    "from": "S1W0" },
-    { "team": "Oklahoma",       "coach": "stew",    "from": "S1W0" },
-    { "team": "Notre Dame",     "coach": "tayne",   "from": "S1W0" },
-    { "team": "Penn State",     "coach": "states",  "from": "S1W0" },
-    { "team": "Alabama",        "coach": "jason",   "from": "S1W0" },
-    { "team": "Miami",          "coach": "lute",    "from": "S1W0" },
-    { "team": "Florida",        "coach": "polo",    "from": "S1W0" },
-    { "team": "Oregon",         "coach": "bowzer",  "from": "S1W0" },
-    { "team": "Michigan",       "coach": "dre",     "from": "S1W0" },
-    { "team": "Tennessee",      "coach": "purp",    "from": "S1W0" },
-    { "team": "Washington",     "coach": "frank",   "from": "S1W0" },
-    { "team": "USC",            "coach": "teeric",  "from": "S1W0" },
-    { "team": "BYU",            "coach": "bhog",    "from": "S1W0" },
-    { "team": "Ole Miss",       "coach": "pat",     "from": "S1W0" },
-    { "team": "Texas",          "coach": "work",    "from": "S1W0" },
-    { "team": "Texas Tech",     "coach": "silingi", "from": "S1W0" },
-    { "team": "Texas A&M",      "coach": "bawce",   "from": "S1W0" },
-    { "team": "Indiana",        "coach": "gooch",   "from": "S1W0" },
-    { "team": "SMU",            "coach": "zbo",     "from": "S1W0" },
-    { "team": "South Carolina", "coach": "thrash",  "from": "S1W0" },
-    { "team": "Arizona State",  "coach": "tbo",     "from": "S2W0" },
-
-    { "team": "Missouri",       "coach": "iceman",  "from": "S1W0",  "to": "S2W0", "note": "auctioned mid-S1; moved to Georgia for S2" },
-    { "team": "Georgia",        "coach": "iceman",  "from": "S2W0" },
-
-    { "team": "Auburn",         "coach": "cell",    "from": "S1W0",  "to": "S2W2", "note": "left for LSU after winning $250 auction" },
-    { "team": "LSU",            "coach": "cell",    "from": "S2W2",  "note": "won LSU auction, $250" },
-
-    { "team": "LSU",            "coach": "quan",    "from": "S1W0",  "to": "S2W2", "note": "vacated LSU, moved to Cal" },
-    { "team": "Cal",            "coach": "quan",    "from": "S2W2" },
-
-    { "team": "Kansas",         "coach": "nas",     "from": "S1W0",  "to": "S2W1", "note": "moved to Florida State" },
-    { "team": "Florida State",  "coach": "nas",     "from": "S2W1",  "note": "replaced TB, who quit" },
-
-    { "team": "Nebraska",       "coach": "jarvis",  "from": "S2W1",  "note": "joined league; returning from hiatus" },
-    { "team": "TCU",            "coach": "kj",      "from": "S2W1",  "note": "new team added" },
-    { "team": "UCLA",           "coach": "tv",      "from": "S2W4",  "note": "previously CPU" },
-
-    { "team": "Utah",           "coach": "champ",   "from": "S2W1",  "to": "S2W7", "note": "quit" },
-    { "team": "Baylor",         "coach": "x",       "from": "S2W1",  "to": "S2W6", "note": "replaced by Cozy" },
-    { "team": "Baylor",         "coach": "cozy",    "from": "S2W6" }
+    {
+      "team": "Clemson",
+      "coach": "lt",
+      "from": "S1W0"
+    },
+    {
+      "team": "Ohio State",
+      "coach": "curt",
+      "from": "S1W0"
+    },
+    {
+      "team": "Oklahoma",
+      "coach": "stew",
+      "from": "S1W0"
+    },
+    {
+      "team": "Notre Dame",
+      "coach": "tayne",
+      "from": "S1W0"
+    },
+    {
+      "team": "Penn State",
+      "coach": "states",
+      "from": "S1W0"
+    },
+    {
+      "team": "Alabama",
+      "coach": "jason",
+      "from": "S1W0"
+    },
+    {
+      "team": "Miami",
+      "coach": "lute",
+      "from": "S1W0"
+    },
+    {
+      "team": "Florida",
+      "coach": "polo",
+      "from": "S1W0"
+    },
+    {
+      "team": "Oregon",
+      "coach": "bowzer",
+      "from": "S1W0"
+    },
+    {
+      "team": "Michigan",
+      "coach": "dre",
+      "from": "S1W0"
+    },
+    {
+      "team": "Tennessee",
+      "coach": "purp",
+      "from": "S1W0"
+    },
+    {
+      "team": "Washington",
+      "coach": "frank",
+      "from": "S1W0"
+    },
+    {
+      "team": "USC",
+      "coach": "teeric",
+      "from": "S1W0"
+    },
+    {
+      "team": "BYU",
+      "coach": "bhog",
+      "from": "S1W0"
+    },
+    {
+      "team": "Ole Miss",
+      "coach": "pat",
+      "from": "S1W0"
+    },
+    {
+      "team": "Texas",
+      "coach": "work",
+      "from": "S1W0"
+    },
+    {
+      "team": "Texas Tech",
+      "coach": "silingi",
+      "from": "S1W0"
+    },
+    {
+      "team": "Texas A&M",
+      "coach": "bawce",
+      "from": "S1W0"
+    },
+    {
+      "team": "Indiana",
+      "coach": "gooch",
+      "from": "S1W0"
+    },
+    {
+      "team": "SMU",
+      "coach": "zbo",
+      "from": "S1W0"
+    },
+    {
+      "team": "South Carolina",
+      "coach": "thrash",
+      "from": "S1W0"
+    },
+    {
+      "team": "Arizona State",
+      "coach": "tbo",
+      "from": "S2W0"
+    },
+    {
+      "team": "Missouri",
+      "coach": "iceman",
+      "from": "S1W0",
+      "to": "S2W0",
+      "note": "auctioned mid-S1; moved to Georgia for S2"
+    },
+    {
+      "team": "Georgia",
+      "coach": "iceman",
+      "from": "S2W0"
+    },
+    {
+      "team": "Auburn",
+      "coach": "cell",
+      "from": "S1W0",
+      "to": "S2W2",
+      "note": "left for LSU after winning $250 auction"
+    },
+    {
+      "team": "LSU",
+      "coach": "cell",
+      "from": "S2W2",
+      "note": "won LSU auction, $250"
+    },
+    {
+      "team": "LSU",
+      "coach": "quan",
+      "from": "S1W0",
+      "to": "S2W2",
+      "note": "vacated LSU, moved to Cal"
+    },
+    {
+      "team": "Cal",
+      "coach": "quan",
+      "from": "S2W2"
+    },
+    {
+      "team": "Kansas",
+      "coach": "nas",
+      "from": "S1W0",
+      "to": "S2W1",
+      "note": "moved to Florida State"
+    },
+    {
+      "team": "Florida State",
+      "coach": "nas",
+      "from": "S2W1",
+      "note": "replaced TB, who quit"
+    },
+    {
+      "team": "Nebraska",
+      "coach": "jarvis",
+      "from": "S2W1",
+      "note": "joined league; returning from hiatus"
+    },
+    {
+      "team": "TCU",
+      "coach": "kj",
+      "from": "S2W1",
+      "note": "new team added"
+    },
+    {
+      "team": "UCLA",
+      "coach": "tv",
+      "from": "S2W4",
+      "note": "previously CPU"
+    },
+    {
+      "team": "Utah",
+      "coach": "champ",
+      "from": "S2W1",
+      "to": "S2W7",
+      "note": "quit"
+    },
+    {
+      "team": "Baylor",
+      "coach": "x",
+      "from": "S2W1",
+      "to": "S2W6",
+      "note": "replaced by Cozy"
+    },
+    {
+      "team": "Baylor",
+      "coach": "cozy",
+      "from": "S2W6"
+    }
   ],
-
+  "legacy_championships": {
+    "_note": "Titles won BEFORE the 20-season accredited cycle. Profile pages add any titles won inside the cycle on top of these automatically.",
+    "stew": 9,
+    "jarvis": 4,
+    "dre": 2,
+    "kj": 2,
+    "lt": 2,
+    "pat": 2,
+    "bowzer": 1
+  },
   "inactive_teams": {
-    "S1": ["Memphis"],
-    "S2": ["Auburn", "Missouri", "Kansas", "Utah", "Oklahoma State", "Memphis"]
+    "S1": [
+      "Memphis"
+    ],
+    "S2": [
+      "Auburn",
+      "Missouri",
+      "Kansas",
+      "Utah",
+      "Oklahoma State",
+      "Memphis"
+    ]
   }
 }

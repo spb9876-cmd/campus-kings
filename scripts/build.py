@@ -20,6 +20,7 @@ MEDIA_SRC = Path("/mnt/user-data/outputs")
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from points import compute, coach_for
+import profiles
 
 CSS = """
 :root{
@@ -218,6 +219,7 @@ def ticker(season_data, limit=14):
 def shell(title, active, body, hero=None, bug=""):
     nav = ""
     for href, label in [("index.html", "Overview"), ("standings.html", "Standings"),
+                        ("coaches.html", "Coaches"),
                         ("rules.html", "Rules"), ("history.html", "History")]:
         on = " class='on'" if href == active else ""
         nav += "<a href='%s'%s>%s</a>" % (href, on, label)
@@ -451,7 +453,22 @@ def main():
     (SITE / "standings.html").write_text(build_standings(league, s2, pts, bug))
     (SITE / "rules.html").write_text(build_rules(rules, bug))
     (SITE / "history.html").write_text(build_history(league, s1, bug))
-    print("Built 4 pages, copied %d/%d media -> %s" % (copied, len(content["content"]), SITE))
+
+    prof = profiles.gather(league, [s1, s2])
+    cur = league["league"]["current_season"]
+    (SITE / "coaches.html").write_text(
+        profiles.index_page(league, prof, shell, bug, cur))
+    n = 0
+    hist = league.get("legacy_championships", {})
+    for c in league["coaches"]:
+        cid = c["id"]
+        if not (profiles.current_team(league, cid, cur) or hist.get(cid) or prof.get(cid)):
+            continue
+        (SITE / ("coach-%s.html" % cid)).write_text(
+            profiles.coach_page(league, cid, prof, shell, bug, cur))
+        n += 1
+    print("Built %d pages (%d coach profiles), copied %d/%d media -> %s"
+          % (5 + n, n, copied, len(content["content"]), SITE))
 
 
 if __name__ == "__main__":
