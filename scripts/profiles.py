@@ -6,7 +6,7 @@ runs, and a game log that names the opposing coach where there was one.
 """
 from collections import defaultdict
 
-from points import coach_for
+from points import coach_for, stamp
 
 PROFILED = set()
 clink = None   # injected by build.py
@@ -25,10 +25,10 @@ def current_team(league, coach_id, season):
     for t in league["tenures"]:
         if t["coach"] != coach_id:
             continue
-        start = int(t["from"][1])
-        end = int(t["to"][1]) if t.get("to") else 99
+        start = stamp(t["from"])[0]
+        end = stamp(t["to"])[0] if t.get("to") else 99
         if start <= season <= end:
-            if best is None or t["from"] > best["from"]:
+            if best is None or stamp(t["from"]) > stamp(best["from"]):
                 best = t
     return best["team"] if best else None
 

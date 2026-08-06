@@ -5,6 +5,7 @@ Nothing here is hand-entered: points are derived from the bracket, so the
 standings can never drift out of sync with the results.
 """
 import json
+import re
 import sys
 from pathlib import Path
 from collections import defaultdict
@@ -12,6 +13,20 @@ from collections import defaultdict
 DATA = Path(__file__).resolve().parent.parent / "data"
 
 ROUND_ORDER = ["R1", "QF", "SF", "NC"]
+
+_STAMP = re.compile(r"^S(\d+)W(\d+)$")
+
+
+def stamp(s):
+    """Parse a tenure stamp like 'S2W10' into a sortable (season, week) tuple.
+
+    Must not be compared as a string: 'S2W10' < 'S2W2' lexically, which would
+    order a week-10 move before a week-2 one.
+    """
+    m = _STAMP.match(s.strip())
+    if not m:
+        raise ValueError("bad tenure stamp %r - expected e.g. S2W10" % s)
+    return int(m.group(1)), int(m.group(2))
 
 
 def load(name):
@@ -32,14 +47,14 @@ def coach_for(league, team, season):
     for t in league["tenures"]:
         if t["team"] != team:
             continue
-        start = int(t["from"][1])
-        end = int(t["to"][1]) if t.get("to") else 99
+        start = stamp(t["from"])[0]
+        end = stamp(t["to"])[0] if t.get("to") else 99
         if start <= season <= end:
             matches.append(t)
     if not matches:
         return None
     # Prefer the tenure that starts latest but still covers the season
-    return sorted(matches, key=lambda t: t["from"])[-1]["coach"]
+    return sorted(matches, key=lambda t: stamp(t["from"]))[-1]["coach"]
 
 
 def compute(league, season_data):

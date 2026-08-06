@@ -226,7 +226,8 @@
     },
     {
       "id": "nas",
-      "name": "Nas"
+      "name": "Nas",
+      "status": "departed"
     },
     {
       "id": "silingi",
@@ -432,7 +433,15 @@
     {
       "team": "Cal",
       "coach": "quan",
-      "from": "S2W2"
+      "from": "S2W2",
+      "to": "S2W10",
+      "note": "left for Florida State"
+    },
+    {
+      "team": "Florida State",
+      "coach": "quan",
+      "from": "S2W10",
+      "note": "won Florida State auction, $175"
     },
     {
       "team": "Kansas",
@@ -445,7 +454,8 @@
       "team": "Florida State",
       "coach": "nas",
       "from": "S2W1",
-      "note": "replaced TB, who quit"
+      "note": "replaced TB, who quit; left the league S2W10",
+      "to": "S2W10"
     },
     {
       "team": "Nebraska",
@@ -505,7 +515,8 @@
       "Kansas",
       "Utah",
       "Oklahoma State",
-      "Memphis"
+      "Memphis",
+      "Cal"
     ]
   }
 }
