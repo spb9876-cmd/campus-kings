@@ -1,19 +1,67 @@
 name: build
+
 on:
+  # Refresh from the Sheet on the hour
   schedule: [{ cron: "0 * * * *" }]
+  # "Run workflow" button in the Actions tab
   workflow_dispatch:
+  # Your own pushes deploy too, so nothing waits on the next cron tick
+  push:
+    branches: [main]
+
+# Never let two runs deploy at once. A scheduled run already in flight when you
+# push is allowed to finish rather than being killed mid-deploy.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
-      - run: python3 scripts/ingest.py --sheet "${{ secrets.SHEET_URL }}"
-      - run: python3 scripts/build.py
-      - run: |
-          git config user.name "ck-bot"
-          git config user.email "bot@campuskings"
-          git add -A
-          git diff --staged --quiet || git commit -m "auto: refresh from sheet"
-          git push
+
+      # Only pull the Sheet on scheduled / manual runs. On a push, build exactly
+      # what you committed -- otherwise an ingest could quietly deploy something
+      # different from what you tested locally.
+      - name: Refresh season data from the Sheet
+        if: github.event_name != 'push'
+        env:
+          SHEET_URL: ${{ secrets.SHEET_URL }}
+        run: |
+          if [ -z "$SHEET_URL" ]; then
+            echo "::error::SHEET_URL secret is not set - add it under Settings > Secrets and variables > Actions"
+            exit 1
+          fi
+          python3 scripts/ingest.py --sheet "$SHEET_URL"
+
+      - name: Regression tests
+        run: python3 scripts/test_points.py
+
+      - name: Build site
+        run: python3 scripts/build.py
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
