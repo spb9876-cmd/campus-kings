@@ -39,6 +39,7 @@ a{color:inherit;text-decoration:none}
 .navbar .inner{max-width:1000px;margin:0 auto;padding:16px 24px;display:flex;
   align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:11px}
+.brand .mark{width:30px;height:30px;display:block;border-radius:50%}
 .brand .name{font-family:'Anton',Impact,sans-serif;font-size:20px;letter-spacing:1.5px;text-transform:uppercase}
 .brand .name span{color:var(--gold)}
 nav{display:flex;gap:20px;font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted)}
@@ -51,7 +52,22 @@ nav a.on{color:var(--gold);border-bottom-color:var(--gold)}
 .hero .field{position:absolute;inset:0;opacity:.5}
 .hero .glow{position:absolute;inset:0;
   background:radial-gradient(ellipse 760px 320px at 50% 0,rgba(223,168,57,.18),transparent 70%)}
-.hero .inner{position:relative;max-width:1000px;margin:0 auto;padding:76px 24px 64px;text-align:center}
+.hero .inner{position:relative;max-width:1000px;margin:0 auto;padding:44px 24px 34px;text-align:center}
+.hero .crest{width:118px;height:118px;display:block;margin:0 auto 22px;border-radius:50%;
+  box-shadow:0 0 44px rgba(223,168,57,.22)}
+.scrollcue{display:flex;flex-direction:column;align-items:center;gap:7px;margin-top:26px;
+  font-size:9.5px;letter-spacing:2.4px;text-transform:uppercase;color:var(--muted2)}
+.scrollcue svg{animation:bob 1.9s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+@media(prefers-reduced-motion:reduce){.scrollcue svg{animation:none}}
+.quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+  background:var(--rule);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.quick a{background:var(--card);padding:17px 18px;display:block;transition:background .15s}
+.quick a:hover{background:var(--card2)}
+.quick .qk{font-family:\'Anton\',Impact,sans-serif;font-size:14px;text-transform:uppercase;
+  letter-spacing:1px;margin-bottom:3px}
+.quick .qd{font-size:11.5px;color:var(--muted);line-height:1.45}
+.quick .qk span{color:var(--gold)}
 .eyebrow{font-size:11px;letter-spacing:3.5px;text-transform:uppercase;color:var(--golddim);margin-bottom:20px}
 .hero h1{font-family:'Anton',Impact,sans-serif;font-size:clamp(38px,6.4vw,68px);line-height:.97;
   text-transform:uppercase;margin:0 0 18px;letter-spacing:1px}
@@ -174,10 +190,7 @@ footer{border-top:1px solid var(--rule);padding:26px 0 34px;font-size:10.5px;let
 @media(max-width:720px){.rulegrid{grid-template-columns:1fr}.toc{display:none}}
 """
 
-CROWN = ('<svg width="24" height="19" viewBox="0 0 34 26" fill="none">'
-         '<path d="M2 22L4 8L11 14L17 4L23 14L30 8L32 22H2Z" stroke="#dfa839" '
-         'stroke-width="2" stroke-linejoin="round"/>'
-         '<line x1="2" y1="22" x2="32" y2="22" stroke="#dfa839" stroke-width="2"/></svg>')
+CROWN = '<img class="mark" src="media/logo-mark.png" alt="">' 
 
 FIELD = ('<svg class="field" width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 1000 380">'
          '<defs><linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">'
@@ -231,6 +244,8 @@ def shell(title, active, body, hero=None, bug=""):
 <meta property="og:title" content="Campus Kings">
 <meta property="og:description" content="A 20-season CFB 27 online dynasty. Thirty coaches. One belt.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="media/logo.png">
+<link rel="icon" href="media/favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>{CSS}</style></head><body>
 <div class="navbar"><div class="inner">
@@ -270,11 +285,24 @@ def build_index(league, s1, s2, content, pts, about, bug=""):
     hero = (f'<div class="hero">{FIELD}<div class="glow"></div><div class="inner">'
             f'<div class="eyebrow">Campus Kings &middot; Season '
             f'{league["league"]["current_season"]} in progress</div>'
+            f'<img class="crest" src="media/logo.png" alt="Campus Kings">'
             f'<h1>Thirty coaches.<br>Twenty seasons.<br><em>One belt.</em></h1>'
             f'<p class="lede">{about["intro"]}</p>'
-            f'<div class="cta"><a class="btn" href="standings.html">Standings</a>'
-            f'<a class="btn ghost" href="rules.html">Read the rules</a></div>'
-            f'</div></div><div class="glance"><div class="inner">'
+            f'<div class="scrollcue">Scroll'
+            f'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#dfa839" '
+            f'stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></div>'
+            f'</div></div>'
+            f'<div class="quick">'
+            f'<a href="standings.html"><div class="qk">Standings <span>&rarr;</span></div>'
+            f'<div class="qd">Records, weekly results, points race</div></a>'
+            f'<a href="coaches.html"><div class="qk">Coaches <span>&rarr;</span></div>'
+            f'<div class="qd">Profiles, rings, full game logs</div></a>'
+            f'<a href="rules.html"><div class="qk">Rules <span>&rarr;</span></div>'
+            f'<div class="qd">Settings, bans, scheduling</div></a>'
+            f'<a href="history.html"><div class="qk">History <span>&rarr;</span></div>'
+            f'<div class="qd">Champions, brackets, moves</div></a>'
+            f'</div>'
+            f'<div class="glance"><div class="inner">'
             + "".join(f"<div class='cell'><div class='fig'>{g['figure']}</div>"
                       f"<div class='lab'>{g['label']}</div></div>"
                       for g in about["at_a_glance"])
@@ -442,6 +470,12 @@ def main():
     (SITE / "media").mkdir(exist_ok=True)
     # Tell GitHub Pages to serve these files as-is instead of running Jekyll
     (SITE / ".nojekyll").write_text("")
+    LOGO_FILES = ("logo.png", "logo-mark.png", "favicon.png")
+    for f in LOGO_FILES:
+        src = MEDIA_SRC / f
+        if src.exists():
+            shutil.copy(src, SITE / "media" / f)
+
     copied = 0
     missing = []
     for c in content["content"]:

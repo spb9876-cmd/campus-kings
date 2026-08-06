@@ -1,11 +1,10 @@
 {
   "preamble": "The Campus Kings NCAA 27 Online Dynasty aims to create an enjoyable and engaging experience for all participants. This league emphasizes strategic gameplay, recruitment battles, and the thrill of college football. You are responsible for knowing the rules.",
-
   "sections": [
     {
       "id": "objective",
       "title": "League objective",
-      "body": "The primary objective is an enjoyable, engaging experience for everyone involved. While much of the schedule is played against computer-controlled teams, user-versus-user matchups are encouraged wherever they occur — especially in conference play. This league is built for casual enjoyment with a real emphasis on strategy, recruiting, and competition."
+      "body": "The primary objective is an enjoyable, engaging experience for everyone involved. While much of the schedule is played against computer-controlled teams, user-versus-user matchups are encouraged wherever they occur \u2014 especially in conference play. This league is built for casual enjoyment with a real emphasis on strategy, recruiting, and competition."
     },
     {
       "id": "settings",
@@ -23,7 +22,7 @@
       "items": [
         "Power I Hulk",
         "Gun Power I Tight",
-        "All Wildcat formations outside the red zone — Wildcat may only be used inside your opponent's 20-yard line",
+        "All Wildcat formations outside the red zone \u2014 Wildcat may only be used inside your opponent's 20-yard line",
         "All direct-snap plays, anywhere on the field including the red zone",
         "Calling defensive-line stunts from Field Goal Block"
       ],
@@ -39,25 +38,25 @@
       "title": "Roster position changes",
       "body": "Players may move freely within these defined groups and no others:",
       "items": [
-        "Running Back: RB ↔ FB",
-        "Offensive Line: LT ↔ LG ↔ C ↔ RG ↔ RT",
-        "Defensive Line: LEDG ↔ REDG ↔ DT",
-        "Linebacker: SAM ↔ MIKE ↔ WILL",
-        "Defensive Back: CB ↔ FS ↔ SS",
-        "Specialist: K ↔ P"
+        "Running Back: RB \u2194 FB",
+        "Offensive Line: LT \u2194 LG \u2194 C \u2194 RG \u2194 RT",
+        "Defensive Line: LEDG \u2194 REDG \u2194 DT",
+        "Linebacker: SAM \u2194 MIKE \u2194 WILL",
+        "Defensive Back: CB \u2194 FS \u2194 SS",
+        "Specialist: K \u2194 P"
       ],
-      "footer": "ATHs may only move to EDGE or TE if they were originally grouped in Defensive Line or TE respectively, and must stay at the position you initially set for the duration of their career. No archetype exploits: moving players between groups (e.g. RB → CB → RB) to manipulate archetypes or unlock badges will drop that player's rating to 40 across the board, with possible additional penalties, fines, or removal from the league."
+      "footer": "ATHs may only move to EDGE or TE if they were originally grouped in Defensive Line or TE respectively, and must stay at the position you initially set for the duration of their career. No archetype exploits: moving players between groups (e.g. RB \u2192 CB \u2192 RB) to manipulate archetypes or unlock badges will drop that player's rating to 40 across the board, with possible additional penalties, fines, or removal from the league."
     },
     {
       "id": "scheduling",
       "title": "Scheduling games",
-      "flag": "You must be able to play at least 7 PM – 12 AM ET daily. If you can't, this is not the league for you.",
+      "flag": "You must be able to play at least 7 PM \u2013 12 AM ET daily. If you can't, this is not the league for you.",
       "items": [
         "User chats are created so both players can agree on a time as soon as possible.",
         "Games must be scheduled and played within the designated gaming hours.",
         "If there's an issue, state your availability within gaming hours. No reason needs to be given.",
         "If a game can't be scheduled reasonably, admins decide based on what's posted in the user chat.",
-        "Advancement will not be held up for user games — playoff games excepted.",
+        "Advancement will not be held up for user games \u2014 playoff games excepted.",
         "Be time-zone specific when scheduling, and tag your opponent in every response in the game chat."
       ],
       "footer": "Once a time is set there's a 15-minute grace period without comms and 30 minutes with comms. The waiting player may take the forfeit win or play the game. Don't play with people's time. No one person will hold up the league."
@@ -82,7 +81,7 @@
     {
       "id": "streaming",
       "title": "Streaming requirement",
-      "body": "All games must be streamed — user games and CPU games alike. This promotes transparency and accountability, and gives the rest of the league something to follow. Failure to stream could result in a loss, handled case by case."
+      "body": "All user-vs-user games must be streamed. This promotes transparency and accountability, and gives the rest of the league something to follow. Failure to stream could result in a loss, handled case by case."
     },
     {
       "id": "teams",
@@ -99,35 +98,86 @@
       "title": "Playoff Points",
       "body": "The Campus King Belt still goes to the coach with the most national championships over the 20 accredited seasons. Playoff Points run alongside it to track the overall top five across the full cycle.",
       "table": {
-        "head": ["Achievement", "Points"],
+        "head": [
+          "Achievement",
+          "Points"
+        ],
         "rows": [
-          ["Make the playoffs", "+1"],
-          ["Advance to Round 2", "+2"],
-          ["Reach the Final Four", "+3"],
-          ["Reach the National Championship", "+4"],
-          ["Win the National Championship", "+8"]
+          [
+            "Make the playoffs",
+            "+1"
+          ],
+          [
+            "Advance to Round 2",
+            "+2"
+          ],
+          [
+            "Reach the Final Four",
+            "+3"
+          ],
+          [
+            "Reach the National Championship",
+            "+4"
+          ],
+          [
+            "Win the National Championship",
+            "+8"
+          ]
         ]
       },
       "table2": {
-        "head": ["Finish", "Total"],
+        "head": [
+          "Finish",
+          "Total"
+        ],
         "rows": [
-          ["National Champion", "18"],
-          ["National Runner-Up", "10"],
-          ["Final Four loss", "6"],
-          ["Round 2 loss", "3"],
-          ["First-round loss", "1"]
+          [
+            "National Champion",
+            "18"
+          ],
+          [
+            "National Runner-Up",
+            "10"
+          ],
+          [
+            "Final Four loss",
+            "6"
+          ],
+          [
+            "Round 2 loss",
+            "3"
+          ],
+          [
+            "First-round loss",
+            "1"
+          ]
         ]
       },
       "table3": {
-        "head": ["Conference title bonus", "Points"],
+        "head": [
+          "Conference title bonus",
+          "Points"
+        ],
         "rows": [
-          ["SEC Champion", "+2"],
-          ["Big Ten Champion", "+2"],
-          ["Big 12 Champion", "+2"],
-          ["ACC Champion", "+1"]
+          [
+            "SEC Champion",
+            "+2"
+          ],
+          [
+            "Big Ten Champion",
+            "+2"
+          ],
+          [
+            "Big 12 Champion",
+            "+2"
+          ],
+          [
+            "ACC Champion",
+            "+1"
+          ]
         ]
       },
-      "footer": "Conference bonuses stack on top of playoff points — an SEC national champion earns 18 + 2 = 20. Tiebreakers, in order: most national championships, most championship appearances, most Final Four appearances, most total playoff appearances."
+      "footer": "Conference bonuses stack on top of playoff points \u2014 an SEC national champion earns 18 + 2 = 20. Tiebreakers, in order: most national championships, most championship appearances, most Final Four appearances, most total playoff appearances."
     }
   ]
 }
