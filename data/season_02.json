@@ -1,7 +1,7 @@
 {
   "season": 2,
   "status": "in_progress",
-  "current_week": 11,
+  "current_week": 12,
   "results": [
     {
       "week": 0,
@@ -491,8 +491,8 @@
     },
     {
       "week": 10,
-      "winner": "Texas Tech",
-      "loser": "TCU",
+      "winner": "TCU",
+      "loser": "Texas Tech",
       "score": [
         57,
         56
@@ -534,6 +534,24 @@
         35
       ],
       "gotw": true
+    },
+    {
+      "week": 11,
+      "winner": "TCU",
+      "loser": "Baylor",
+      "score": [
+        45,
+        20
+      ]
+    },
+    {
+      "week": 12,
+      "winner": "Ole Miss",
+      "loser": "Alabama",
+      "score": [
+        51,
+        21
+      ]
     }
   ],
   "poll_snapshot": {

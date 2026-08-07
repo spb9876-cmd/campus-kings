@@ -72,13 +72,13 @@ Quinton Martin Jr. put up one of the loudest losing performances you will ever s
 
 Bowzer's own writeup called it an instant classic decided by a last-second defensive stand. For once the guy making the graphics wasn't overselling it. States goes from a 45-0 shutout to a 43-36 loss in seven days.
 
-### Texas Tech 57, TCU 56 — Triple Overtime
+### TCU 57, Texas Tech 56 — Triple Overtime
 
 **Game of the month, and nobody made a graphic for it.**
 
-Silingi survives KJ by a single point in three overtimes. Bhog's entire review: *"What a fuckin game."* KJ conceded on the spot — *"gg"* — and Silingi's response was pure shellshock: *"damn, GG. so many wild things goin on."*
+KJ survives Silingi by a single point in three overtimes. Bhog's entire review: *"What a fuckin game."* Silingi's own response was pure shellshock: *"damn, GG. so many wild things goin on."*
 
-Then came the regret. *"I should have just gone for two. I debated it 🙁"* KJ told him the rulebook wasn't optional: *"real life rule is you were supposed to in double ot."* Curt jumped in to correct the correction — *"Its the 3rd OT"* — and when KJ pushed back that third overtime is two-point-only, Curt closed the case with the flex of the month: *"I know because Ive played in a 4OT game last year."*
+Then came the regret, from the man who lost by one. *"I should have just gone for two. I debated it 🙁"* KJ told him the rulebook wasn't optional: *"real life rule is you were supposed to in double ot."* Curt jumped in to correct the correction — *"Its the 3rd OT"* — and when KJ pushed back that third overtime is two-point-only, Curt closed the case with the flex of the month: *"I know because Ive played in a 4OT game last year."*
 
 One hundred and thirteen combined points. Get a box score posted.
 
@@ -152,4 +152,4 @@ Bhog eventually tapped out of the price war: *"Ain't think it was gone be a 50 b
 
 ---
 
-*Weeks 8-10 in the books. Stew is the last unbeaten standing, Purp is the hottest coach in the league, Silingi survived 113 points of triple-overtime chaos, and Quan paid $175 for a franchise he spent a full afternoon calling worthless.*
+*Weeks 8-10 in the books. Stew is the last unbeaten standing, Purp is the hottest coach in the league, KJ survived 113 points of triple-overtime chaos, and Quan paid $175 for a franchise he spent a full afternoon calling worthless.*
