@@ -280,7 +280,12 @@ PRESS_CSS = """
 :root{
   --bg:#f2efe7; --ink:#17160f; --muted:#57534a; --muted2:#8a8478;
   --gold:#9e2b25; --golddim:#7d2420; --rule:#d9d3c4;
-  --card:#fbf9f3; --card2:#ebe7db; --turf:#1b1a16;
+  --card:#fbf9f3; --card2:#ebe7db;
+  /* --turf is the fallback hero background. Only the coach-profile hero uses
+     it (the homepage covers it with the banner photo, the article hero sets
+     its own), so on a light page it has to be light or the coach name sits
+     near-black on near-black. */
+  --turf:#eae5d8;
   --display:'Graduate',Georgia,serif;
   --serif:'Source Serif 4',Georgia,serif;
 }
