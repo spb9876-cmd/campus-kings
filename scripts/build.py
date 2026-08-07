@@ -40,6 +40,38 @@ import profiles
 THEME = "press"
 PRESS = THEME == "press"
 
+# Palette schedule, only meaningful when THEME == "press":
+#   "clock"  dark 7pm-7am Eastern, light 7am-7pm, for every visitor regardless
+#            of their own timezone or device setting
+#   "day"    always the light newsprint palette
+#   "night"  always the dark palette
+SCHEME = "clock"
+
+# Runs synchronously in <head>, before anything paints, so the correct palette is
+# in place on the first frame -- set it from a deferred script and every visitor
+# after 7pm sees a white flash first. Intl with an IANA zone is used rather than
+# a fixed -5 offset so the switch tracks EST/EDT on its own.
+CLOCK_JS = """<script>
+(function(){
+  var root=document.documentElement;
+  function easternHour(){
+    var h=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',
+      hour:'numeric',hour12:false}).format(new Date());
+    return parseInt(h,10)%24;           /* some ICU builds say 24 for midnight */
+  }
+  function apply(){
+    var h;
+    try{h=easternHour();}catch(e){h=new Date().getHours();}  /* no Intl: local */
+    root.classList.toggle('night',h>=19||h<7);
+  }
+  apply();
+  setInterval(apply,60000);             /* flip a page that's been left open */
+})();
+</script>"""
+
+NIGHT_CLASS = ' class="night"' if (PRESS and SCHEME == "night") else ""
+HEAD_JS = CLOCK_JS if (PRESS and SCHEME == "clock") else ""
+
 STANDINGS_WORD = ("&mdash; <em>The Belt</em>" if PRESS else "<em>Standings</em>")
 
 FONT_QUERY = ("family=Graduate&family=Source+Serif+4:ital,wght@0,400;0,600;1,400"
@@ -276,7 +308,11 @@ footer{border-top:1px solid var(--rule);padding:26px 0 34px;font-size:10.5px;let
 # --------------------------------------------------------------------------
 PRESS_CSS = """
 /* ---- palette. The custom-property names are kept so the ~200 var() calls in
-   the base sheet keep working; --gold is now an ink red. ---- */
+   the base sheet keep working; --gold is now an ink red.
+
+   Day tokens live on :root, night tokens on html.night. Only colours differ --
+   the type, copy and layout are the same around the clock, because those are
+   editorial choices and shouldn't change at 7pm. ---- */
 :root{
   --bg:#f2efe7; --ink:#17160f; --muted:#57534a; --muted2:#8a8478;
   --gold:#9e2b25; --golddim:#7d2420; --rule:#d9d3c4;
@@ -286,11 +322,23 @@ PRESS_CSS = """
      its own), so on a light page it has to be light or the coach name sits
      near-black on near-black. */
   --turf:#eae5d8;
+  --nav:rgba(242,239,231,.93);
+  /* text sitting on the homepage banner photo, which is dark in both schemes */
+  --onphoto:#f7f4ec; --onphoto-dim:rgba(247,244,236,.78); --onphoto-accent:#e8b4a4;
   --display:'Graduate',Georgia,serif;
   --serif:'Source Serif 4',Georgia,serif;
 }
+html.night{
+  /* a warm near-black, not the old cold #08080a, so night reads as the same
+     design after dark rather than a different site */
+  --bg:#12110e; --ink:#f0ece2; --muted:#a8a29a; --muted2:#6f6a62;
+  --gold:#d9574a; --golddim:#b04a3f; --rule:#2b2924;
+  --card:#1a1915; --card2:#211f1a; --turf:#1c1a16;
+  --nav:rgba(18,17,14,.93);
+  --onphoto-accent:#e8918a;
+}
 html,body{background:var(--bg)}
-.navbar{background:rgba(242,239,231,.93)}
+.navbar{background:var(--nav)}
 
 /* ---- display face. Graduate sets wider and shorter than Anton, so anything
    that was sized for Anton needs bringing down. ---- */
@@ -350,11 +398,11 @@ h2.sec::after{background:var(--rule)}
 /* ---- the homepage hero still sits on a dark photo, so its text stays light.
    Scoped by the sibling combinator so the coach and article heroes, which have
    no .banner, are untouched. ---- */
-.hero .banner ~ .inner{color:#f7f4ec}
-.hero .banner ~ .inner .lede{color:rgba(247,244,236,.78)}
-.hero .banner ~ .inner .eyebrow{color:#e8b4a4}
+.hero .banner ~ .inner{color:var(--onphoto)}
+.hero .banner ~ .inner .lede{color:var(--onphoto-dim)}
+.hero .banner ~ .inner .eyebrow{color:var(--onphoto-accent)}
 .hero .banner ~ .inner .scrollcue{color:rgba(247,244,236,.6)}
-.hero .banner ~ .inner h1 em{color:#e8b4a4}
+.hero .banner ~ .inner h1 em{color:var(--onphoto-accent)}
 .hero .scrim{background:linear-gradient(180deg,rgba(20,19,16,.62) 0%,
   rgba(20,19,16,.80) 58%,var(--bg) 100%)}
 
@@ -414,8 +462,9 @@ def shell(title, active, body, hero=None, bug=""):
         on = " class='on'" if href == active else ""
         nav += "<a href='%s'%s>%s</a>" % (href, on, label)
     return f"""<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
+<html lang="en"{NIGHT_CLASS}><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+{HEAD_JS}
 <title>{title} — Campus Kings</title>
 <meta name="description" content="Campus Kings — a 20-season CFB 27 online dynasty league.">
 <meta property="og:title" content="Campus Kings">
