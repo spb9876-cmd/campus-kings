@@ -152,9 +152,8 @@ def index_page(league, prof, shell, bug, season):
     rows.sort(key=lambda r: (-r["rings"], -r["w"], r["name"]))
 
     b = ['<div class="pagehead"><h1 class="page">The <em>Coaches</em></h1>'
-         '<p class="psub">Lifetime championships, tracked records, and every game played. '
-         'Ring counts span all league history &mdash; the Belt tracks the current '
-         '20-season cycle only.</p></div>'
+         '<p class="psub">Every coach, every game we have on record. Ring counts go '
+         'all the way back; the Belt only counts the current 20-season run.</p></div>'
          '<div class="section"><table><tr><th>Coach</th><th>Current team</th>'
          '<th>Rings</th><th>Tracked W&ndash;L</th></tr>']
     for r in rows:

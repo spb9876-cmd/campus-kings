@@ -25,6 +25,48 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from points import compute, compute_all, completed_seasons, belt_leaders, coach_for
 import profiles
 
+# ---------------------------------------------------------------------------
+# LOOK AND FEEL  --  flip this one constant to change or revert the whole thing.
+#
+#   "press"    newsprint editorial: warm off-white page, ink-red accent,
+#              Graduate display face, serif prose, sentence-case labels.
+#   "classic"  the original: near-black page, gold accent, Anton, and the
+#              small letterspaced uppercase labels throughout.
+#
+# "classic" appends no overrides and changes no copy, so setting it here
+# reproduces the previous site exactly. Nothing below this line is deleted for
+# "press" -- it is all layered on top, so the revert is total.
+# ---------------------------------------------------------------------------
+THEME = "press"
+PRESS = THEME == "press"
+
+STANDINGS_WORD = ("&mdash; <em>The Belt</em>" if PRESS else "<em>Standings</em>")
+
+FONT_QUERY = ("family=Graduate&family=Source+Serif+4:ital,wght@0,400;0,600;1,400"
+              "&family=Inter:wght@400;500;600;700" if PRESS else
+              "family=Anton&family=Inter:wght@400;600;700")
+
+NAV = ([("index.html", "Home"), ("standings.html", "The Belt"),
+        ("coaches.html", "Coaches"), ("content.html", "Archive"),
+        ("rules.html", "Rulebook"), ("history.html", "History")] if PRESS else
+       [("index.html", "Overview"), ("standings.html", "Standings"),
+        ("coaches.html", "Coaches"), ("content.html", "Archive"),
+        ("rules.html", "Rules"), ("history.html", "History")])
+
+_MONTHS = ("Jan", "Feb", "March", "April", "May", "June",
+           "July", "Aug", "Sept", "Oct", "Nov", "Dec")
+
+
+def fmt_date(d):
+    """'2026-08-06' -> 'Aug 6, 2026'. Nobody writes ISO dates on a website."""
+    if not PRESS:
+        return d
+    try:
+        y, m, day = (int(p) for p in str(d).split("-")[:3])
+        return "%s %d, %d" % (_MONTHS[m - 1], day, y)
+    except (ValueError, IndexError):
+        return d
+
 CSS = """
 :root{
   --bg:#08080a; --ink:#f4f2ea; --muted:#8d8b82; --muted2:#5a5852;
@@ -228,6 +270,100 @@ footer{border-top:1px solid var(--rule);padding:26px 0 34px;font-size:10.5px;let
 @media(max-width:720px){.rulegrid{grid-template-columns:1fr}.toc{display:none}}
 """
 
+# --------------------------------------------------------------------------
+# Everything below is layered on top of the sheet above. It redefines; it never
+# edits. Set THEME = "classic" and none of it is emitted.
+# --------------------------------------------------------------------------
+PRESS_CSS = """
+/* ---- palette. The custom-property names are kept so the ~200 var() calls in
+   the base sheet keep working; --gold is now an ink red. ---- */
+:root{
+  --bg:#f2efe7; --ink:#17160f; --muted:#57534a; --muted2:#8a8478;
+  --gold:#9e2b25; --golddim:#7d2420; --rule:#d9d3c4;
+  --card:#fbf9f3; --card2:#ebe7db; --turf:#1b1a16;
+  --display:'Graduate',Georgia,serif;
+  --serif:'Source Serif 4',Georgia,serif;
+}
+html,body{background:var(--bg)}
+.navbar{background:rgba(242,239,231,.93)}
+
+/* ---- display face. Graduate sets wider and shorter than Anton, so anything
+   that was sized for Anton needs bringing down. ---- */
+.brand .name,.quick .qk,.hero h1,.glance .fig,h1.page,.pillar .n,.step .k,
+.belt .who,.num,.rt,td.s,.article h2,.rule h3,.ticker::before{
+  font-family:var(--display)}
+.brand .name{font-size:16px;letter-spacing:.5px}
+.hero h1{font-size:clamp(28px,4.4vw,48px);line-height:1.06;letter-spacing:0}
+h1.page{font-size:clamp(24px,3.4vw,34px);line-height:1.12;letter-spacing:0}
+.belt .who{font-size:24px;letter-spacing:0}
+.glance .fig{font-size:26px}
+.article h2{font-size:19px;letter-spacing:0}
+.rule h3{font-size:17px}
+.quick .qk{font-size:13px;letter-spacing:0}
+.step .k{font-size:13px}
+.num{font-size:19px}
+.rt,td.s{font-size:13.5px}
+.ticker::before{font-size:10px;letter-spacing:1.4px}
+
+/* ---- prose gets a serif; tables and chrome stay in Inter ---- */
+.hero p.lede,.psub,.article p,.article li,.pillar p,.step p,.belt .meta,
+.quick .qd,.card .bl,.dt{font-family:var(--serif)}
+.article p,.article li{font-size:16.5px;line-height:1.72}
+.psub{font-size:16px;font-style:normal}
+
+/* ---- the tell: small letterspaced uppercase labels. Caps are kept only on
+   the nav and the section rules; everything else goes sentence case. ---- */
+.eyebrow,.glance .lab,.byline,.card .kind,.poster .cap,.wklabel,.belt .lbl,
+th,.tag,.co,.scrollcue,footer,.tk .wk,.tk .gw,.pillar .n,.btn,
+.quick .qk,.step .k,.belt .who,h1.page,.hero h1{
+  text-transform:none;letter-spacing:0}
+.eyebrow{font-size:13px;color:var(--gold);font-weight:600;margin-bottom:14px}
+.glance .lab{font-size:12.5px;color:var(--muted)}
+.byline{font-size:13px;color:var(--muted)}
+.card .kind{font-size:12px;color:var(--gold);font-weight:600}
+.poster .cap{font-size:12.5px}
+.wklabel{font-size:13px;font-weight:600;color:var(--ink)}
+.belt .lbl{font-size:12.5px;color:var(--muted)}
+th{font-size:12px;color:var(--muted)}
+.tag{font-size:11px;padding:2px 6px}
+.co{font-size:12px}
+.scrollcue{font-size:12px}
+footer{font-size:12.5px;line-height:1.8}
+.tk .wk{font-size:11px}
+.tk .gw{font-size:10.5px}
+.btn{font-size:13px}
+h2.sec{letter-spacing:1.6px;font-size:11px;color:var(--muted)}
+h2.sec::after{background:var(--rule)}
+
+/* ---- red on white needs light text, not the near-black the dark theme used ---- */
+.btn:hover{background:var(--gold);color:var(--bg)}
+.tk .gw{background:var(--gold);color:var(--bg)}
+.ticker{background:var(--card2)}
+.ticker::before{background:var(--ink);color:var(--bg)}
+.ticker::after{background:linear-gradient(90deg,transparent,var(--card2))}
+
+/* ---- the homepage hero still sits on a dark photo, so its text stays light.
+   Scoped by the sibling combinator so the coach and article heroes, which have
+   no .banner, are untouched. ---- */
+.hero .banner ~ .inner{color:#f7f4ec}
+.hero .banner ~ .inner .lede{color:rgba(247,244,236,.78)}
+.hero .banner ~ .inner .eyebrow{color:#e8b4a4}
+.hero .banner ~ .inner .scrollcue{color:rgba(247,244,236,.6)}
+.hero .banner ~ .inner h1 em{color:#e8b4a4}
+.hero .scrim{background:linear-gradient(180deg,rgba(20,19,16,.62) 0%,
+  rgba(20,19,16,.80) 58%,var(--bg) 100%)}
+
+/* ---- flourishes that read as generated polish ---- */
+.card:hover{transform:none;border-color:var(--muted2)}
+.hero .crest{box-shadow:none}
+.glow{display:none}
+.card{background:var(--card)}
+.card:hover .ttl{color:var(--gold)}
+"""
+
+if PRESS:
+    CSS = CSS + PRESS_CSS
+
 CROWN = '<img class="mark" src="media/logo-mark.png" alt="">' 
 
 FIELD = ('<svg class="field" width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 1000 380">'
@@ -269,9 +405,7 @@ def ticker(season_data, limit=14):
 
 def shell(title, active, body, hero=None, bug=""):
     nav = ""
-    for href, label in [("index.html", "Overview"), ("standings.html", "Standings"),
-                        ("coaches.html", "Coaches"), ("content.html", "Archive"),
-                        ("rules.html", "Rules"), ("history.html", "History")]:
+    for href, label in NAV:
         on = " class='on'" if href == active else ""
         nav += "<a href='%s'%s>%s</a>" % (href, on, label)
     return f"""<!DOCTYPE html>
@@ -284,7 +418,7 @@ def shell(title, active, body, hero=None, bug=""):
 <meta property="og:type" content="website">
 <meta property="og:image" content="media/logo.png">
 <link rel="icon" href="media/favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?{FONT_QUERY}&display=swap" rel="stylesheet">
 <style>{CSS}</style></head><body>
 <div class="navbar"><div class="inner">
 <a class="brand" href="index.html">{CROWN}<span class="name">Campus <span>Kings</span></span></a>
@@ -292,7 +426,7 @@ def shell(title, active, body, hero=None, bug=""):
 {bug}
 {hero or ""}
 <div class="wrap">{body}</div>
-<footer>Campus Kings &middot; CFB 27 Online Dynasty<br>Updated {date.today().isoformat()}</footer>
+<footer>Campus Kings &middot; CFB 27 Online Dynasty<br>Updated {fmt_date(date.today().isoformat())}</footer>
 </body></html>
 """
 
@@ -542,7 +676,7 @@ def content_card(c):
             f'<img src="media/{c["file"]}" alt="{html.escape(c["title"], quote=True)}" loading="lazy">'
             f'<div class="body"><div class="kind">{c["kind"]} &middot; S{c["season"]}</div>'
             f'<div class="ttl">{c["title"]}{tag}</div><div class="bl">{c["blurb"]}</div>'
-            f'<div class="dte">{c["date"]}</div></div></a>')
+            f'<div class="dte">{fmt_date(c["date"])}</div></div></a>')
 
 
 def build_content(content, bug=""):
@@ -552,10 +686,13 @@ def build_content(content, bug=""):
     for c in items:
         by_season[c["season"]].append(c)
 
-    n_posts = sum(1 for c in items if c.get("article"))
+    blurb = ("Everything we've published, newest first. Nothing falls off this page."
+             if PRESS else
+             "Every recap, power ranking, and graphic published so far &mdash; "
+             "%d in total, %d with a full write-up. Nothing falls off this page."
+             % (len(items), sum(1 for c in items if c.get("article"))))
     b = [f"""<div class="pagehead"><h1 class="page">The <em>Archive</em></h1>
-<p class="psub">Every recap, power ranking, and graphic published so far &mdash;
-{len(items)} in total, {n_posts} with a full write-up. Nothing falls off this page.</p></div>"""]
+<p class="psub">{blurb}</p></div>"""]
 
     for season in sorted(by_season, reverse=True):
         b.append(f'<div class="section"><h2 class="sec">Season {season}</h2><div class="grid">')
@@ -583,7 +720,7 @@ def build_article(c, body_md, bug=""):
             f'<div class="cap">{label}</div></a>')
 
     b = [f'<div class="section" style="border-bottom:none">',
-         f'<div class="byline">Published {c["date"]}</div>',
+         f'<div class="byline">Published {fmt_date(c["date"])}</div>',
          "\n".join(posters),
          f'<div class="article">{markdown(body_md)}</div>',
          f'<div class="backlink"><a href="content.html">&larr; All content</a></div>',
@@ -624,7 +761,7 @@ def build_rules(rules, bug=""):
 
 def build_standings(league, s2, pts, bug="", n_seasons=1):
     recs = league_records(s2, league, 2)
-    b = [f"""<div class="pagehead"><h1 class="page">Season Two <em>Standings</em></h1>
+    b = [f"""<div class="pagehead"><h1 class="page">Season Two {STANDINGS_WORD}</h1>
 <p class="psub">Through week {s2.get('current_week', 0)}. League games only &mdash;
 CPU results aren't tracked, so these won't match the in-game poll.</p></div>"""]
 

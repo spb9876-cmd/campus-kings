@@ -8,7 +8,7 @@
 <meta property="og:type" content="website">
 <meta property="og:image" content="media/logo.png">
 <link rel="icon" href="media/favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Graduate&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#08080a; --ink:#f4f2ea; --muted:#8d8b82; --muted2:#5a5852;
@@ -210,14 +210,99 @@ footer{border-top:1px solid var(--rule);padding:26px 0 34px;font-size:10.5px;let
   background:var(--golddim);border-radius:2px;padding:2px 5px}
 @media(prefers-reduced-motion:reduce){.ticker .track{animation:none}}
 @media(max-width:720px){.rulegrid{grid-template-columns:1fr}.toc{display:none}}
+
+/* ---- palette. The custom-property names are kept so the ~200 var() calls in
+   the base sheet keep working; --gold is now an ink red. ---- */
+:root{
+  --bg:#f2efe7; --ink:#17160f; --muted:#57534a; --muted2:#8a8478;
+  --gold:#9e2b25; --golddim:#7d2420; --rule:#d9d3c4;
+  --card:#fbf9f3; --card2:#ebe7db; --turf:#1b1a16;
+  --display:'Graduate',Georgia,serif;
+  --serif:'Source Serif 4',Georgia,serif;
+}
+html,body{background:var(--bg)}
+.navbar{background:rgba(242,239,231,.93)}
+
+/* ---- display face. Graduate sets wider and shorter than Anton, so anything
+   that was sized for Anton needs bringing down. ---- */
+.brand .name,.quick .qk,.hero h1,.glance .fig,h1.page,.pillar .n,.step .k,
+.belt .who,.num,.rt,td.s,.article h2,.rule h3,.ticker::before{
+  font-family:var(--display)}
+.brand .name{font-size:16px;letter-spacing:.5px}
+.hero h1{font-size:clamp(28px,4.4vw,48px);line-height:1.06;letter-spacing:0}
+h1.page{font-size:clamp(24px,3.4vw,34px);line-height:1.12;letter-spacing:0}
+.belt .who{font-size:24px;letter-spacing:0}
+.glance .fig{font-size:26px}
+.article h2{font-size:19px;letter-spacing:0}
+.rule h3{font-size:17px}
+.quick .qk{font-size:13px;letter-spacing:0}
+.step .k{font-size:13px}
+.num{font-size:19px}
+.rt,td.s{font-size:13.5px}
+.ticker::before{font-size:10px;letter-spacing:1.4px}
+
+/* ---- prose gets a serif; tables and chrome stay in Inter ---- */
+.hero p.lede,.psub,.article p,.article li,.pillar p,.step p,.belt .meta,
+.quick .qd,.card .bl,.dt{font-family:var(--serif)}
+.article p,.article li{font-size:16.5px;line-height:1.72}
+.psub{font-size:16px;font-style:normal}
+
+/* ---- the tell: small letterspaced uppercase labels. Caps are kept only on
+   the nav and the section rules; everything else goes sentence case. ---- */
+.eyebrow,.glance .lab,.byline,.card .kind,.poster .cap,.wklabel,.belt .lbl,
+th,.tag,.co,.scrollcue,footer,.tk .wk,.tk .gw,.pillar .n,.btn,
+.quick .qk,.step .k,.belt .who,h1.page,.hero h1{
+  text-transform:none;letter-spacing:0}
+.eyebrow{font-size:13px;color:var(--gold);font-weight:600;margin-bottom:14px}
+.glance .lab{font-size:12.5px;color:var(--muted)}
+.byline{font-size:13px;color:var(--muted)}
+.card .kind{font-size:12px;color:var(--gold);font-weight:600}
+.poster .cap{font-size:12.5px}
+.wklabel{font-size:13px;font-weight:600;color:var(--ink)}
+.belt .lbl{font-size:12.5px;color:var(--muted)}
+th{font-size:12px;color:var(--muted)}
+.tag{font-size:11px;padding:2px 6px}
+.co{font-size:12px}
+.scrollcue{font-size:12px}
+footer{font-size:12.5px;line-height:1.8}
+.tk .wk{font-size:11px}
+.tk .gw{font-size:10.5px}
+.btn{font-size:13px}
+h2.sec{letter-spacing:1.6px;font-size:11px;color:var(--muted)}
+h2.sec::after{background:var(--rule)}
+
+/* ---- red on white needs light text, not the near-black the dark theme used ---- */
+.btn:hover{background:var(--gold);color:var(--bg)}
+.tk .gw{background:var(--gold);color:var(--bg)}
+.ticker{background:var(--card2)}
+.ticker::before{background:var(--ink);color:var(--bg)}
+.ticker::after{background:linear-gradient(90deg,transparent,var(--card2))}
+
+/* ---- the homepage hero still sits on a dark photo, so its text stays light.
+   Scoped by the sibling combinator so the coach and article heroes, which have
+   no .banner, are untouched. ---- */
+.hero .banner ~ .inner{color:#f7f4ec}
+.hero .banner ~ .inner .lede{color:rgba(247,244,236,.78)}
+.hero .banner ~ .inner .eyebrow{color:#e8b4a4}
+.hero .banner ~ .inner .scrollcue{color:rgba(247,244,236,.6)}
+.hero .banner ~ .inner h1 em{color:#e8b4a4}
+.hero .scrim{background:linear-gradient(180deg,rgba(20,19,16,.62) 0%,
+  rgba(20,19,16,.80) 58%,var(--bg) 100%)}
+
+/* ---- flourishes that read as generated polish ---- */
+.card:hover{transform:none;border-color:var(--muted2)}
+.hero .crest{box-shadow:none}
+.glow{display:none}
+.card{background:var(--card)}
+.card:hover .ttl{color:var(--gold)}
 </style></head><body>
 <div class="navbar"><div class="inner">
 <a class="brand" href="index.html"><img class="mark" src="media/logo-mark.png" alt=""><span class="name">Campus <span>Kings</span></span></a>
-<nav><a href='index.html'>Overview</a><a href='standings.html'>Standings</a><a href='coaches.html'>Coaches</a><a href='content.html' class='on'>Archive</a><a href='rules.html'>Rules</a><a href='history.html'>History</a></nav></div></div>
+<nav><a href='index.html'>Home</a><a href='standings.html'>The Belt</a><a href='coaches.html'>Coaches</a><a href='content.html' class='on'>Archive</a><a href='rules.html'>Rulebook</a><a href='history.html'>History</a></nav></div></div>
 <div class="ticker"><div class="track"><span class="tk"><span class="wk">W12</span><span class="a">Ole Miss</span><span class="sc">51&ndash;21</span><span class="b">Alabama</span></span><span class="tk"><span class="wk">W11</span><span class="a">Ole Miss</span><span class="sc">38&ndash;21</span><span class="b">Texas A&M</span></span><span class="tk"><span class="wk">W11</span><span class="a">Clemson</span><span class="sc">48&ndash;11</span><span class="b">Texas Tech</span></span><span class="tk"><span class="wk">W11</span><span class="a">Tennessee</span><span class="sc">42&ndash;3</span><span class="b">South Carolina</span></span><span class="tk"><span class="wk">W11</span><span class="a">Notre Dame</span><span class="sc">38&ndash;35</span><span class="b">Texas</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W11</span><span class="a">TCU</span><span class="sc">45&ndash;20</span><span class="b">Baylor</span></span><span class="tk"><span class="wk">W10</span><span class="a">Tennessee</span><span class="sc">38&ndash;7</span><span class="b">Notre Dame</span></span><span class="tk"><span class="wk">W10</span><span class="a">Miami</span><span class="sc">44&ndash;0</span><span class="b">SMU</span></span><span class="tk"><span class="wk">W10</span><span class="a">Florida</span><span class="sc">24&ndash;14</span><span class="b">Georgia</span></span><span class="tk"><span class="wk">W10</span><span class="a">Oregon</span><span class="sc">43&ndash;36</span><span class="b">Penn State</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W10</span><span class="a">South Carolina</span><span class="sc">41&ndash;35</span><span class="b">Texas</span></span><span class="tk"><span class="wk">W10</span><span class="a">Texas A&M</span><span class="sc">35&ndash;28</span><span class="b">LSU</span></span><span class="tk"><span class="wk">W10</span><span class="a">TCU</span><span class="sc">57&ndash;56</span><span class="b">Texas Tech</span></span><span class="tk"><span class="wk">W9</span><span class="a">Penn State</span><span class="sc">45&ndash;0</span><span class="b">Indiana</span></span><span class="tk"><span class="wk">W12</span><span class="a">Ole Miss</span><span class="sc">51&ndash;21</span><span class="b">Alabama</span></span><span class="tk"><span class="wk">W11</span><span class="a">Ole Miss</span><span class="sc">38&ndash;21</span><span class="b">Texas A&M</span></span><span class="tk"><span class="wk">W11</span><span class="a">Clemson</span><span class="sc">48&ndash;11</span><span class="b">Texas Tech</span></span><span class="tk"><span class="wk">W11</span><span class="a">Tennessee</span><span class="sc">42&ndash;3</span><span class="b">South Carolina</span></span><span class="tk"><span class="wk">W11</span><span class="a">Notre Dame</span><span class="sc">38&ndash;35</span><span class="b">Texas</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W11</span><span class="a">TCU</span><span class="sc">45&ndash;20</span><span class="b">Baylor</span></span><span class="tk"><span class="wk">W10</span><span class="a">Tennessee</span><span class="sc">38&ndash;7</span><span class="b">Notre Dame</span></span><span class="tk"><span class="wk">W10</span><span class="a">Miami</span><span class="sc">44&ndash;0</span><span class="b">SMU</span></span><span class="tk"><span class="wk">W10</span><span class="a">Florida</span><span class="sc">24&ndash;14</span><span class="b">Georgia</span></span><span class="tk"><span class="wk">W10</span><span class="a">Oregon</span><span class="sc">43&ndash;36</span><span class="b">Penn State</span><span class="gw">GOTW</span></span><span class="tk"><span class="wk">W10</span><span class="a">South Carolina</span><span class="sc">41&ndash;35</span><span class="b">Texas</span></span><span class="tk"><span class="wk">W10</span><span class="a">Texas A&M</span><span class="sc">35&ndash;28</span><span class="b">LSU</span></span><span class="tk"><span class="wk">W10</span><span class="a">TCU</span><span class="sc">57&ndash;56</span><span class="b">Texas Tech</span></span><span class="tk"><span class="wk">W9</span><span class="a">Penn State</span><span class="sc">45&ndash;0</span><span class="b">Indiana</span></span></div></div>
 <div class="hero" style="padding:0;background:var(--bg)"><div class="inner" style="padding:56px 24px 40px;text-align:left;max-width:1000px"><div class="eyebrow">Recruiting &middot; Season 1</div><h1 style="font-size:clamp(30px,5vw,52px)">Season One Recruiting Results</h1><p class="lede" style="margin:0;max-width:620px">Class rankings, the transfer portal top 100, and regular recruiting top 100 — all three boards, backdated to the archive.</p></div></div>
 <div class="wrap"><div class="section" style="border-bottom:none">
-<div class="byline">Published 2026-07-27</div>
+<div class="byline">Published July 27, 2026</div>
 <a class="poster" href="media/campus_kings_s1_recruiting_classes.jpg"><img src="media/campus_kings_s1_recruiting_classes.jpg" alt="Top 31 recruiting classes — user teams only, best to worst" loading="lazy"><div class="cap">Top 31 recruiting classes — user teams only, best to worst</div></a>
 <a class="poster" href="media/campus_kings_s1_transfer_portal.jpg"><img src="media/campus_kings_s1_transfer_portal.jpg" alt="Top 100 transfer portal — 98 signed, 2 unsigned" loading="lazy"><div class="cap">Top 100 transfer portal — 98 signed, 2 unsigned</div></a>
 <a class="poster" href="media/campus_kings_s1_regular_recruits.jpg"><img src="media/campus_kings_s1_regular_recruits.jpg" alt="Top 100 regular recruits — 91 signed, 9 unsigned" loading="lazy"><div class="cap">Top 100 regular recruits — 91 signed, 9 unsigned</div></a>
@@ -244,5 +329,5 @@ footer{border-top:1px solid var(--rule);padding:26px 0 34px;font-size:10.5px;let
 <p><em>Filed to the archive after the fact. The graphics are the source of record; if a number here doesn't match one of them, trust the graphic.</em></p></div>
 <div class="backlink"><a href="content.html">&larr; All content</a></div>
 </div></div>
-<footer>Campus Kings &middot; CFB 27 Online Dynasty<br>Updated 2026-08-07</footer>
+<footer>Campus Kings &middot; CFB 27 Online Dynasty<br>Updated Aug 7, 2026</footer>
 </body></html>
