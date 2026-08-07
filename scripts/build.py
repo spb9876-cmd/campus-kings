@@ -793,19 +793,8 @@ CPU results aren't tracked, so these won't match the in-game poll.</p></div>"""]
         b.append("</table>")
     b.append("</div>")
 
-    snap = s2.get("poll_snapshot")
-    if snap and snap.get("records"):
-        b.append('<div class="section"><h2 class="sec">Official records &middot; in-game poll</h2>'
-                 '<p class="dt" style="margin:-8px 0 16px">As of week %s, from the %s. '
-                 'These count CPU games, so they differ from the league-only records above.</p>'
-                 '<table><tr><th>Team</th><th>Coach</th><th>W&ndash;L</th></tr>'
-                 % (snap.get("as_of_week", "?"), snap.get("source", "in-game poll")))
-        for team, rec in snap["records"].items():
-            cid = coach_for(league, team, 2)
-            who = clink(league, cid) if cid else "<span style='color:var(--muted2)'>CPU</span>"
-            b.append("<tr><td class='w'>%s</td><td style='color:var(--muted)'>%s</td>"
-                     "<td class='s'>%s</td></tr>" % (team, who, rec.replace("-", "&ndash;")))
-        b.append("</table></div>")
+    # The in-game poll table used to sit here. It was hand-maintained and always
+    # drifting, so it's gone; "poll_snapshot" in the season file is now unused.
 
     b.append('<div class="section"><h2 class="sec">Playoff Points &middot; %s</h2><table><tr>'
              '<th>#</th><th>Coach</th><th>Team</th><th>Titles</th><th>Pts</th></tr>'
