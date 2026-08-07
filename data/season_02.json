@@ -306,15 +306,6 @@
     },
     {
       "week": 7,
-      "winner": "South Carolina",
-      "loser": "Auburn",
-      "score": [
-        51,
-        32
-      ]
-    },
-    {
-      "week": 7,
       "winner": "Oregon",
       "loser": "Ohio State",
       "score": [
@@ -397,30 +388,12 @@
       "gotw": true
     },
     {
-      "week": 8,
-      "winner": "LSU",
-      "loser": "Auburn",
-      "score": [
-        49,
-        26
-      ]
-    },
-    {
       "week": 9,
       "winner": "Penn State",
       "loser": "Indiana",
       "score": [
         45,
         0
-      ]
-    },
-    {
-      "week": 9,
-      "winner": "Ole Miss",
-      "loser": "Auburn",
-      "score": [
-        46,
-        44
       ]
     },
     {
