@@ -98,16 +98,34 @@ def gather(league, seasons):
 
         # Conference titles
         for cc in sdata.get("conference_championships", []):
-            cid = coach_for(league, cc["winner"], sn)
-            if cid:
-                prof[cid]["conf"] += 1
+            for team, won in ((cc["winner"], True), (cc["loser"], False)):
+                cid = coach_for(league, team, sn)
+                if not cid:
+                    continue
+                opp = cc["loser"] if won else cc["winner"]
+                opp_cid = coach_for(league, opp, sn)
+                p = prof[cid]
+                p["w" if won else "l"] += 1
+                if won:
+                    p["conf"] += 1
+                p["games"].append({
+                    "season": sn, "week": "%s Title" % cc["conference"],
+                    "team": team, "won": won, "opp": opp,
+                    "opp_coach": _cname(league, opp_cid) if opp_cid else None,
+                    "opp_cid": opp_cid,
+                    "score": cc.get("score"), "gotw": False,
+                    "kind": "conf", "conference": cc["conference"],
+                })
 
-    # Newest season first; within a season, regular games by week then playoffs in order
+    # Newest season first; within a season: regular games by week, then the
+    # conference title, then the playoff run in bracket order.
     po_order = {"Round 1": 1, "Quarterfinal": 2, "Semifinal": 3, "Championship": 4}
 
     def sort_key(g):
         if g["kind"] == "playoff":
-            return (-g["season"], 1, po_order.get(g["week"], 9))
+            return (-g["season"], 2, po_order.get(g["week"], 9))
+        if g["kind"] == "conf":
+            return (-g["season"], 1, 0)
         return (-g["season"], 0, g["week"])
 
     for p in prof.values():
@@ -218,6 +236,8 @@ def coach_page(league, cid, prof, shell, bug, season):
                 tags += '<span class="tag">%s</span>' % g["bowl"]
             if g["kind"] == "playoff":
                 tags += '<span class="tag">Playoff</span>'
+            if g["kind"] == "conf":
+                tags += '<span class="tag">Conf Title</span>'
             wk = g["week"] if isinstance(g["week"], str) else "Week %s" % g["week"]
             b.append(f"<tr><td style='color:{col};font-weight:700;width:26px'>{res}</td>"
                      f"<td class='s' style='width:76px'>{sc}</td>"
