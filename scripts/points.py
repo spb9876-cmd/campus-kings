@@ -122,13 +122,22 @@ def compute(league, season_data):
             # virtue of the bye; everyone else has only the berth so far.
             reached[team] = "QF" if int(seed) <= 4 else "R1"
 
+    # Conference champions earn their bonus the moment the title game is in,
+    # bracket or not. Touching the defaultdict puts them in the pool with a
+    # round of None, meaning "no playoff credit yet -- bonus only".
+    for cc in season_data.get("conference_championships") or []:
+        reached[cc["winner"]]
+
     scores = {}
     detail = {}
     for team, deepest in reached.items():
-        total = pts["make_playoffs"]
-        parts = ["playoff berth +%d" % pts["make_playoffs"]]
-
-        idx = ROUND_ORDER.index(deepest)
+        total = 0
+        parts = []
+        idx = -1
+        if deepest is not None:
+            total = pts["make_playoffs"]
+            parts = ["playoff berth +%d" % pts["make_playoffs"]]
+            idx = ROUND_ORDER.index(deepest)
         won_title = any(
             g["round"] == "NC" and g["winner"] == team
             for g in season_data.get("playoffs") or []
@@ -156,6 +165,8 @@ def compute(league, season_data):
                     total += bonus
                     parts.append("%s title +%d" % (cc["conference"], bonus))
 
+        if total == 0:
+            continue          # in the pool but nothing earned yet
         scores[team] = total
         detail[team] = parts
 
@@ -220,7 +231,8 @@ def completed_seasons(league):
         if not f.exists():
             continue
         d = json.loads(f.read_text(encoding="utf-8"))
-        if d.get("playoffs") or d.get("playoff_seeds"):
+        if (d.get("playoffs") or d.get("playoff_seeds")
+                or d.get("conference_championships")):
             out.append(d)
     return out
 
@@ -257,9 +269,10 @@ def compute_all(league, seasons):
         for r in compute(league, sdata):
             c = career.setdefault(r["coach"], blank(r["coach"]))
             c["points"] += r["points"]
-            c["seasons"] += 1                      # total playoff appearances
-            if ROUND_ORDER.index(r["reached"]) >= 2:
-                c["final_fours"] += 1
+            if r["reached"] is not None:
+                c["seasons"] += 1                  # total playoff appearances
+                if ROUND_ORDER.index(r["reached"]) >= 2:
+                    c["final_fours"] += 1
             if r["team"] not in c["teams"]:
                 c["teams"].append(r["team"])
         # titles / runner-up straight from the bracket
