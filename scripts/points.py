@@ -113,9 +113,15 @@ def compute(league, season_data):
     # as optional -- a season whose bracket lands before the seeds are filled in
     # should build with a warning, not a KeyError.
     seeds = season_data.get("playoff_seeds") or {}
-    if not seeds and __name__ == "__main__":
+    if not seeds and not (season_data.get("playoff_byes") or []) \
+            and __name__ == "__main__":
         print("(no playoff_seeds for S%d -- teams yet to play score nothing)\n"
               % season)
+    # A bye means you are already in round two, so credit the quarterfinal.
+    for team in season_data.get("playoff_byes") or []:
+        if reached[team] is None:
+            reached[team] = "QF"
+
     for seed, team in seeds.items():
         if reached[team] is None:
             # In the field but yet to play. Seeds 1-4 are already in round two by

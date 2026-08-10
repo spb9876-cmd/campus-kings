@@ -28,10 +28,16 @@ DATA = Path(__file__).resolve().parent.parent / "data"
 #   R1/QF/SF/NC-> playoff rounds
 #   BOWL       -> non-playoff bowl between two user teams; put the bowl's name in
 #                 the "bowl" column. Counts in records and game logs, scores nothing.
-#   SEED       -> declares the playoff field: seed number in "week", team in
-#                 "winner", everything else blank. One row per team.
+#   BYE        -> a team with a first-round bye: team in "winner", everything
+#                 else blank. Four rows, read off the quarterfinal column of the
+#                 bracket. This is the only thing results can't tell us -- a bye
+#                 team plays no game until its quarterfinal, so without it the top
+#                 four seeds would score nothing while first-round losers banked a
+#                 berth. Teams that play in the first round need no row at all.
+#   SEED       -> optional: full field with seed numbers, number in "week", team
+#                 in "winner". BYE is the short version and is usually enough.
 STAGES = ("R1", "QF", "SF", "NC")
-EXTRA_STAGES = ("BOWL", "SEED")
+EXTRA_STAGES = ("BOWL", "SEED", "BYE")
 
 
 def all_teams(league):
@@ -77,6 +83,7 @@ def main():
     playoffs = defaultdict(list)
     bowls = defaultdict(list)
     seeds = defaultdict(dict)
+    byes = defaultdict(list)
     seen = set()
 
     for i, row in enumerate(rows, start=2):  # header is line 1
@@ -84,6 +91,28 @@ def main():
             continue
 
         stage_raw = (row.get("stage") or "").strip().upper()
+        if stage_raw == "BYE":
+            raw = (row.get("winner") or "").strip()
+            t = lookup.get(raw.lower())
+            if not t:
+                close = get_close_matches(raw.lower(), lookup.keys(), n=1, cutoff=0.6)
+                hint = " (did you mean %s?)" % lookup[close[0]] if close else ""
+                errors.append("line %d: unknown team %r%s" % (i, raw, hint))
+                continue
+            try:
+                sn = int(row["season"])
+            except (ValueError, KeyError):
+                errors.append("line %d: BYE needs a season" % i)
+                continue
+            if t in byes[sn]:
+                errors.append("line %d: %s already has a bye" % (i, t))
+                continue
+            if len(byes[sn]) >= 4:
+                errors.append("line %d: more than four byes in S%d" % (i, sn))
+                continue
+            byes[sn].append(t)
+            continue
+
         if stage_raw == "SEED":
             raw = (row.get("winner") or "").strip()
             t = lookup.get(raw.lower())
@@ -221,7 +250,7 @@ def main():
 
     order = {s: n for n, s in enumerate(STAGES)}
     all_seasons = (set(by_season) | set(conf_titles) | set(playoffs)
-                   | set(bowls) | set(seeds))
+                   | set(bowls) | set(seeds) | set(byes))
     for season in sorted(all_seasons):
         path = DATA / ("season_%02d.json" % season)
         if path.exists():
@@ -245,13 +274,16 @@ def main():
         if seeds.get(season):
             data["playoff_seeds"] = {k: seeds[season][k]
                                      for k in sorted(seeds[season], key=int)}
+        if byes.get(season):
+            data["playoff_byes"] = byes[season]
 
         path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
         print("S%d: %d regular, %d conf title(s), %d playoff, %d bowl(s), "
-              "%d seed(s) -> %s"
+              "%d seed(s), %d bye(s) -> %s"
               % (season, len(results), len(conf_titles.get(season, [])),
                  len(playoffs.get(season, [])), len(bowls.get(season, [])),
-                 len(seeds.get(season, {})), path.name))
+                 len(seeds.get(season, {})), len(byes.get(season, [])),
+                 path.name))
 
 
 if __name__ == "__main__":
