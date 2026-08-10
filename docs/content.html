@@ -226,7 +226,19 @@ footer{border-top:1px solid var(--rule);padding:26px 0 34px;font-size:10.5px;let
 .tk .gw{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#0b0b0d;
   background:var(--golddim);border-radius:2px;padding:2px 5px}
 @media(prefers-reduced-motion:reduce){.ticker .track{animation:none}}
-@media(max-width:720px){.rulegrid{grid-template-columns:1fr}.toc{display:none}}
+@media(max-width:720px){.rulegrid{grid-template-columns:1fr}.toc{display:none}
+  /* tiebreaker columns are reference detail; drop them rather than let the
+     table push the whole page sideways on a phone */
+  .tb{display:none}
+  /* six nav items don't fit at 390px and were dragging every page sideways.
+     Let the nav scroll on its own instead of widening the document. */
+  .navbar .inner{gap:10px}
+  nav{gap:14px;font-size:11px;letter-spacing:1px;overflow-x:auto;
+    -webkit-overflow-scrolling:touch;max-width:100%;
+    scrollbar-width:none;padding-bottom:2px}
+  nav::-webkit-scrollbar{display:none}
+  nav a{white-space:nowrap;flex:0 0 auto}}
+.section{overflow-x:auto}
 
 /* ---- palette. The custom-property names are kept so the ~200 var() calls in
    the base sheet keep working; --gold is now an ink red.

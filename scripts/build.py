@@ -23,7 +23,7 @@ MEDIA_SRC = ROOT / "media_src"   # drop new recap PNGs here
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from points import (compute, compute_all, completed_seasons, belt_leaders,
-                    belt_race, coach_for, live_bracket, bracket_is_final)
+                    coach_for, live_bracket, bracket_is_final)
 import profiles
 
 # ---------------------------------------------------------------------------
@@ -300,7 +300,19 @@ footer{border-top:1px solid var(--rule);padding:26px 0 34px;font-size:10.5px;let
 .tk .gw{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#0b0b0d;
   background:var(--golddim);border-radius:2px;padding:2px 5px}
 @media(prefers-reduced-motion:reduce){.ticker .track{animation:none}}
-@media(max-width:720px){.rulegrid{grid-template-columns:1fr}.toc{display:none}}
+@media(max-width:720px){.rulegrid{grid-template-columns:1fr}.toc{display:none}
+  /* tiebreaker columns are reference detail; drop them rather than let the
+     table push the whole page sideways on a phone */
+  .tb{display:none}
+  /* six nav items don't fit at 390px and were dragging every page sideways.
+     Let the nav scroll on its own instead of widening the document. */
+  .navbar .inner{gap:10px}
+  nav{gap:14px;font-size:11px;letter-spacing:1px;overflow-x:auto;
+    -webkit-overflow-scrolling:touch;max-width:100%;
+    scrollbar-width:none;padding-bottom:2px}
+  nav::-webkit-scrollbar{display:none}
+  nav a{white-space:nowrap;flex:0 0 auto}}
+.section{overflow-x:auto}
 """
 
 # --------------------------------------------------------------------------
@@ -875,13 +887,14 @@ def build_standings(league, s2, pts, bug="", n_seasons=1,
         if not team:
             continue
         field.append({"coach": cid, "team": team, "points": 0, "titles": 0,
-                      "runner_up": 0, "seasons": 0})
-    race = belt_race(field)
+                      "runner_up": 0, "seasons": 0, "nc_apps": 0,
+                      "final_fours": 0, "rank": len(pts) + 1})
+    race = sorted(field, key=lambda r: (r.get("rank") or 99, r["coach"]))
 
-    b = [f"""<div class="pagehead"><h1 class="page">The <em>Belt</em> Race</h1>
-<p class="psub">The belt goes to whoever wins the most national championships across
-the 20 accredited seasons. Playoff Points are the parallel ladder &mdash; they only move
-in the postseason, so the race stands still until a bracket finishes.</p></div>"""]
+    b = [f"""<div class="pagehead"><h1 class="page">The <em>Belt</em></h1>
+<p class="psub">The belt goes to whoever wins the most national championships across the
+20 accredited seasons. Playoff Points are a separate, cumulative ladder &mdash; they only
+move in the postseason, so the standings hold still until a bracket finishes.</p></div>"""]
 
     if belt:
         holder = " &middot; ".join(clink(league, r["coach"]) for r in belt)
@@ -896,23 +909,28 @@ in the postseason, so the race stands still until a bracket finishes.</p></div>"
              f'{n_seasons} of {league["league"]["accredited_seasons"]} accredited '
              f'seasons complete.</div></div></div>')
 
-    b.append('<div class="section"><h2 class="sec">Belt race</h2>'
-             '<p class="dt" style="margin:-8px 0 16px">Ranked by championships, then '
-             'Playoff Points. "This season" is league games only, so it won\'t match '
-             'the in-game poll.</p>'
-             '<table><tr><th>#</th><th>Coach</th><th>Team</th><th>Titles</th>'
-             '<th>Runner-up</th><th>Pts</th><th>This season</th></tr>')
+    b.append('<div class="section"><h2 class="sec">Playoff Points standings</h2>'
+             '<p class="dt" style="margin:-8px 0 16px">Cumulative: +1 making the field, '
+             '+2 round two, +3 Final Four, +4 the title game, +8 winning it, plus the '
+             'conference bonus (SEC / B1G / Big 12 +2, ACC +1). Ties break on '
+             'championships, then title-game appearances, then Final Fours, then total '
+             'playoff appearances. "This season" is league games only.</p>'
+             '<table><tr><th>#</th><th>Coach</th><th>Team</th><th>Pts</th>'
+             '<th>Titles</th><th class="tb">Title&nbsp;games</th>'
+             '<th class="tb">Final&nbsp;Fours</th><th class="tb">Playoffs</th>'
+             '<th>This season</th></tr>')
     for r in race:
         w, l = season_wl.get(r["coach"], (0, 0))
-        wl = ("%d&ndash;%d" % (w, l)) if (w or l) else \
-             "<span style='color:var(--muted2)'>&mdash;</span>"
         dash = "<span style='color:var(--muted2)'>&mdash;</span>"
-        b.append(f"<tr><td>{r['belt_rank']}</td>"
+        wl = ("%d&ndash;%d" % (w, l)) if (w or l) else dash
+        b.append(f"<tr><td>{r.get('rank') or dash}</td>"
                  f"<td class='w'>{clink(league, r['coach'])}</td>"
                  f"<td style='color:var(--muted)'>{r['team']}</td>"
-                 f"<td class='s'>{r['titles'] or dash}</td>"
-                 f"<td style='color:var(--muted)'>{r.get('runner_up', 0) or dash}</td>"
                  f"<td class='s'>{r['points']}</td>"
+                 f"<td class='s'>{r['titles'] or dash}</td>"
+                 f"<td class='tb' style='color:var(--muted)'>{r.get('nc_apps', 0) or dash}</td>"
+                 f"<td class='tb' style='color:var(--muted)'>{r.get('final_fours', 0) or dash}</td>"
+                 f"<td class='tb' style='color:var(--muted)'>{r.get('seasons', 0) or dash}</td>"
                  f"<td style='color:var(--muted)'>{wl}</td></tr>")
     b.append("</table></div>")
 

@@ -159,6 +159,9 @@ def compute(league, season_data):
             "coach": coach,
             "points": total,
             "breakdown": detail[team],
+            "reached": deepest,
+            "won_title": any(g["round"] == "NC" and g["winner"] == team
+                             for g in season_data["playoffs"]),
         })
 
     if skipped and __name__ == "__main__":
@@ -219,16 +222,23 @@ def compute_all(league, seasons):
 
     Points are attributed to the coach who held the team that season, so a
     coach keeps what he earned even after switching programs.
+
+    Ordering follows the published standings rules: points first, then most
+    national championships, then most championship-game appearances, then most
+    Final Four appearances, then most total playoff appearances.
     """
+    def blank(cid, team=None):
+        return {"coach": cid, "points": 0, "teams": [team] if team else [],
+                "titles": 0, "runner_up": 0, "seasons": 0, "final_fours": 0}
+
     career = {}
     for sdata in seasons:
         for r in compute(league, sdata):
-            c = career.setdefault(r["coach"], {
-                "coach": r["coach"], "points": 0, "teams": [],
-                "titles": 0, "runner_up": 0, "seasons": 0,
-            })
+            c = career.setdefault(r["coach"], blank(r["coach"]))
             c["points"] += r["points"]
-            c["seasons"] += 1
+            c["seasons"] += 1                      # total playoff appearances
+            if ROUND_ORDER.index(r["reached"]) >= 2:
+                c["final_fours"] += 1
             if r["team"] not in c["teams"]:
                 c["teams"].append(r["team"])
         # titles / runner-up straight from the bracket
@@ -239,21 +249,25 @@ def compute_all(league, seasons):
                 cid = coach_for(league, team, sdata["season"])
                 if not cid:
                     continue
-                c = career.setdefault(cid, {
-                    "coach": cid, "points": 0, "teams": [team],
-                    "titles": 0, "runner_up": 0, "seasons": 0,
-                })
+                c = career.setdefault(cid, blank(cid, team))
                 c["titles" if won else "runner_up"] += 1
 
-    rows = sorted(career.values(),
-                  key=lambda r: (-r["points"], -r["titles"], -r["runner_up"], r["coach"]))
+    for c in career.values():
+        # championship-game appearances = won it or lost it
+        c["nc_apps"] = c["titles"] + c["runner_up"]
+
+    def order(r):
+        return (-r["points"], -r["titles"], -r["nc_apps"],
+                -r["final_fours"], -r["seasons"], r["coach"])
+
+    rows = sorted(career.values(), key=order)
     rank, last = 0, None
     for i, r in enumerate(rows, start=1):
-        key = (r["points"], r["titles"], r["runner_up"])
+        key = order(r)[:-1]        # everything but the alphabetical fallback
         if key != last:
             rank, last = i, key
         r["rank"] = rank
-        r["team"] = r["teams"][-1]      # most recent team, for display
+        r["team"] = r["teams"][-1] if r["teams"] else "&mdash;"
     return rows
 
 
