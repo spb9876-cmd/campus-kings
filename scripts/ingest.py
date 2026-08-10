@@ -38,6 +38,10 @@ DATA = Path(__file__).resolve().parent.parent / "data"
 #                 in "winner". BYE is the short version and is usually enough.
 STAGES = ("R1", "QF", "SF", "NC")
 EXTRA_STAGES = ("BOWL", "SEED", "BYE")
+# The points rules call the quarterfinal "round two", so accept R2 for it.
+STAGE_ALIASES = {"R2": "QF", "R3": "SF", "R4": "NC", "QUARTERFINAL": "QF",
+                 "SEMIFINAL": "SF", "SEMI": "SF", "FINAL": "NC",
+                 "CHAMPIONSHIP": "NC", "TITLE": "NC"}
 
 
 def all_teams(league):
@@ -168,6 +172,7 @@ def main():
         stage = (row.get("stage") or "").strip().upper()
         raw_week = (row.get("week") or "").strip()
 
+        stage = STAGE_ALIASES.get(stage, stage)
         if (stage and stage not in STAGES and stage not in EXTRA_STAGES
                 and not stage.startswith("CONF")):
             errors.append("line %d: unknown stage %r — use one of: %s, %s, or CONF:SEC"

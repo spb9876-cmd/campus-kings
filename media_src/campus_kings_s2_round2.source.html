@@ -1,0 +1,106 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<style>
+  /* Anton + Inter aren't installed here, so this falls back to a condensed
+     face. Re-render locally with the real fonts for a pixel match. */
+  @font-face{font-family:'CKDisplay';src:local('Anton');}
+  :root{--bg:#0a0a0c;--card:#131317;--card2:#17171c;--gold:#dfa839;
+        --dim:#a9863f;--ink:#f4f2ea;--mut:#8d8b82;--mut2:#5f5c55;--rule:#26262a}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{width:880px;background:var(--bg);color:var(--ink);
+       font-family:'Inter','DejaVu Sans',sans-serif;padding:38px 34px 26px}
+  .disp{font-family:'Anton','DejaVu Sans Condensed','TeX Gyre Heros Cn',sans-serif;
+        font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+  .eyebrow{font-size:9.5px;letter-spacing:3.4px;color:var(--gold);margin-bottom:9px}
+  h1{font-size:44px;line-height:.98;letter-spacing:.3px}
+  h1 em{color:var(--gold);font-style:normal}
+  .sub{font-size:9.5px;letter-spacing:2.6px;color:var(--mut);margin-top:9px}
+  .rule{height:2px;background:var(--gold);margin:15px 0 26px;opacity:.85}
+  h2{font-size:19px;margin:26px 0 11px;display:flex;align-items:center;gap:13px}
+  h2::after{content:"";flex:1;height:1px;
+    background:linear-gradient(90deg,var(--dim),transparent)}
+  .g{background:var(--card);border-left:3px solid var(--rule);
+     display:flex;align-items:center;padding:11px 16px;margin-bottom:5px}
+  .g.hi{border-left-color:var(--gold);
+        background:linear-gradient(90deg,#1d1a12,var(--card) 62%)}
+  .tag{width:74px;flex:0 0 74px;font-size:8px;letter-spacing:1.5px;
+       color:var(--gold);line-height:1.35}
+  .g:not(.hi) .tag{color:var(--mut2)}
+  .mid{flex:1;min-width:0}
+  .m{font-size:20px;line-height:1.15}
+  .m .l{color:var(--mut)}
+  .meta{font-size:8.5px;letter-spacing:1.7px;color:var(--mut2);margin-top:3px}
+  .sc{font-family:'Anton','DejaVu Sans Condensed',sans-serif;font-size:27px;
+      white-space:nowrap;padding-left:14px}
+  .sc .w{color:var(--ink)}.sc .d{color:var(--dim);margin:0 3px}.sc .x{color:var(--mut2)}
+  .note{font-size:10.5px;color:var(--mut);padding:7px 16px 12px 90px;line-height:1.5}
+  .note b{color:var(--gold);font-weight:600}
+  .pend{border:1px dashed var(--rule);padding:12px 16px;margin-top:6px;
+        font-size:10.5px;color:var(--mut)}
+  .pend b{color:var(--ink);font-weight:600}
+  .semi{background:var(--card2);border:1px solid var(--rule);padding:17px 18px;margin-top:12px}
+  .semi .k{font-size:9px;letter-spacing:2.4px;color:var(--gold);margin-bottom:11px}
+  .row{display:flex;justify-content:space-between;align-items:baseline;
+       padding:7px 0;border-bottom:1px solid #1e1e22;font-size:15px}
+  .row:last-child{border-bottom:none}
+  .row .q{color:var(--mut)}
+  foot{display:flex;justify-content:space-between;margin-top:26px;
+       padding-top:13px;border-top:1px solid var(--rule);
+       font-size:8.5px;letter-spacing:2.2px;color:var(--mut2)}
+</style></head><body>
+<div class="eyebrow">CAMPUS KINGS &nbsp;&#9670;&nbsp; SEASON TWO</div>
+<h1 class="disp">Playoff <em>Round Two</em></h1>
+<div class="sub disp">FIRST ROUND &amp; QUARTERFINALS &nbsp;&#9670;&nbsp; ONE GAME LEFT TO PLAY</div>
+<div class="rule"></div>
+
+<h2 class="disp">First Round</h2>
+<div class="g hi"><div class="tag disp">BIGGEST<br>WIN</div><div class="mid">
+  <div class="m disp">Notre Dame <span class="l">vs</span> Memphis</div>
+  <div class="meta disp">TAYNE &middot; CPU &middot; 55-POINT MARGIN</div></div>
+  <div class="sc"><span class="w">62</span><span class="d">&ndash;</span><span class="x">7</span></div></div>
+<div class="g"><div class="tag disp">OLE MISS<br>ROUT</div><div class="mid">
+  <div class="m disp">Ole Miss <span class="l">vs</span> Ohio State</div>
+  <div class="meta disp">PAT &middot; CURT &middot; THREE POINTS ALLOWED</div></div>
+  <div class="sc"><span class="w">31</span><span class="d">&ndash;</span><span class="x">3</span></div></div>
+<div class="g"><div class="tag disp">THREE<br>POINTS</div><div class="mid">
+  <div class="m disp">Florida <span class="l">vs</span> Tennessee</div>
+  <div class="meta disp">POLO &middot; PURP &middot; DECIDED LATE</div></div>
+  <div class="sc"><span class="w">34</span><span class="d">&ndash;</span><span class="x">31</span></div></div>
+<div class="g"><div class="tag disp">LOWEST<br>SCORING</div><div class="mid">
+  <div class="m disp">Miami <span class="l">vs</span> Arizona State</div>
+  <div class="meta disp">LUTE &middot; TBO &middot; BIG 12 CHAMPION OUT</div></div>
+  <div class="sc"><span class="w">14</span><span class="d">&ndash;</span><span class="x">6</span></div></div>
+
+<h2 class="disp">Quarterfinals</h2>
+<div class="g hi"><div class="tag disp">ROSE<br>SHUTOUT</div><div class="mid">
+  <div class="m disp">Notre Dame <span class="l">vs</span> Oregon</div>
+  <div class="meta disp">TAYNE &middot; BOWZER &middot; 5 SEED OVER 4 SEED</div></div>
+  <div class="sc"><span class="w">21</span><span class="d">&ndash;</span><span class="x">0</span></div></div>
+<div class="note">Oregon shut out. <b>Tayne is in the Final Four</b> after scoring 83 across two rounds and allowing seven.</div>
+<div class="g"><div class="tag disp">SUGAR</div><div class="mid">
+  <div class="m disp">Oklahoma <span class="l">vs</span> Ole Miss</div>
+  <div class="meta disp">STEW &middot; PAT &middot; STILL UNBEATEN</div></div>
+  <div class="sc"><span class="w">35</span><span class="d">&ndash;</span><span class="x">14</span></div></div>
+<div class="g"><div class="tag disp">PEACH<br>94 PTS</div><div class="mid">
+  <div class="m disp">Clemson <span class="l">vs</span> Florida</div>
+  <div class="meta disp">LT &middot; POLO &middot; HIGHEST SCORING GAME</div></div>
+  <div class="sc"><span class="w">52</span><span class="d">&ndash;</span><span class="x">42</span></div></div>
+<div class="pend"><b>Fiesta &mdash; Penn State vs Miami</b> &nbsp;not yet played. States or Lute takes the last semifinal spot.</div>
+
+<h2 class="disp">Bowl Games</h2>
+<div class="g"><div class="tag disp">GATOR</div><div class="mid">
+  <div class="m disp">Alabama <span class="l">vs</span> UCLA</div>
+  <div class="meta disp">JASON &middot; TV</div></div>
+  <div class="sc"><span class="w">33</span><span class="d">&ndash;</span><span class="x">18</span></div></div>
+<div class="g"><div class="tag disp">CITRUS</div><div class="mid">
+  <div class="m disp">Texas <span class="l">vs</span> Washington</div>
+  <div class="meta disp">WORK &middot; FRANK</div></div>
+  <div class="sc"><span class="w">38</span><span class="d">&ndash;</span><span class="x">6</span></div></div>
+
+<div class="semi">
+  <div class="k disp">THE FINAL FOUR</div>
+  <div class="row"><span class="disp">Oklahoma <span class="q">vs</span> Notre Dame</span><span class="q disp">STEW &middot; TAYNE</span></div>
+  <div class="row"><span class="disp">Clemson <span class="q">vs</span> Penn State / Miami</span><span class="q disp">LT &middot; TBD</span></div>
+</div>
+
+<foot><span class="disp">CAMPUS KINGS &middot; PLAYOFF ROUND TWO</span><span class="disp">TITLE GAME &middot; NEW ORLEANS</span></foot>
+</body></html>

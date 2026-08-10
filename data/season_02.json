@@ -780,6 +780,33 @@
         34,
         31
       ]
+    },
+    {
+      "round": "QF",
+      "winner": "Oklahoma",
+      "loser": "Ole Miss",
+      "score": [
+        35,
+        14
+      ]
+    },
+    {
+      "round": "QF",
+      "winner": "Notre Dame",
+      "loser": "Oregon",
+      "score": [
+        21,
+        0
+      ]
+    },
+    {
+      "round": "QF",
+      "winner": "Clemson",
+      "loser": "Florida",
+      "score": [
+        52,
+        42
+      ]
     }
   ],
   "bowls": [
@@ -789,6 +816,15 @@
       "score": [
         33,
         18
+      ],
+      "bowl": "Bowl"
+    },
+    {
+      "winner": "Texas",
+      "loser": "Washington",
+      "score": [
+        38,
+        6
       ],
       "bowl": "Bowl"
     }

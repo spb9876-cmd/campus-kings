@@ -1,6 +1,15 @@
 {
   "content": [
     {
+      "title": "Playoff Round Two",
+      "kind": "Recap",
+      "season": 2,
+      "date": "2026-08-09",
+      "file": "campus_kings_s2_round2.jpg",
+      "blurb": "Notre Dame shuts out Oregon, Oklahoma stays unbeaten, and one quarterfinal is still to play.",
+      "article": "s2-playoff-round-two.md"
+    },
+    {
       "title": "Conference Titles and the Playoff Field",
       "kind": "Playoff Preview",
       "season": 2,
