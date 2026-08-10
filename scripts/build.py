@@ -22,7 +22,8 @@ SITE = ROOT / "docs"
 MEDIA_SRC = ROOT / "media_src"   # drop new recap PNGs here
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from points import compute, compute_all, completed_seasons, belt_leaders, coach_for
+from points import (compute, compute_all, completed_seasons, belt_leaders,
+                    coach_for, live_bracket, bracket_is_final)
 import profiles
 
 # ---------------------------------------------------------------------------
@@ -844,6 +845,55 @@ CPU results aren't tracked, so these won't match the in-game poll.</p></div>"""]
 
     # The in-game poll table used to sit here. It was hand-maintained and always
     # drifting, so it's gone; "poll_snapshot" in the season file is now unused.
+
+    ccs = s2.get("conference_championships") or []
+    if ccs:
+        b.append('<div class="section"><h2 class="sec">Conference championships</h2><table>')
+        for cc in ccs:
+            wc = coach_for(league, cc["winner"], 2)
+            lc = coach_for(league, cc["loser"], 2)
+            sc = ("%d&ndash;%d" % tuple(cc["score"])) if cc.get("score") else "TBD"
+            b.append("<tr><td class='s' style='width:66px'>%s</td>"
+                     "<td class='w'>%s</td>"
+                     "<td style='color:var(--muted)'>over %s</td>"
+                     "<td class='s'>%s</td></tr>"
+                     % (cc["conference"],
+                        "%s <span style='color:var(--muted2)'>(%s)</span>"
+                        % (cc["winner"], clink(league, wc) if wc else "CPU"),
+                        "%s <span style='color:var(--muted2)'>(%s)</span>"
+                        % (cc["loser"], clink(league, lc) if lc else "CPU"), sc))
+        b.append("</table></div>")
+
+    # Playoff games for a season still in progress. Once the NC row lands the
+    # season is scored normally and the finished bracket moves to History, so
+    # this section disappears on its own.
+    live = live_bracket(s2)
+    if live:
+        labels = {"R1": "First round", "QF": "Quarterfinals",
+                  "SF": "Semifinals", "NC": "National Championship"}
+        b.append('<div class="section"><h2 class="sec">Playoff bracket &middot; in progress</h2>'
+                 '<p class="dt" style="margin:-8px 0 16px">Rounds appear as results are '
+                 'entered. Playoff Points and the Belt update once the title game is in.</p>')
+        for rnd in ("R1", "QF", "SF", "NC"):
+            rows = [g for g in live if g.get("round") == rnd]
+            if not rows:
+                continue
+            b.append(f'<div class="wklabel">{labels[rnd]}</div><table>')
+            for g in rows:
+                tags = "".join('<span class="tag">%s</span>' % g[k]
+                               for k in ("bowl", "note") if g.get(k))
+                sc = ("%d&ndash;%d" % tuple(g["score"])) if g.get("score") else "TBD"
+                wc = coach_for(league, g["winner"], 2)
+                lc = coach_for(league, g["loser"], 2)
+                b.append("<tr><td class='w'>%s%s</td>"
+                         "<td style='color:var(--muted)'>over %s</td>"
+                         "<td class='s'>%s</td></tr>"
+                         % ("%s <span style='color:var(--muted2)'>(%s)</span>"
+                            % (g["winner"], clink(league, wc) if wc else "CPU"), tags,
+                            "%s <span style='color:var(--muted2)'>(%s)</span>"
+                            % (g["loser"], clink(league, lc) if lc else "CPU"), sc))
+            b.append("</table>")
+        b.append("</div>")
 
     b.append('<div class="section"><h2 class="sec">Playoff Points &middot; %s</h2><table><tr>'
              '<th>#</th><th>Coach</th><th>Team</th><th>Titles</th><th>Pts</th></tr>'

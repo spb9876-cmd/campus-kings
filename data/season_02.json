@@ -1,7 +1,7 @@
 {
   "season": 2,
   "status": "in_progress",
-  "current_week": 12,
+  "current_week": 13,
   "results": [
     {
       "week": 0,
@@ -551,6 +551,106 @@
       "score": [
         51,
         21
+      ],
+      "gotw": true
+    },
+    {
+      "week": 12,
+      "winner": "USC",
+      "loser": "Indiana",
+      "score": [
+        35,
+        14
+      ]
+    },
+    {
+      "week": 12,
+      "winner": "LSU",
+      "loser": "Georgia",
+      "score": [
+        45,
+        27
+      ]
+    },
+    {
+      "week": 12,
+      "winner": "Oregon",
+      "loser": "Nebraska",
+      "score": [
+        41,
+        14
+      ]
+    },
+    {
+      "week": 12,
+      "winner": "Penn State",
+      "loser": "Washington",
+      "score": [
+        31,
+        22
+      ]
+    },
+    {
+      "week": 13,
+      "winner": "Ohio State",
+      "loser": "Michigan",
+      "score": [
+        54,
+        14
+      ]
+    },
+    {
+      "week": 13,
+      "winner": "Texas",
+      "loser": "LSU",
+      "score": [
+        42,
+        7
+      ]
+    },
+    {
+      "week": 13,
+      "winner": "Oklahoma",
+      "loser": "Texas A&M",
+      "score": [
+        50,
+        24
+      ]
+    },
+    {
+      "week": 13,
+      "winner": "Florida",
+      "loser": "Florida State",
+      "score": [
+        33,
+        7
+      ]
+    },
+    {
+      "week": 13,
+      "winner": "UCLA",
+      "loser": "USC",
+      "score": [
+        28,
+        7
+      ]
+    },
+    {
+      "week": 13,
+      "winner": "Clemson",
+      "loser": "South Carolina",
+      "score": [
+        47,
+        0
+      ]
+    },
+    {
+      "week": 13,
+      "winner": "Oregon",
+      "loser": "Washington",
+      "score": [
+        41,
+        3
       ]
     }
   ],
@@ -604,6 +704,44 @@
       "week": 7,
       "type": "contro",
       "text": "Oregon beat Ohio State in OT on a disputed fumble; most argued-about finish of the year."
+    }
+  ],
+  "conference_championships": [
+    {
+      "conference": "SEC",
+      "winner": "Oklahoma",
+      "loser": "Florida",
+      "score": [
+        55,
+        13
+      ]
+    },
+    {
+      "conference": "B1G",
+      "winner": "Penn State",
+      "loser": "Ohio State",
+      "score": [
+        21,
+        17
+      ]
+    },
+    {
+      "conference": "ACC",
+      "winner": "Clemson",
+      "loser": "Miami",
+      "score": [
+        31,
+        10
+      ]
+    },
+    {
+      "conference": "BIG12",
+      "winner": "Arizona State",
+      "loser": "TCU",
+      "score": [
+        26,
+        15
+      ]
     }
   ]
 }

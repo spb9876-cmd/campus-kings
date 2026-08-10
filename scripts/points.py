@@ -177,17 +177,41 @@ def compute(league, season_data):
     return rows
 
 
+def bracket_is_final(season_data):
+    """True once the national championship game has been entered."""
+    return any(g.get("round") == "NC" for g in season_data.get("playoffs") or [])
+
+
 def completed_seasons(league):
-    """Every season file that actually has a bracket to score."""
+    """Seasons whose bracket has actually been decided.
+
+    Gating on "has any playoff rows" is not enough: mid-bracket, the teams with
+    first-round byes appear in no game yet, so they'd score zero while teams that
+    lost in the first round score a berth -- byes would rank below first-round
+    losers. A season only enters career points and the Belt once its NC row is in.
+    """
     out = []
     for n in range(1, league["league"]["accredited_seasons"] + 1):
         f = DATA / ("season_%02d.json" % n)
         if not f.exists():
             continue
         d = json.loads(f.read_text(encoding="utf-8"))
-        if d.get("playoffs"):
+        if bracket_is_final(d):
             out.append(d)
     return out
+
+
+def live_bracket(season_data):
+    """Postseason games for a season still in progress, newest round first.
+
+    Returns [] once the bracket is final -- at that point the season is scored
+    normally and the finished bracket belongs on the history page instead.
+    """
+    games = season_data.get("playoffs") or []
+    if not games or bracket_is_final(season_data):
+        return []
+    order = {r: i for i, r in enumerate(ROUND_ORDER)}
+    return sorted(games, key=lambda g: order.get(g.get("round"), 9))
 
 
 def compute_all(league, seasons):
