@@ -1,24 +1,24 @@
 name: build
 
 on:
-  # Refresh from the Sheet on the hour
+  # Pull the Sheet on the hour and check it still builds
   schedule: [{ cron: "0 * * * *" }]
   # "Run workflow" button in the Actions tab
   workflow_dispatch:
-  # Your own pushes deploy too, so nothing waits on the next cron tick
+  # Validate every push
   push:
     branches: [main]
 
-# Never let two runs deploy at once. A scheduled run already in flight when you
-# push is allowed to finish rather than being killed mid-deploy.
 concurrency:
-  group: pages
+  group: build
   cancel-in-progress: false
 
+# Read-only. This workflow does not publish and does not commit -- Pages deploys
+# from the docs/ folder on main, which your own `git push` updates. That is why
+# there are no configure-pages / upload-pages-artifact steps here: those fail
+# unless Settings > Pages > Source is set to "GitHub Actions".
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 jobs:
   build:
@@ -30,9 +30,7 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
 
-      # Only pull the Sheet on scheduled / manual runs. On a push, build exactly
-      # what you committed -- otherwise an ingest could quietly deploy something
-      # different from what you tested locally.
+      # Only on scheduled / manual runs. A push builds exactly what was committed.
       - name: Refresh season data from the Sheet
         if: github.event_name != 'push'
         env:
@@ -50,18 +48,8 @@ jobs:
       - name: Build site
         run: python3 scripts/build.py
 
-      - uses: actions/configure-pages@v5
-
-      - uses: actions/upload-pages-artifact@v4
-        with:
-          path: docs
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      # Nothing is committed or deployed. If the Sheet had new scores, this run
+      # proves they ingest and build cleanly; run ingest locally and push to
+      # publish them.
+      - name: Summary
+        run: echo "Validated. Deploys happen from committed docs/ on push."

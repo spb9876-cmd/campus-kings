@@ -263,11 +263,27 @@ def main():
             results.sort(key=lambda r: r["week"])
             data["results"] = results
             data["current_week"] = max(r["week"] for r in results)
-        if conf_titles.get(season):
-            data["conference_championships"] = conf_titles[season]
+        # Never let the Sheet shrink hand-entered postseason data. Season One's
+        # bracket lives only in its season file -- if a partial set of playoff rows
+        # ever appears in the Sheet, replacing eleven games with two would destroy
+        # it silently. Same rule for conference titles.
+        def keep_bigger(key, incoming, what):
+            existing = data.get(key) or []
+            if not incoming:
+                return                      # Sheet said nothing; leave it alone
+            if len(incoming) < len(existing):
+                print("  REFUSED: Sheet has %d %s for S%d but the file already has "
+                      "%d. Keeping the file. Add the missing rows, or delete "
+                      "\"%s\" from season_%02d.json if the cut is intended."
+                      % (len(incoming), what, season, len(existing), key, season),
+                      file=sys.stderr)
+                return
+            data[key] = incoming
+
+        keep_bigger("conference_championships", conf_titles.get(season), "conf titles")
         if playoffs.get(season):
             playoffs[season].sort(key=lambda g: order.get(g["round"], 9))
-            data["playoffs"] = playoffs[season]
+        keep_bigger("playoffs", playoffs.get(season), "playoff games")
         if bowls.get(season):
             bowls[season].sort(key=lambda g: g["bowl"])
             data["bowls"] = bowls[season]
