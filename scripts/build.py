@@ -23,7 +23,7 @@ MEDIA_SRC = ROOT / "media_src"   # drop new recap PNGs here
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from points import (compute, compute_all, completed_seasons, belt_leaders,
-                    coach_for, live_bracket, bracket_is_final)
+                    belt_race, coach_for, live_bracket, bracket_is_final)
 import profiles
 
 # ---------------------------------------------------------------------------
@@ -678,11 +678,11 @@ def build_index(league, s1, s2, content, pts, about, bug="",
             f'stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></div>'
             f'</div></div>'
             f'<div class="quick">'
-            f'<a href="standings.html"><div class="qk">Standings <span>&rarr;</span></div>'
-            f'<div class="qd">Records, weekly results, points race</div></a>'
+            f'<a href="standings.html"><div class="qk">{NAV[1][1]} <span>&rarr;</span></div>'
+            f'<div class="qd">The championship race, weekly results</div></a>'
             f'<a href="coaches.html"><div class="qk">Coaches <span>&rarr;</span></div>'
             f'<div class="qd">Profiles, rings, full game logs</div></a>'
-            f'<a href="rules.html"><div class="qk">Rules <span>&rarr;</span></div>'
+            f'<a href="rules.html"><div class="qk">{NAV[4][1]} <span>&rarr;</span></div>'
             f'<div class="qd">Settings, bans, scheduling</div></a>'
             f'<a href="history.html"><div class="qk">History <span>&rarr;</span></div>'
             f'<div class="qd">Champions, brackets, moves</div></a>'
@@ -838,18 +838,67 @@ def build_rules(rules, bug=""):
     return shell("Rules", "rules.html", inner, None, bug)
 
 
-def build_standings(league, s2, pts, bug="", n_seasons=1):
-    recs = league_records(s2, league, 2)
-    b = [f"""<div class="pagehead"><h1 class="page">Season Two {STANDINGS_WORD}</h1>
-<p class="psub">Through week {s2.get('current_week', 0)}. League games only &mdash;
-CPU results aren't tracked, so these won't match the in-game poll.</p></div>"""]
+def build_standings(league, s2, pts, bug="", n_seasons=1,
+                    belt=None, belt_titles=0):
+    # This season's W-L, folded into the race table as a column so replacing the
+    # old head-to-head standings doesn't lose it.
+    season_wl = {r["coach"]: (r["w"], r["l"])
+                 for r in league_records(s2, league, 2)}
 
-    b.append('<div class="section"><h2 class="sec">Head-to-head record</h2><table><tr>'
-             '<th>#</th><th>Team</th><th>Coach</th><th>W&ndash;L</th></tr>')
-    for i, r in enumerate(recs, 1):
-        b.append(f"<tr><td>{i}</td><td class='w'>{r['team']}</td>"
-                 f"<td style='color:var(--muted)'>{clink(league, r['coach'])}</td>"
-                 f"<td class='s'>{r['w']}&ndash;{r['l']}</td></tr>")
+    # compute_all() only makes rows for coaches who have scored, so on its own the
+    # table would show 11 of 31. Everyone currently holding a team belongs in the
+    # race at zero; coaches who have earned points keep their row even if they've
+    # since left.
+    sn = s2.get("season", 2)
+    field = list(pts)
+    scored = {r["coach"] for r in field}
+    for c in league["coaches"]:
+        cid = c["id"]
+        if cid in scored:
+            continue
+        team = profiles.current_team(league, cid, sn)
+        if not team:
+            continue
+        field.append({"coach": cid, "team": team, "points": 0, "titles": 0,
+                      "runner_up": 0, "seasons": 0})
+    race = belt_race(field)
+
+    b = [f"""<div class="pagehead"><h1 class="page">The <em>Belt</em> Race</h1>
+<p class="psub">The belt goes to whoever wins the most national championships across
+the 20 accredited seasons. Playoff Points are the parallel ladder &mdash; they only move
+in the postseason, so the race stands still until a bracket finishes.</p></div>"""]
+
+    if belt:
+        holder = " &middot; ".join(clink(league, r["coach"]) for r in belt)
+        line = "%d national championship%s%s" % (
+            belt_titles, "" if belt_titles == 1 else "s",
+            " each" if len(belt) > 1 else "")
+    else:
+        holder, line = "Up for grabs", "No titles awarded yet"
+    b.append(f'<div class="section"><div class="belt"><div class="lbl">Holding the belt</div>'
+             f'<div class="who">{holder}</div>'
+             f'<div class="meta">{line} &middot; '
+             f'{n_seasons} of {league["league"]["accredited_seasons"]} accredited '
+             f'seasons complete.</div></div></div>')
+
+    b.append('<div class="section"><h2 class="sec">Belt race</h2>'
+             '<p class="dt" style="margin:-8px 0 16px">Ranked by championships, then '
+             'Playoff Points. "This season" is league games only, so it won\'t match '
+             'the in-game poll.</p>'
+             '<table><tr><th>#</th><th>Coach</th><th>Team</th><th>Titles</th>'
+             '<th>Runner-up</th><th>Pts</th><th>This season</th></tr>')
+    for r in race:
+        w, l = season_wl.get(r["coach"], (0, 0))
+        wl = ("%d&ndash;%d" % (w, l)) if (w or l) else \
+             "<span style='color:var(--muted2)'>&mdash;</span>"
+        dash = "<span style='color:var(--muted2)'>&mdash;</span>"
+        b.append(f"<tr><td>{r['belt_rank']}</td>"
+                 f"<td class='w'>{clink(league, r['coach'])}</td>"
+                 f"<td style='color:var(--muted)'>{r['team']}</td>"
+                 f"<td class='s'>{r['titles'] or dash}</td>"
+                 f"<td style='color:var(--muted)'>{r.get('runner_up', 0) or dash}</td>"
+                 f"<td class='s'>{r['points']}</td>"
+                 f"<td style='color:var(--muted)'>{wl}</td></tr>")
     b.append("</table></div>")
 
     by = defaultdict(list)
@@ -919,16 +968,7 @@ CPU results aren't tracked, so these won't match the in-game poll.</p></div>"""]
             b.append("</table>")
         b.append("</div>")
 
-    b.append('<div class="section"><h2 class="sec">Playoff Points &middot; %s</h2><table><tr>'
-             '<th>#</th><th>Coach</th><th>Team</th><th>Titles</th><th>Pts</th></tr>'
-             % ("season one" if n_seasons == 1 else "through %d seasons" % n_seasons))
-    for r in pts:
-        b.append(f"<tr><td>{r['rank']}</td><td class='w'>{clink(league, r['coach'])}</td>"
-                 f"<td style='color:var(--muted)'>{r['team']}</td>"
-                 f"<td style='color:var(--muted)'>{r.get('titles', 0) or '—'}</td>"
-                 f"<td class='s'>{r['points']}</td></tr>")
-    b.append("</table></div>")
-    return shell("Standings", "standings.html", "\n".join(b), None, bug)
+    return shell("The Belt", "standings.html", "\n".join(b), None, bug)
 
 
 def build_history(league, s1, bug=""):
@@ -1041,7 +1081,7 @@ def main():
     profiles.clink = clink
 
     (SITE / "index.html").write_text(build_index(league, s1, s2, content, pts, about, bug, belt, belt_titles, len(seasons)), encoding="utf-8")
-    (SITE / "standings.html").write_text(build_standings(league, s2, pts, bug, len(seasons)), encoding="utf-8")
+    (SITE / "standings.html").write_text(build_standings(league, s2, pts, bug, len(seasons), belt, belt_titles), encoding="utf-8")
     (SITE / "rules.html").write_text(build_rules(rules, bug), encoding="utf-8")
     (SITE / "history.html").write_text(build_history(league, s1, bug), encoding="utf-8")
     (SITE / "coaches.html").write_text(

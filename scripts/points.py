@@ -257,6 +257,25 @@ def compute_all(league, seasons):
     return rows
 
 
+def belt_race(rows):
+    """Re-rank career rows for the Belt race: titles first, then points.
+
+    compute_all() orders by points, which is the right shape for the Playoff
+    Points ladder. The Belt is won on championships, so the race standings have
+    to lead with titles and use points only to separate coaches on the same
+    number of rings.
+    """
+    out = sorted(rows, key=lambda r: (-r["titles"], -r["points"],
+                                      -r["runner_up"], r["coach"]))
+    rank, last = 0, None
+    for i, r in enumerate(out, start=1):
+        key = (r["titles"], r["points"], r["runner_up"])
+        if key != last:
+            rank, last = i, key
+        r["belt_rank"] = rank
+    return out
+
+
 def belt_leaders(rows):
     """Coaches tied for the most accredited-cycle championships."""
     if not rows:
