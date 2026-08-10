@@ -96,8 +96,14 @@ def compute(league, season_data):
             if prev is None or ROUND_ORDER.index(rnd) > ROUND_ORDER.index(prev):
                 reached[team] = rnd
 
-    # Byes: seeds 1-4 skip R1, so credit them as having reached QF minimum
-    for seed, team in season_data["playoff_seeds"].items():
+    # Byes: seeds 1-4 skip R1, so credit them as having reached QF minimum.
+    # playoff_seeds is hand-entered (ingest.py doesn't produce it), so treat it
+    # as optional -- a season whose bracket lands before the seeds are filled in
+    # should build with a warning, not a KeyError.
+    seeds = season_data.get("playoff_seeds") or {}
+    if not seeds and __name__ == "__main__":
+        print("(no playoff_seeds for S%d -- bye credit not applied)\n" % season)
+    for seed, team in seeds.items():
         if int(seed) <= 4 and reached[team] is None:
             reached[team] = "QF"
 
@@ -128,7 +134,7 @@ def compute(league, season_data):
             parts.append("championship +%d" % pts["win_championship"])
 
         # Conference title bonus
-        for cc in season_data["conference_championships"]:
+        for cc in season_data.get("conference_championships") or []:
             if cc["winner"] == team:
                 bonus = conf_bonus.get(cc["conference"], 0)
                 if bonus:

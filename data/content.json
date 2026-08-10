@@ -1,6 +1,25 @@
 {
   "content": [
     {
+      "title": "Conference Titles and the Playoff Field",
+      "kind": "Playoff Preview",
+      "season": 2,
+      "date": "2026-08-09",
+      "file": "campus_kings_s2_playoff_bracket.jpg",
+      "blurb": "Oklahoma finishes 13-0, four conference titles settled, and Kewan Lacy goes back-to-back.",
+      "article": "s2-conference-titles-playoff-preview.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s2_playoff_bracket.jpg",
+          "caption": "The twelve-team field — title game in New Orleans"
+        },
+        {
+          "file": "campus_kings_s2_heisman.jpg",
+          "caption": "Kewan Lacy wins a second straight Heisman — 2,342 yards, 31 TD, 12.0 a carry"
+        }
+      ]
+    },
+    {
       "title": "Weeks 8-10 Recap",
       "kind": "Recap",
       "season": 2,
