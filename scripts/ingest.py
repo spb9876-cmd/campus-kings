@@ -26,7 +26,12 @@ DATA = Path(__file__).resolve().parent.parent / "data"
 #   blank      -> regular season, week must be a number
 #   CONF:SEC   -> conference championship (bonus points keyed off the conference)
 #   R1/QF/SF/NC-> playoff rounds
+#   BOWL       -> non-playoff bowl between two user teams; put the bowl's name in
+#                 the "bowl" column. Counts in records and game logs, scores nothing.
+#   SEED       -> declares the playoff field: seed number in "week", team in
+#                 "winner", everything else blank. One row per team.
 STAGES = ("R1", "QF", "SF", "NC")
+EXTRA_STAGES = ("BOWL", "SEED")
 
 
 def all_teams(league):
@@ -70,10 +75,41 @@ def main():
     by_season = defaultdict(list)
     conf_titles = defaultdict(list)
     playoffs = defaultdict(list)
+    bowls = defaultdict(list)
+    seeds = defaultdict(dict)
     seen = set()
 
     for i, row in enumerate(rows, start=2):  # header is line 1
         if not (row.get("winner") or "").strip():
+            continue
+
+        stage_raw = (row.get("stage") or "").strip().upper()
+        if stage_raw == "SEED":
+            raw = (row.get("winner") or "").strip()
+            t = lookup.get(raw.lower())
+            if not t:
+                close = get_close_matches(raw.lower(), lookup.keys(), n=1, cutoff=0.6)
+                hint = " (did you mean %s?)" % lookup[close[0]] if close else ""
+                errors.append("line %d: unknown team %r%s" % (i, raw, hint))
+                continue
+            try:
+                sn = int(row["season"])
+                seed_no = int((row.get("week") or "").strip())
+            except (ValueError, KeyError):
+                errors.append("line %d: SEED needs a season and a seed number in "
+                              "the week column" % i)
+                continue
+            if not 1 <= seed_no <= 12:
+                errors.append("line %d: seed %d is outside 1-12" % (i, seed_no))
+                continue
+            if str(seed_no) in seeds[sn]:
+                errors.append("line %d: seed %d already given to %s"
+                              % (i, seed_no, seeds[sn][str(seed_no)]))
+                continue
+            if t in seeds[sn].values():
+                errors.append("line %d: %s is already seeded" % (i, t))
+                continue
+            seeds[sn][str(seed_no)] = t
             continue
 
         def team(field):
@@ -103,9 +139,11 @@ def main():
         stage = (row.get("stage") or "").strip().upper()
         raw_week = (row.get("week") or "").strip()
 
-        if stage and stage not in STAGES and not stage.startswith("CONF"):
-            errors.append("line %d: unknown stage %r — use one of: %s, or CONF:SEC"
-                          % (i, row["stage"].strip(), ", ".join(STAGES)))
+        if (stage and stage not in STAGES and stage not in EXTRA_STAGES
+                and not stage.startswith("CONF")):
+            errors.append("line %d: unknown stage %r — use one of: %s, %s, or CONF:SEC"
+                          % (i, row["stage"].strip(), ", ".join(STAGES),
+                             ", ".join(EXTRA_STAGES)))
             continue
 
         if stage:
@@ -154,6 +192,12 @@ def main():
             if note:
                 entry["note"] = note
             conf_titles[season].append(entry)
+        elif stage == "BOWL":
+            entry = {"winner": w, "loser": l, "score": score,
+                     "bowl": (row.get("bowl") or "").strip() or "Bowl"}
+            if note:
+                entry["note"] = note
+            bowls[season].append(entry)
         elif stage:
             entry = {"round": stage, "winner": w, "loser": l, "score": score}
             if note:
@@ -176,7 +220,8 @@ def main():
         sys.exit(1)
 
     order = {s: n for n, s in enumerate(STAGES)}
-    all_seasons = set(by_season) | set(conf_titles) | set(playoffs)
+    all_seasons = (set(by_season) | set(conf_titles) | set(playoffs)
+                   | set(bowls) | set(seeds))
     for season in sorted(all_seasons):
         path = DATA / ("season_%02d.json" % season)
         if path.exists():
@@ -194,11 +239,19 @@ def main():
         if playoffs.get(season):
             playoffs[season].sort(key=lambda g: order.get(g["round"], 9))
             data["playoffs"] = playoffs[season]
+        if bowls.get(season):
+            bowls[season].sort(key=lambda g: g["bowl"])
+            data["bowls"] = bowls[season]
+        if seeds.get(season):
+            data["playoff_seeds"] = {k: seeds[season][k]
+                                     for k in sorted(seeds[season], key=int)}
 
         path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
-        print("S%d: %d regular, %d conf title(s), %d playoff -> %s"
+        print("S%d: %d regular, %d conf title(s), %d playoff, %d bowl(s), "
+              "%d seed(s) -> %s"
               % (season, len(results), len(conf_titles.get(season, [])),
-                 len(playoffs.get(season, [])), path.name))
+                 len(playoffs.get(season, [])), len(bowls.get(season, [])),
+                 len(seeds.get(season, {})), path.name))
 
 
 if __name__ == "__main__":

@@ -469,6 +469,10 @@ def ticker(season_data, limit=14):
         entries.append(((1, 0), cc["conference"], cc["winner"],
                         cc.get("score"), cc["loser"], "CONF"))
 
+    for bg in season_data.get("bowls") or []:
+        entries.append(((1, 0), bg.get("bowl", "Bowl"), bg["winner"],
+                        bg.get("score"), bg["loser"], "BOWL"))
+
     for g in season_data.get("playoffs") or []:
         rnd = g.get("round")
         tag = "TITLE" if rnd == "NC" else (g.get("bowl") or "")
@@ -669,6 +673,8 @@ def league_records(season_data, league, season_no):
         add(r["winner"], r["loser"], r["week"])
     for cc in season_data.get("conference_championships") or []:
         add(cc["winner"], cc["loser"], "PO")
+    for bg in season_data.get("bowls") or []:
+        add(bg["winner"], bg["loser"], "PO")
     for g in season_data.get("playoffs") or []:
         add(g["winner"], g["loser"], "PO")
 
@@ -975,6 +981,25 @@ move in the postseason, so the standings hold still until a bracket finishes.</p
                         % (cc["winner"], clink(league, wc) if wc else "CPU"),
                         "%s <span style='color:var(--muted2)'>(%s)</span>"
                         % (cc["loser"], clink(league, lc) if lc else "CPU"), sc))
+        b.append("</table></div>")
+
+    bowl_games = s2.get("bowls") or []
+    if bowl_games:
+        b.append('<div class="section"><h2 class="sec">Bowl games</h2>'
+                 '<p class="dt" style="margin:-8px 0 16px">Outside the bracket, so they '
+                 'count in records but earn no Playoff Points.</p><table>')
+        for bg in bowl_games:
+            wc = coach_for(league, bg["winner"], 2)
+            lc = coach_for(league, bg["loser"], 2)
+            sc = ("%d&ndash;%d" % tuple(bg["score"])) if bg.get("score") else "TBD"
+            b.append("<tr><td class='s' style='width:96px'>%s</td>"
+                     "<td class='w'>%s <span style='color:var(--muted2)'>(%s)</span></td>"
+                     "<td style='color:var(--muted)'>over %s "
+                     "<span style='color:var(--muted2)'>(%s)</span></td>"
+                     "<td class='s'>%s</td></tr>"
+                     % (bg.get("bowl", "Bowl"), bg["winner"],
+                        clink(league, wc) if wc else "CPU", bg["loser"],
+                        clink(league, lc) if lc else "CPU", sc))
         b.append("</table></div>")
 
     # Playoff games for a season still in progress. Once the NC row lands the

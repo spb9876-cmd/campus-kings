@@ -96,6 +96,26 @@ def gather(league, seasons):
                     "kind": "playoff", "bowl": g.get("bowl"),
                 })
 
+        # Bowl games. Real games, so they count in the record and the log, but
+        # they are outside the bracket and earn no Playoff Points.
+        for bg in sdata.get("bowls") or []:
+            for team, won in ((bg["winner"], True), (bg["loser"], False)):
+                cid = coach_for(league, team, sn)
+                if not cid:
+                    continue
+                opp = bg["loser"] if won else bg["winner"]
+                opp_cid = coach_for(league, opp, sn)
+                p = prof[cid]
+                p["w" if won else "l"] += 1
+                p["games"].append({
+                    "season": sn, "week": bg.get("bowl", "Bowl"),
+                    "team": team, "won": won, "opp": opp,
+                    "opp_coach": _cname(league, opp_cid) if opp_cid else None,
+                    "opp_cid": opp_cid,
+                    "score": bg.get("score"), "gotw": False,
+                    "kind": "bowl", "bowl": bg.get("bowl"),
+                })
+
         # Conference titles
         for cc in sdata.get("conference_championships", []):
             for team, won in ((cc["winner"], True), (cc["loser"], False)):
@@ -231,12 +251,15 @@ def coach_page(league, cid, prof, shell, bug, season):
             tags = ""
             if g["gotw"]:
                 tags += '<span class="tag">GOTW</span>'
-            if g.get("bowl"):
+            # a bowl game already shows its name in the week column
+            if g.get("bowl") and g["kind"] != "bowl":
                 tags += '<span class="tag">%s</span>' % g["bowl"]
             if g["kind"] == "playoff":
                 tags += '<span class="tag">Playoff</span>'
             if g["kind"] == "conf":
                 tags += '<span class="tag">Conf Title</span>'
+            if g["kind"] == "bowl":
+                tags += '<span class="tag">Bowl</span>'
             wk = g["week"] if isinstance(g["week"], str) else "Week %s" % g["week"]
             b.append(f"<tr><td style='color:{col};font-weight:700;width:26px'>{res}</td>"
                      f"<td class='s' style='width:76px'>{sc}</td>"

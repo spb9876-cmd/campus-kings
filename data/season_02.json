@@ -743,5 +743,25 @@
         15
       ]
     }
+  ],
+  "playoffs": [
+    {
+      "round": "R1",
+      "winner": "Notre Dame",
+      "loser": "Memphis",
+      "score": [
+        62,
+        7
+      ]
+    },
+    {
+      "round": "R1",
+      "winner": "Miami",
+      "loser": "Arizona State",
+      "score": [
+        14,
+        6
+      ]
+    }
   ]
 }
