@@ -637,16 +637,31 @@ def clink(league, cid, text=None):
 
 
 def league_records(season_data, league, season_no):
+    """Per-coach W-L for a season, counting every game the league played.
+
+    Conference finals and playoff rounds are games too -- reading only "results"
+    left conference champions a win short and their opponents a loss short.
+    Regular-season games resolve at the week they were played so a team's CPU-era
+    games don't land on the coach who has since left it; postseason games resolve
+    at the end of the season.
+    """
     rec = defaultdict(lambda: [0, 0])
+
+    def add(winner, loser, week):
+        for team, idx in ((winner, 0), (loser, 1)):
+            cid = coach_for(league, team, season_no, week)
+            if cid:
+                rec[cid][idx] += 1
+
     for r in season_data.get("results", []):
-        rec[r["winner"]][0] += 1
-        rec[r["loser"]][1] += 1
-    out = []
-    for team, (w, l) in rec.items():
-        coach = coach_for(league, team, season_no)
-        if coach:
-            out.append({"team": team, "coach": coach, "w": w, "l": l})
-    out.sort(key=lambda r: (-(r["w"] - r["l"]), -r["w"], r["team"]))
+        add(r["winner"], r["loser"], r["week"])
+    for cc in season_data.get("conference_championships") or []:
+        add(cc["winner"], cc["loser"], "PO")
+    for g in season_data.get("playoffs") or []:
+        add(g["winner"], g["loser"], "PO")
+
+    out = [{"coach": cid, "w": w, "l": l} for cid, (w, l) in rec.items()]
+    out.sort(key=lambda r: (-(r["w"] - r["l"]), -r["w"], r["coach"]))
     return out
 
 
