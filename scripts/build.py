@@ -433,25 +433,49 @@ FIELD = ('<svg class="field" width="100%" height="100%" preserveAspectRatio="non
          + "</svg>")
 
 
+PO_ORDER = {"R1": 0, "QF": 1, "SF": 2, "NC": 3}
+
+
 def ticker(season_data, limit=14):
     """Scrolling scorebug of the most recent results.
 
+    Postseason outranks the regular season, and deeper rounds outrank earlier
+    ones, so the ticker leads with the biggest game the league has played rather
+    than whatever happened in the last regular week.
+
     The item list is emitted twice so the CSS translateX(-50%) loop is seamless.
     """
-    results = season_data.get("results", [])
-    if not results:
+    # (sort key, chip label, winner, score, loser, trailing tag)
+    entries = []
+
+    for r in season_data.get("results", []):
+        entries.append(((0, r["week"]), "W%s" % r["week"], r["winner"],
+                        r.get("score"), r["loser"],
+                        "GOTW" if r.get("gotw") else ""))
+
+    for cc in season_data.get("conference_championships") or []:
+        entries.append(((1, 0), cc["conference"], cc["winner"],
+                        cc.get("score"), cc["loser"], "CONF"))
+
+    for g in season_data.get("playoffs") or []:
+        rnd = g.get("round")
+        tag = "TITLE" if rnd == "NC" else (g.get("bowl") or "")
+        entries.append(((2, PO_ORDER.get(rnd, 0)), rnd or "PO", g["winner"],
+                        g.get("score"), g["loser"], tag))
+
+    if not entries:
         return ""
-    recent = sorted(results, key=lambda r: -r["week"])[:limit]
+    entries.sort(key=lambda e: e[0], reverse=True)
 
     items = []
-    for r in recent:
-        sc = "%d&ndash;%d" % tuple(r["score"]) if r["score"] else "TBD"
-        gw = '<span class="gw">GOTW</span>' if r.get("gotw") else ""
+    for _, label, winner, score, loser, tag in entries[:limit]:
+        sc = "%d&ndash;%d" % tuple(score) if score else "TBD"
+        chip = '<span class="gw">%s</span>' % tag if tag else ""
         items.append(
-            f'<span class="tk"><span class="wk">W{r["week"]}</span>'
-            f'<span class="a">{r["winner"]}</span>'
+            f'<span class="tk"><span class="wk">{label}</span>'
+            f'<span class="a">{winner}</span>'
             f'<span class="sc">{sc}</span>'
-            f'<span class="b">{r["loser"]}</span>{gw}</span>'
+            f'<span class="b">{loser}</span>{chip}</span>'
         )
     strip = "".join(items)
     return f'<div class="ticker"><div class="track">{strip}{strip}</div></div>'
