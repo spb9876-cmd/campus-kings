@@ -142,9 +142,14 @@ def gather(league, seasons):
     po_order = {"Round 1": 1, "Quarterfinal": 2, "Semifinal": 3, "Championship": 4}
 
     def sort_key(g):
+        # Tier keeps the kinds apart so the third element is only ever
+        # compared against its own type -- a bowl name is a string and a
+        # regular-season week is an int, and mixing them raises TypeError.
         if g["kind"] == "playoff":
-            return (-g["season"], 2, po_order.get(g["week"], 9))
+            return (-g["season"], 3, po_order.get(g["week"], 9))
         if g["kind"] == "conf":
+            return (-g["season"], 2, 0)
+        if g["kind"] == "bowl":
             return (-g["season"], 1, 0)
         return (-g["season"], 0, g["week"])
 
