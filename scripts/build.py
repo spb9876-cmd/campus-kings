@@ -740,8 +740,12 @@ def build_index(league, s1, s2, content, pts, about, bug="",
     else:
         belt_names = "Up for grabs"
         belt_line = "No titles awarded yet"
+    live_now = bool(s2.get("playoffs") or s2.get("playoff_seeds")) \
+        and not bracket_is_final(s2)
     pts_label = ("season one" if n_seasons == 1
                  else "through %d seasons" % n_seasons)
+    if live_now:
+        pts_label += " &middot; season %d in progress" % s2.get("season", 2)
 
     b.append(f"""<div class="section"><h2 class="sec">The Campus King Belt</h2>
 <div class="belt"><div class="lbl">Current leader</div>
@@ -890,6 +894,9 @@ def build_standings(league, s2, pts, bug="", n_seasons=1,
                       "runner_up": 0, "seasons": 0, "nc_apps": 0,
                       "final_fours": 0, "rank": len(pts) + 1})
     race = sorted(field, key=lambda r: (r.get("rank") or 99, r["coach"]))
+    # a season only counts as decided once its title game is in
+    decided = n_seasons - (1 if (s2.get("playoffs") or s2.get("playoff_seeds"))
+                           and not bracket_is_final(s2) else 0)
 
     b = [f"""<div class="pagehead"><h1 class="page">The <em>Belt</em></h1>
 <p class="psub">The belt goes to whoever wins the most national championships across the
@@ -906,8 +913,8 @@ move in the postseason, so the standings hold still until a bracket finishes.</p
     b.append(f'<div class="section"><div class="belt"><div class="lbl">Holding the belt</div>'
              f'<div class="who">{holder}</div>'
              f'<div class="meta">{line} &middot; '
-             f'{n_seasons} of {league["league"]["accredited_seasons"]} accredited '
-             f'seasons complete.</div></div></div>')
+             f'{decided} of {league["league"]["accredited_seasons"]} accredited '
+             f'seasons decided.</div></div></div>')
 
     b.append('<div class="section"><h2 class="sec">Playoff Points standings</h2>'
              '<p class="dt" style="margin:-8px 0 16px">Cumulative: +1 making the field, '

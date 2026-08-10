@@ -13,6 +13,7 @@ from collections import defaultdict
 DATA = Path(__file__).resolve().parent.parent / "data"
 
 ROUND_ORDER = ["R1", "QF", "SF", "NC"]
+NEXT_ROUND = {"R1": "QF", "QF": "SF", "SF": "NC"}
 
 _STAMP = re.compile(r"^S(\d+)W(\d+)$")
 
@@ -89,12 +90,23 @@ def compute(league, season_data):
 
     # Determine how far each team advanced
     reached = defaultdict(lambda: None)
-    for game in season_data["playoffs"]:
+    for game in season_data.get("playoffs") or []:
         rnd = game["round"]
         for team in (game["winner"], game["loser"]):
             prev = reached[team]
             if prev is None or ROUND_ORDER.index(rnd) > ROUND_ORDER.index(prev):
                 reached[team] = rnd
+
+    # Winning a round *is* reaching the next one. Without this a first-round
+    # winner would sit on a berth until his quarterfinal is entered, even though
+    # he has already advanced and earned the round-two award.
+    for game in season_data.get("playoffs") or []:
+        nxt = NEXT_ROUND.get(game["round"])
+        if not nxt:
+            continue
+        w = game["winner"]
+        if reached[w] is None or ROUND_ORDER.index(nxt) > ROUND_ORDER.index(reached[w]):
+            reached[w] = nxt
 
     # Byes: seeds 1-4 skip R1, so credit them as having reached QF minimum.
     # playoff_seeds is hand-entered (ingest.py doesn't produce it), so treat it
@@ -102,10 +114,13 @@ def compute(league, season_data):
     # should build with a warning, not a KeyError.
     seeds = season_data.get("playoff_seeds") or {}
     if not seeds and __name__ == "__main__":
-        print("(no playoff_seeds for S%d -- bye credit not applied)\n" % season)
+        print("(no playoff_seeds for S%d -- teams yet to play score nothing)\n"
+              % season)
     for seed, team in seeds.items():
-        if int(seed) <= 4 and reached[team] is None:
-            reached[team] = "QF"
+        if reached[team] is None:
+            # In the field but yet to play. Seeds 1-4 are already in round two by
+            # virtue of the bye; everyone else has only the berth so far.
+            reached[team] = "QF" if int(seed) <= 4 else "R1"
 
     scores = {}
     detail = {}
@@ -116,7 +131,7 @@ def compute(league, season_data):
         idx = ROUND_ORDER.index(deepest)
         won_title = any(
             g["round"] == "NC" and g["winner"] == team
-            for g in season_data["playoffs"]
+            for g in season_data.get("playoffs") or []
         )
 
         # Advancing *past* R1 earns the round-2 award, etc.
@@ -159,9 +174,11 @@ def compute(league, season_data):
             "coach": coach,
             "points": total,
             "breakdown": detail[team],
-            "reached": deepest,
+            # reached[team], not `deepest` -- that name belongs to the loop
+            # above and would hand every row the last team's round.
+            "reached": reached[team],
             "won_title": any(g["round"] == "NC" and g["winner"] == team
-                             for g in season_data["playoffs"]),
+                             for g in season_data.get("playoffs") or []),
         })
 
     if skipped and __name__ == "__main__":
@@ -186,12 +203,16 @@ def bracket_is_final(season_data):
 
 
 def completed_seasons(league):
-    """Seasons whose bracket has actually been decided.
+    """Seasons that have a bracket to score.
 
-    Gating on "has any playoff rows" is not enough: mid-bracket, the teams with
-    first-round byes appear in no game yet, so they'd score zero while teams that
-    lost in the first round score a berth -- byes would rank below first-round
-    losers. A season only enters career points and the Belt once its NC row is in.
+    The ladder is cumulative -- a coach banks +1 for making the field, +2 once
+    he is in round two, and so on -- so a season starts scoring the moment its
+    bracket does, and the standings move round by round. Only the Belt waits for
+    the title game, because only that decides a championship.
+
+    This needs "playoff_seeds" in the season file: until a bye team plays its
+    quarterfinal it appears in no game, and without the seed list it would score
+    nothing while first-round losers scored a berth.
     """
     out = []
     for n in range(1, league["league"]["accredited_seasons"] + 1):
@@ -199,7 +220,7 @@ def completed_seasons(league):
         if not f.exists():
             continue
         d = json.loads(f.read_text(encoding="utf-8"))
-        if bracket_is_final(d):
+        if d.get("playoffs") or d.get("playoff_seeds"):
             out.append(d)
     return out
 
