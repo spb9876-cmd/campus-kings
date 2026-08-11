@@ -1,6 +1,25 @@
 {
   "content": [
     {
+      "title": "Season Two: Oklahoma Repeats",
+      "kind": "Recap",
+      "season": 2,
+      "date": "2026-08-11",
+      "file": "campus_kings_s2_champion.jpg",
+      "blurb": "Down 13-0 in New Orleans, Oklahoma wins 28-20 to finish 16-0 and take the belt outright.",
+      "article": "s2-championship-recap.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s2_champion.jpg",
+          "caption": "Back-to-back — 16-0, and the belt held outright"
+        },
+        {
+          "file": "campus_kings_s2_final_bracket.jpg",
+          "caption": "The completed bracket — Oklahoma 28, Clemson 20 in New Orleans"
+        }
+      ]
+    },
+    {
       "title": "Final Four Recap and Title Game Preview",
       "kind": "Recap",
       "season": 2,
