@@ -1,6 +1,15 @@
 {
   "content": [
     {
+      "title": "Final Four Recap and Title Game Preview",
+      "kind": "Recap",
+      "season": 2,
+      "date": "2026-08-10",
+      "file": "campus_kings_s2_title_bracket.jpg",
+      "blurb": "A 120-point semifinal, a rematch in New Orleans, and the belt on the line.",
+      "article": "s2-final-four-title-preview.md"
+    },
+    {
       "title": "Playoff Round Two",
       "kind": "Recap",
       "season": 2,

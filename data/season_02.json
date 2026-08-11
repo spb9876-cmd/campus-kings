@@ -34,6 +34,15 @@
     },
     {
       "week": 1,
+      "winner": "Arizona State",
+      "loser": "BYU",
+      "score": [
+        35,
+        7
+      ]
+    },
+    {
+      "week": 1,
       "winner": "Notre Dame",
       "loser": "UCLA",
       "score": [
@@ -806,6 +815,33 @@
       "score": [
         52,
         42
+      ]
+    },
+    {
+      "round": "QF",
+      "winner": "Penn State",
+      "loser": "Miami",
+      "score": [
+        42,
+        21
+      ]
+    },
+    {
+      "round": "SF",
+      "winner": "Clemson",
+      "loser": "Penn State",
+      "score": [
+        35,
+        21
+      ]
+    },
+    {
+      "round": "SF",
+      "winner": "Oklahoma",
+      "loser": "Notre Dame",
+      "score": [
+        63,
+        57
       ]
     }
   ],
