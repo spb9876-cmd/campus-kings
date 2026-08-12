@@ -303,7 +303,8 @@ nav a.on{color:var(--gold);border-bottom-color:var(--gold)}
   filter:blur(7px) saturate(1.05)}
 /* layer 2 - the scrim. without this the text is unreadable over the photo */
 .hero .scrim{position:absolute;inset:0;background:
-  linear-gradient(180deg,rgba(8,8,10,.70) 0%,rgba(8,8,10,.82) 58%,var(--bg) 100%),
+  linear-gradient(180deg,rgba(8,8,10,.70) 0%,rgba(8,8,10,.82) 58%,
+    rgba(8,8,10,.82) 84%,var(--bg) 100%),
   radial-gradient(ellipse 700px 300px at 50% 8%,rgba(223,168,57,.16),transparent 72%)}
 /* text hugs the top of the box; the fat bottom pad keeps the hero tall so the
    gameplay clip stays in view under the headline */
@@ -655,8 +656,10 @@ h2.sec::after{background:var(--rule)}
 .hero .banner ~ .inner .eyebrow{color:var(--onphoto-accent)}
 .hero .banner ~ .inner .scrollcue{color:rgba(247,244,236,.6)}
 .hero .banner ~ .inner h1 em{color:var(--onphoto-accent)}
+/* hold the dark scrim almost to the bottom edge -- blending toward the paper
+   background from 58% washed the lower half of the clip out white */
 .hero .scrim{background:linear-gradient(180deg,rgba(20,19,16,.62) 0%,
-  rgba(20,19,16,.80) 58%,var(--bg) 100%)}
+  rgba(20,19,16,.80) 58%,rgba(20,19,16,.80) 84%,var(--bg) 100%)}
 
 /* ---- flourishes that read as generated polish ---- */
 .card:hover{transform:none;border-color:var(--muted2)}
