@@ -259,10 +259,6 @@ footer{border-top:1px solid var(--rule);padding:26px 0 34px;font-size:10.5px;let
   /* poster only -- never autoplay motion at someone who asked us not to */
   .hero .herovid{display:none}
 }
-@media(max-width:720px){
-  /* a few MB of video on cell data is a real cost; keep the still on phones */
-  .hero .herovid{display:none}
-}
 
 /* ---- homepage motion (MOTION = True) ---- */
 .beltbar{display:flex;gap:4px;margin-top:16px}
@@ -534,6 +530,8 @@ h2.sec::after{background:var(--rule)}
       var top = document.createElement('video');
       top.className = 'herovid';
       top.muted = true;
+      /* iOS autoplay policy checks the content attributes, not the props */
+      top.setAttribute('muted', '');
       top.setAttribute('playsinline', '');
       top.preload = 'auto';
       top.style.opacity = 0;

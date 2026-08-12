@@ -120,6 +120,8 @@ MOTION_JS = r"""<script>
       var top = document.createElement('video');
       top.className = 'herovid';
       top.muted = true;
+      /* iOS autoplay policy checks the content attributes, not the props */
+      top.setAttribute('muted', '');
       top.setAttribute('playsinline', '');
       top.preload = 'auto';
       top.style.opacity = 0;
@@ -502,10 +504,6 @@ HERO_CSS = """
 .hero .inner{position:relative;z-index:2}
 @media(prefers-reduced-motion:reduce){
   /* poster only -- never autoplay motion at someone who asked us not to */
-  .hero .herovid{display:none}
-}
-@media(max-width:720px){
-  /* a few MB of video on cell data is a real cost; keep the still on phones */
   .hero .herovid{display:none}
 }
 """
