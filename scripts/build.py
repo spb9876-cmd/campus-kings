@@ -1112,7 +1112,7 @@ The belt goes to the coach with the most titles across
              '<a href="standings.html" style="color:var(--gold)">Full standings &rarr;</a></div></div>')
 
     b.append('<div class="section"><h2 class="sec">Latest content</h2><div class="grid">')
-    for c in content["content"][:4]:
+    for c in content["content"][:6]:
         b.append(content_card(c))
     b.append("</div>")
     if len(content["content"]) > 4:
