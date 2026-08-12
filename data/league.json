@@ -3,7 +3,7 @@
     "name": "Campus Kings",
     "game": "CFB 27",
     "accredited_seasons": 20,
-    "current_season": 2
+    "current_season": 3
   },
   "rules": {
     "playoff_points": {
@@ -286,6 +286,10 @@
       "id": "x",
       "name": "X",
       "status": "departed"
+    },
+    {
+      "id": "fields",
+      "name": "Fields Finest"
     }
   ],
   "tenures": [
@@ -494,6 +498,12 @@
       "team": "Baylor",
       "coach": "cozy",
       "from": "S2W6"
+    },
+    {
+      "team": "Auburn",
+      "coach": "fields",
+      "from": "S3W0",
+      "note": "hired for Season Three; Auburn CPU-held since S2W2"
     }
   ],
   "legacy_championships": {
@@ -512,6 +522,14 @@
     ],
     "S2": [
       "Auburn",
+      "Missouri",
+      "Kansas",
+      "Utah",
+      "Oklahoma State",
+      "Memphis",
+      "Cal"
+    ],
+    "S3": [
       "Missouri",
       "Kansas",
       "Utah",

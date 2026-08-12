@@ -509,7 +509,7 @@ def shell(title, active, body, hero=None, bug=""):
 <title>{title} — Campus Kings</title>
 <meta name="description" content="Campus Kings — a 20-season CFB 27 online dynasty league.">
 <meta property="og:title" content="Campus Kings">
-<meta property="og:description" content="A 20-season CFB 27 online dynasty. Thirty coaches. One belt.">
+<meta property="og:description" content="A 20-season CFB 27 online dynasty. One belt.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="media/logo.png">
 <link rel="icon" href="media/favicon.png">
@@ -697,14 +697,34 @@ def career_line(r):
     return ", ".join(bits)
 
 
-def build_index(league, s1, s2, content, pts, about, bug="",
+def glance_figure(g, league, season):
+    """Resolve an at_a_glance figure, deriving the ones that move.
+
+    Write "auto:coaches" or "auto:season" as the figure in about.json and it is
+    computed at build time. The roster changes with every auction, so a
+    hand-typed count is wrong within a week.
+    """
+    fig = str(g.get("figure", ""))
+    if fig == "auto:coaches":
+        return sum(1 for c in league["coaches"]
+                   if profiles.current_team(league, c["id"], season))
+    if fig == "auto:season":
+        return season
+    if fig == "auto:seasons":
+        return league["league"]["accredited_seasons"]
+    return fig
+
+
+def build_index(league, all_seasons, content, pts, about, bug="",
                 belt=None, belt_titles=0, n_seasons=1):
+    s2 = all_seasons[-1]
+    season = s2.get("season", league["league"]["current_season"])
     hero = (f'<div class="hero">'
             f'<div class="banner"></div><div class="scrim"></div>'
             f'<div class="inner">'
             f'<div class="eyebrow">Campus Kings &middot; Season '
             f'{league["league"]["current_season"]} in progress</div>'
-            f'<h1>Thirty coaches.<br>Twenty seasons.<br><em>One belt.</em></h1>'
+            f'<h1>{about.get("hero_html") or "Twenty seasons.<br>One dynasty.<br><em>One belt.</em>"}</h1>'
             f'<p class="lede">{about["intro"]}</p>'
             f'<div class="scrollcue">Scroll'
             f'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#dfa839" '
@@ -721,7 +741,7 @@ def build_index(league, s1, s2, content, pts, about, bug="",
             f'<div class="qd">Champions, brackets, moves</div></a>'
             f'</div>'
             f'<div class="glance"><div class="inner">'
-            + "".join(f"<div class='cell'><div class='fig'>{g['figure']}</div>"
+            + "".join(f"<div class='cell'><div class='fig'>{glance_figure(g, league, season)}</div>"
                       f"<div class='lab'>{g['label']}</div></div>"
                       for g in about["at_a_glance"])
             + "</div></div>")
@@ -751,7 +771,7 @@ def build_index(league, s1, s2, content, pts, about, bug="",
     pts_label = ("season one" if n_seasons == 1
                  else "through %d seasons" % n_seasons)
     if live_now:
-        pts_label += " &middot; season %d in progress" % s2.get("season", 2)
+        pts_label += " &middot; season %d in progress" % sn
 
     b.append(f"""<div class="section"><h2 class="sec">The Campus King Belt</h2>
 <div class="belt"><div class="lbl">Current leader</div>
@@ -879,14 +899,14 @@ def build_standings(league, s2, pts, bug="", n_seasons=1,
                     belt=None, belt_titles=0):
     # This season's W-L, folded into the race table as a column so replacing the
     # old head-to-head standings doesn't lose it.
+    sn = s2.get("season", league["league"]["current_season"])
     season_wl = {r["coach"]: (r["w"], r["l"])
-                 for r in league_records(s2, league, 2)}
+                 for r in league_records(s2, league, sn)}
 
     # compute_all() only makes rows for coaches who have scored, so on its own the
     # table would show 11 of 31. Everyone currently holding a team belongs in the
     # race at zero; coaches who have earned points keep their row even if they've
     # since left.
-    sn = s2.get("season", 2)
     field = list(pts)
     scored = {r["coach"] for r in field}
     for c in league["coaches"]:
@@ -969,8 +989,8 @@ move in the postseason, so the standings hold still until a bracket finishes.</p
     if ccs:
         b.append('<div class="section"><h2 class="sec">Conference championships</h2><table>')
         for cc in ccs:
-            wc = coach_for(league, cc["winner"], 2)
-            lc = coach_for(league, cc["loser"], 2)
+            wc = coach_for(league, cc["winner"], sn)
+            lc = coach_for(league, cc["loser"], sn)
             sc = ("%d&ndash;%d" % tuple(cc["score"])) if cc.get("score") else "TBD"
             b.append("<tr><td class='s' style='width:66px'>%s</td>"
                      "<td class='w'>%s</td>"
@@ -989,8 +1009,8 @@ move in the postseason, so the standings hold still until a bracket finishes.</p
                  '<p class="dt" style="margin:-8px 0 16px">Outside the bracket, so they '
                  'count in records but earn no Playoff Points.</p><table>')
         for bg in bowl_games:
-            wc = coach_for(league, bg["winner"], 2)
-            lc = coach_for(league, bg["loser"], 2)
+            wc = coach_for(league, bg["winner"], sn)
+            lc = coach_for(league, bg["loser"], sn)
             sc = ("%d&ndash;%d" % tuple(bg["score"])) if bg.get("score") else "TBD"
             b.append("<tr><td class='s' style='width:96px'>%s</td>"
                      "<td class='w'>%s <span style='color:var(--muted2)'>(%s)</span></td>"
@@ -1021,8 +1041,8 @@ move in the postseason, so the standings hold still until a bracket finishes.</p
                 tags = "".join('<span class="tag">%s</span>' % g[k]
                                for k in ("bowl", "note") if g.get(k))
                 sc = ("%d&ndash;%d" % tuple(g["score"])) if g.get("score") else "TBD"
-                wc = coach_for(league, g["winner"], 2)
-                lc = coach_for(league, g["loser"], 2)
+                wc = coach_for(league, g["winner"], sn)
+                lc = coach_for(league, g["loser"], sn)
                 b.append("<tr><td class='w'>%s%s</td>"
                          "<td style='color:var(--muted)'>over %s</td>"
                          "<td class='s'>%s</td></tr>"
@@ -1036,44 +1056,84 @@ move in the postseason, so the standings hold still until a bracket finishes.</p
     return shell("The Belt", "standings.html", "\n".join(b), None, bug)
 
 
-def build_history(league, s1, bug=""):
-    nc = next(g for g in s1["playoffs"] if g["round"] == "NC")
-    b = [f"""<div class="pagehead"><h1 class="page">League <em>History</em></h1>
-<p class="psub">Champions, brackets, and how every coach got where they are.</p></div>
-<div class="section"><div class="belt"><div class="lbl">Season One champion</div>
-<div class="who">{s1['champion']} &middot; {clink(league, coach_for(league, s1['champion'], 1))}</div>
-<div class="meta">Beat {s1['runner_up']} ({clink(league, coach_for(league, s1['runner_up'], 1))})
-{nc['score'][0]}&ndash;{nc['score'][1]} in {nc.get('site', 'the final')} &mdash; as an 8 seed.</div>
-</div></div>"""]
+ORDINALS = ("Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven",
+            "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen",
+            "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty")
+
+
+def season_word(n):
+    """3 -> 'Three'. Falls back to the digit past the accredited cycle."""
+    return ORDINALS[n] if 0 <= n < len(ORDINALS) else str(n)
+
+
+def build_history(league, all_seasons, bug=""):
+    """Every completed season, newest first, then the coaching-move log."""
+    b = ['<div class="pagehead"><h1 class="page">League <em>History</em></h1>'
+         '<p class="psub">Champions, brackets, and how every coach got where they '
+         'are.</p></div>']
 
     labels = {"R1": "First round", "QF": "Quarterfinals",
               "SF": "Semifinals", "NC": "National Championship"}
-    b.append('<div class="section"><h2 class="sec">Season One playoff bracket</h2>')
-    for rnd in ["R1", "QF", "SF", "NC"]:
-        b.append(f'<div class="wklabel">{labels[rnd]}</div><table>')
-        for g in [x for x in s1["playoffs"] if x["round"] == rnd]:
-            extra = "".join('<span class="tag">%s</span>' % g[k]
-                            for k in ("bowl", "note") if g.get(k))
-            b.append(f"<tr><td class='w'>{g['winner']}{extra}</td>"
-                     f"<td style='color:var(--muted)'>over {g['loser']}</td>"
-                     f"<td class='s'>{g['score'][0]}&ndash;{g['score'][1]}</td></tr>")
-        b.append("</table>")
-    b.append("</div>")
 
-    recs = s1.get("regular_season_records") or {}
-    if recs:
-        def _wl(v):
-            w, l = v.split("-")
-            return (-int(w), int(l))
-        b.append('<div class="section"><h2 class="sec">Season One final standings</h2>'
-                 '<table><tr><th>#</th><th>Team</th><th>Coach</th><th>W&ndash;L</th></tr>')
-        for i, (team, rec) in enumerate(sorted(recs.items(), key=lambda kv: _wl(kv[1])), 1):
-            cid = coach_for(league, team, 1)
-            who = clink(league, cid) if cid else "<span style='color:var(--muted2)'>CPU</span>"
-            b.append("<tr><td>%d</td><td class='w'>%s</td>"
-                     "<td style='color:var(--muted)'>%s</td><td class='s'>%s</td></tr>"
-                     % (i, team, who, rec.replace("-", "&ndash;")))
-        b.append("</table></div>")
+    # Newest first, and only seasons whose title game has been played.
+    done = [d for d in all_seasons if bracket_is_final(d)]
+    for sd in reversed(done):
+        sn = sd.get("season", 0)
+        word = season_word(sn)
+        nc = next(g for g in sd["playoffs"] if g["round"] == "NC")
+        champ = sd.get("champion") or nc["winner"]
+        runner = sd.get("runner_up") or nc["loser"]
+        seeds = sd.get("playoff_seeds") or {}
+        seed_of = {t: k for k, t in seeds.items()}
+        as_seed = (" &mdash; as a %s seed." % seed_of[champ]) if champ in seed_of else "."
+        b.append(f'<div class="section"><div class="belt">'
+                 f'<div class="lbl">Season {word} champion</div>'
+                 f'<div class="who">{champ} &middot; '
+                 f'{clink(league, coach_for(league, champ, sn))}</div>'
+                 f'<div class="meta">Beat {runner} '
+                 f'({clink(league, coach_for(league, runner, sn))}) '
+                 f'{nc["score"][0]}&ndash;{nc["score"][1]} in '
+                 f'{nc.get("site", "the final")}{as_seed}</div></div></div>')
+
+        b.append(f'<div class="section"><h2 class="sec">Season {word} playoff '
+                 f'bracket</h2>')
+        for rnd in ("R1", "QF", "SF", "NC"):
+            rows = [x for x in sd["playoffs"] if x["round"] == rnd]
+            if not rows:
+                continue
+            b.append(f'<div class="wklabel">{labels[rnd]}</div><table>')
+            for g in rows:
+                extra = "".join('<span class="tag">%s</span>' % g[k]
+                                for k in ("bowl", "note") if g.get(k))
+                sc = ("%d&ndash;%d" % tuple(g["score"])) if g.get("score") else "TBD"
+                b.append(f"<tr><td class='w'>{g['winner']}{extra}</td>"
+                         f"<td style='color:var(--muted)'>over {g['loser']}</td>"
+                         f"<td class='s'>{sc}</td></tr>")
+            b.append("</table>")
+        b.append("</div>")
+
+        recs = sd.get("regular_season_records") or {}
+        if recs:
+            def _wl(v):
+                w, l = v.split("-")
+                return (-int(w), int(l))
+            b.append(f'<div class="section"><h2 class="sec">Season {word} final '
+                     f'standings</h2><table><tr><th>#</th><th>Team</th>'
+                     f'<th>Coach</th><th>W&ndash;L</th></tr>')
+            for i, (team, rec) in enumerate(
+                    sorted(recs.items(), key=lambda kv: _wl(kv[1])), 1):
+                cid = coach_for(league, team, sn)
+                who = clink(league, cid) if cid else \
+                    "<span style='color:var(--muted2)'>CPU</span>"
+                b.append("<tr><td>%d</td><td class='w'>%s</td>"
+                         "<td style='color:var(--muted)'>%s</td>"
+                         "<td class='s'>%s</td></tr>"
+                         % (i, team, who, rec.replace("-", "&ndash;")))
+            b.append("</table></div>")
+
+    if not done:
+        b.append('<div class="section"><p class="dt">No season has been '
+                 'completed yet.</p></div>')
 
     b.append('<div class="section"><h2 class="sec">Coaching moves</h2><table><tr>'
              '<th>Team</th><th>Coach</th><th>From</th><th>Note</th></tr>')
@@ -1088,13 +1148,31 @@ def build_history(league, s1, bug=""):
     return shell("History", "history.html", "\n".join(b), None, bug)
 
 
+def load_all_seasons(league):
+    """Every season_NN.json that exists, in order.
+
+    main() used to name season_01 and season_02 literally, which meant adding a
+    season meant editing code. Now dropping season_03.json in data/ is enough.
+    """
+    out = []
+    for n in range(1, league["league"]["accredited_seasons"] + 1):
+        f = DATA / ("season_%02d.json" % n)
+        if f.exists():
+            out.append(json.loads(f.read_text(encoding="utf-8")))
+    if not out:
+        raise SystemExit("No season files found in %s" % DATA)
+    return out
+
+
 def main():
-    league, s1, s2 = load("league.json"), load("season_01.json"), load("season_02.json")
+    league = load("league.json")
     content, about, rules = load("content.json"), load("about.json"), load("rules.json")
+    all_seasons = load_all_seasons(league)
+    cur_season = all_seasons[-1]          # newest file drives the live pages
     seasons = completed_seasons(league)
     pts = compute_all(league, seasons)
     belt, belt_titles = belt_leaders(pts)
-    bug = ticker(s2)
+    bug = ticker(cur_season)
 
     SITE.mkdir(exist_ok=True)
     (SITE / "media").mkdir(exist_ok=True)
@@ -1135,7 +1213,7 @@ def main():
             c.pop("article")
 
     # Work out who gets a profile first, so coach names can link everywhere.
-    prof = profiles.gather(league, [s1, s2])
+    prof = profiles.gather(league, all_seasons)
     cur = league["league"]["current_season"]
     legacy = league.get("legacy_championships", {})
     roster = [c["id"] for c in league["coaches"]
@@ -1145,10 +1223,10 @@ def main():
     profiles.PROFILED = PROFILED
     profiles.clink = clink
 
-    (SITE / "index.html").write_text(build_index(league, s1, s2, content, pts, about, bug, belt, belt_titles, len(seasons)), encoding="utf-8")
-    (SITE / "standings.html").write_text(build_standings(league, s2, pts, bug, len(seasons), belt, belt_titles), encoding="utf-8")
+    (SITE / "index.html").write_text(build_index(league, all_seasons, content, pts, about, bug, belt, belt_titles, len(seasons)), encoding="utf-8")
+    (SITE / "standings.html").write_text(build_standings(league, cur_season, pts, bug, len(seasons), belt, belt_titles), encoding="utf-8")
     (SITE / "rules.html").write_text(build_rules(rules, bug), encoding="utf-8")
-    (SITE / "history.html").write_text(build_history(league, s1, bug), encoding="utf-8")
+    (SITE / "history.html").write_text(build_history(league, all_seasons, bug), encoding="utf-8")
     (SITE / "coaches.html").write_text(
         profiles.index_page(league, prof, shell, bug, cur), encoding="utf-8")
     (SITE / "content.html").write_text(build_content(content, bug), encoding="utf-8")

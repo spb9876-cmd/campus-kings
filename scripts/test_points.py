@@ -72,9 +72,19 @@ def main():
     check(career[0]["coach"] == "stew", "career leader is stew")
     check(career[0]["points"] >= 18, "career points >= single-season total")
 
+    # The belt holder must be whoever actually has the most NC wins across the
+    # completed seasons -- asserting a fixed count would go stale every season.
+    from collections import Counter
+    wins = Counter()
+    for sd in seasons:
+        for g in sd.get("playoffs") or []:
+            if g["round"] == "NC":
+                wins[g["winner"]] += 1
+    top = max(wins.values()) if wins else 0
     leaders, n = belt_leaders(career)
-    check([l["coach"] for l in leaders] == ["stew"] and n == 1,
-          "belt held by stew with 1 title")
+    check(n == top, "belt title count matches the brackets (%d)" % top)
+    check(all(l["titles"] == top for l in leaders) and leaders,
+          "every belt holder has the top title count")
 
     # With only S1 complete, career must equal the single-season result.
     if len(seasons) == 1:

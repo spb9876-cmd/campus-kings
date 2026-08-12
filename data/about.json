@@ -1,14 +1,14 @@
 {
   "tagline": "A 20-season CFB 27 online dynasty.",
-  "hero": "Thirty coaches. Twenty seasons. One belt.",
-  "intro": "Campus Kings is a long-haul online dynasty built around strategic gameplay, recruiting battles, and the thrill of college football. It's competitive without being joyless \u2014 the games matter, the group chat matters, and everybody's chasing the same thing.",
+  "hero": "Twenty seasons. One dynasty. One belt.",
+  "intro": "Campus Kings is a long-haul online dynasty built around strategic gameplay, recruiting battles, and the thrill of college football. It's competitive without being joyless — the games matter, the group chat matters, and everybody's chasing the same thing.",
   "at_a_glance": [
     {
-      "figure": "30",
+      "figure": "auto:coaches",
       "label": "Active coaches"
     },
     {
-      "figure": "20",
+      "figure": "auto:seasons",
       "label": "Accredited seasons"
     },
     {
@@ -29,7 +29,7 @@
     {
       "num": "02",
       "title": "Playoff Points reward the climb",
-      "body": "A parallel points race tracks the whole cycle \u2014 making the bracket, winning playoff games, reaching the Final Four, taking your conference. Being one of the five best coaches over 20 seasons should mean something too."
+      "body": "A parallel points race tracks the whole cycle — making the bracket, winning playoff games, reaching the Final Four, taking your conference. Being one of the five best coaches over 20 seasons should mean something too."
     },
     {
       "num": "03",
@@ -62,6 +62,7 @@
   ],
   "join": {
     "title": "Getting in",
-    "body": "New coaches need approval from LT or Curt. Team selections go through the league board to keep things competitively balanced. Bring good comms and a willingness to grind a rebuild \u2014 the rest sorts itself out."
-  }
+    "body": "New coaches need approval from LT or Curt. Team selections go through the league board to keep things competitively balanced. Bring good comms and a willingness to grind a rebuild — the rest sorts itself out."
+  },
+  "hero_html": "Twenty seasons.<br>One dynasty.<br><em>One belt.</em>"
 }
