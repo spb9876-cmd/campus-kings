@@ -1,6 +1,15 @@
 {
   "content": [
     {
+      "title": "Season Two Final Power Rankings",
+      "kind": "Power Rankings",
+      "season": 2,
+      "date": "2026-08-12",
+      "file": "campus_kings_s2_final_power_rankings.png",
+      "blurb": "All 29 teams, one last time — the champ clears the field, and the risers rewrite the preseason board.",
+      "article": "s2-final-power-rankings.md"
+    },
+    {
       "title": "Season Two: Oklahoma Repeats",
       "kind": "Recap",
       "season": 2,
