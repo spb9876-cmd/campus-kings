@@ -108,8 +108,16 @@ MOTION_JS = r"""<script>
         hv.load();
         hv.play().catch(function(){});
       };
+      /* Between clips, fade to the banner still, swap sources behind the
+         fade, and only fade back once the next clip is actually rendering
+         frames -- load() flashes the poster otherwise. */
+      hv.addEventListener('playing', function(){
+        hv.classList.remove('swap');
+      });
       hv.addEventListener('ended', function(){
-        idx = (idx + 1) % list.length; show();
+        idx = (idx + 1) % list.length;
+        hv.classList.add('swap');
+        setTimeout(show, 650);          /* let the .6s opacity fade finish */
       });
       show();
     }
@@ -442,7 +450,10 @@ HERO_CSS = """
 .hero .herovid{position:absolute;inset:-2px;width:calc(100% + 4px);
   height:calc(100% + 4px);object-fit:cover;z-index:0;
   /* the banner still sits underneath as the paint-first layer */
-  filter:saturate(.92) contrast(1.04) brightness(.86)}
+  filter:saturate(.92) contrast(1.04) brightness(.86);
+  transition:opacity .6s ease}
+/* mid-swap: fade down to the banner still so the poster never pops between clips */
+.hero .herovid.swap{opacity:0}
 .hero .scrim{z-index:1}
 .hero .inner{position:relative;z-index:2}
 @media(prefers-reduced-motion:reduce){
