@@ -305,7 +305,7 @@ nav a.on{color:var(--gold);border-bottom-color:var(--gold)}
 .hero .scrim{position:absolute;inset:0;background:
   linear-gradient(180deg,rgba(8,8,10,.70) 0%,rgba(8,8,10,.82) 58%,var(--bg) 100%),
   radial-gradient(ellipse 700px 300px at 50% 8%,rgba(223,168,57,.16),transparent 72%)}
-.hero .inner{position:relative;max-width:1000px;margin:0 auto;padding:86px 24px 40px;text-align:center}
+.hero .inner{position:relative;max-width:1000px;margin:0 auto;padding:150px 24px 96px;text-align:center}
 .hero .crest{width:118px;height:118px;display:block;margin:0 auto 22px;border-radius:50%;
   box-shadow:0 0 44px rgba(223,168,57,.22)}
 .scrollcue{display:flex;flex-direction:column;align-items:center;gap:7px;margin-top:26px;
