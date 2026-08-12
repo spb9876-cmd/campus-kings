@@ -247,9 +247,8 @@ footer{border-top:1px solid var(--rule);padding:26px 0 34px;font-size:10.5px;let
   height:calc(100% + 4px);object-fit:cover;z-index:0;
   /* the banner still sits underneath as the paint-first layer */
   filter:saturate(.92) contrast(1.04) brightness(.86);
-  transition:opacity .6s ease}
-/* mid-swap: fade down to the banner still so the poster never pops between clips */
-.hero .herovid.swap{opacity:0}
+  /* the second JS-made layer crossfades clip-to-clip via inline opacity */
+  transition:opacity .8s ease}
 .hero .scrim{z-index:1}
 .hero .inner{position:relative;z-index:2}
 @media(prefers-reduced-motion:reduce){
@@ -450,33 +449,74 @@ h2.sec::after{background:var(--rule)}
     try { list = JSON.parse(hv.dataset.clips || '[]'); } catch(e){}
     if (list.length > 1){
       hv.removeAttribute('loop');
+      /* autoplay would restart the layer every time setClip() reloads it,
+         silently burning through the preloaded clip at opacity 0; playback
+         is driven explicitly below instead */
+      hv.removeAttribute('autoplay');
       var idx = Math.floor(Math.random() * list.length);   /* vary per visit */
       /* Each entry is the format list for ONE clip. Rebuild the <source>
          children rather than assigning .src, so the browser keeps choosing a
          format it can decode. */
-      var show = function(){
-        hv.innerHTML = '';
-        list[idx].forEach(function(u){
+      var setClip = function(v, i){
+        v.innerHTML = '';
+        list[i].forEach(function(u){
           var sc = document.createElement('source');
           sc.src = u;
           sc.type = /\.webm$/.test(u) ? 'video/webm' : 'video/mp4';
-          hv.appendChild(sc);
+          v.appendChild(sc);
         });
-        hv.load();
-        hv.play().catch(function(){});
+        v.load();
       };
-      /* Between clips, fade to the banner still, swap sources behind the
-         fade, and only fade back once the next clip is actually rendering
-         frames -- load() flashes the poster otherwise. */
-      hv.addEventListener('playing', function(){
-        hv.classList.remove('swap');
+      /* Second video layer stacked over the first. The next clip preloads in
+         whichever layer is hidden and starts playing before the fade, so one
+         clip dissolves straight into the next -- neither the poster nor the
+         banner still ever shows between highlights. Only the top layer's
+         opacity animates; the bottom stays opaque beneath it, so there is no
+         half-transparent dip mid-fade. */
+      var top = document.createElement('video');
+      top.className = 'herovid';
+      top.muted = true;
+      top.setAttribute('playsinline', '');
+      top.preload = 'auto';
+      top.style.opacity = 0;
+      hv.parentNode.insertBefore(top, hv.nextSibling);
+      var cur = hv, off = top, fading = false;
+      setClip(cur, idx);
+      cur.play().catch(function(){});
+      setClip(off, (idx + 1) % list.length);
+      var swap = function(){
+        if (fading) return;
+        fading = true;
+        /* if a background-tab stall let the preloaded clip drift, restart it */
+        try { if (off.currentTime > 0) off.currentTime = 0; } catch(e){}
+        off.play().catch(function(){});
+        top.style.opacity = (off === top) ? 1 : 0;
+        setTimeout(function(){
+          cur.pause();
+          idx = (idx + 1) % list.length;
+          var t = cur; cur = off; off = t;
+          setClip(off, (idx + 1) % list.length);
+          fading = false;
+        }, 850);                        /* just past the .8s opacity fade */
+      };
+      [cur, off].forEach(function(v){
+        /* start the fade shortly before the clip runs out so the motion
+           never freezes on a last frame; 'ended' is the no-duration fallback */
+        v.addEventListener('timeupdate', function(){
+          if (v === cur && !fading && v.duration &&
+              v.duration - v.currentTime < 0.9) swap();
+        });
+        v.addEventListener('ended', function(){
+          if (v === cur && !fading) swap();
+        });
       });
-      hv.addEventListener('ended', function(){
-        idx = (idx + 1) % list.length;
-        hv.classList.add('swap');
-        setTimeout(show, 650);          /* let the .6s opacity fade finish */
+      /* Hidden tabs pause muted video and throttle timers, which would leave
+         the rotation dead when the visitor comes back -- kick it back over. */
+      document.addEventListener('visibilitychange', function(){
+        if (document.hidden) return;
+        if (cur.ended && !fading) swap();
+        else cur.play().catch(function(){});
       });
-      show();
     }
   }
 
