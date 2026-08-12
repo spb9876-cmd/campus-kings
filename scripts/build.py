@@ -359,6 +359,78 @@ DYNAMIC_JS = r"""<script>
       });
     });
   });
+
+  /* ---- site-wide search. The index is one JSON built at generation time --
+     coaches, teams, write-ups, and every recorded result -- fetched once on
+     first open. "/" or the navbar button opens it; arrows + Enter drive it. ---- */
+  var ov=document.querySelector('.searchov');
+  if(ov){
+    var sbtn=document.querySelector('.searchbtn');
+    var sinp=ov.querySelector('.searchinput');
+    var sres=ov.querySelector('.searchresults');
+    var IX=null, srows=[], scur=-1;
+    function sesc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+    function sload(){
+      if(IX) return Promise.resolve(IX);
+      return fetch('search-index.json').then(function(r){return r.json();})
+        .then(function(j){IX=j;return j;}).catch(function(){IX=[];return IX;});
+    }
+    function sopen(){ ov.hidden=false; sinp.focus();
+      sload().then(function(){srender(sinp.value);}); }
+    function sclose(){ ov.hidden=true; sinp.value=''; scur=-1; }
+    /* prefix beats word-start beats substring beats subtitle hit */
+    function sscore(e,q){
+      var t=e.t.toLowerCase(), s=(e.s||'').toLowerCase();
+      if(t.indexOf(q)===0) return 0;
+      var ws=t.split(/\s+/).some(function(w){return w.indexOf(q)===0;});
+      if(ws) return 1;
+      if(t.indexOf(q)>-1) return 2;
+      if(s.indexOf(q)>-1) return 3;
+      return -1;
+    }
+    function smark(){
+      [].forEach.call(sres.children,function(el,i){
+        el.classList.toggle('on',i===scur);
+      });
+      if(scur>-1&&sres.children[scur])
+        sres.children[scur].scrollIntoView({block:'nearest'});
+    }
+    function srender(qraw){
+      var q=qraw.trim().toLowerCase();
+      if(!q){ sres.innerHTML=''; srows=[]; scur=-1; return; }
+      var m=[];
+      IX.forEach(function(e){var sc=sscore(e,q); if(sc>-1) m.push([sc,e]);});
+      m.sort(function(a,b){return a[0]-b[0];});
+      srows=m.slice(0,12).map(function(x){return x[1];});
+      scur=srows.length?0:-1;
+      sres.innerHTML=srows.map(function(e){
+        return '<a class="sr" href="'+sesc(e.h)+'"><span class="sk">'+sesc(e.k)+
+               '</span><span class="st">'+sesc(e.t)+'</span><span class="ss">'+
+               sesc(e.s||'')+'</span></a>';
+      }).join('')||'<div class="snone">No matches</div>';
+      smark();
+    }
+    if(sbtn) sbtn.addEventListener('click',sopen);
+    ov.addEventListener('mousedown',function(e){ if(e.target===ov) sclose(); });
+    sinp.addEventListener('input',function(){ srender(sinp.value); });
+    sinp.addEventListener('keydown',function(e){
+      if(e.key==='ArrowDown'){ e.preventDefault();
+        if(srows.length){ scur=(scur+1)%srows.length; smark(); } }
+      else if(e.key==='ArrowUp'){ e.preventDefault();
+        if(srows.length){ scur=(scur-1+srows.length)%srows.length; smark(); } }
+      else if(e.key==='Enter'){ if(scur>-1&&srows[scur]) location.href=srows[scur].h; }
+      else if(e.key==='Escape') sclose();
+    });
+    document.addEventListener('keydown',function(e){
+      if(!ov.hidden){ if(e.key==='Escape') sclose(); return; }
+      var tag=(e.target.tagName||'').toUpperCase();
+      if(tag==='INPUT'||tag==='TEXTAREA'||e.target.isContentEditable) return;
+      if(e.key==='/'||((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k')){
+        e.preventDefault(); sopen();
+      }
+    });
+  }
 })();
 </script>"""
 
@@ -389,6 +461,33 @@ table.sortable th[data-dir=asc]::after{content:" \\2191"}
   padding:6px 12px;cursor:pointer}
 .chip:hover{color:var(--ink);border-color:var(--muted)}
 .chip.on{color:var(--gold);border-color:var(--golddim)}
+
+.searchbtn{background:none;border:1px solid var(--rule);border-radius:2px;
+  color:var(--muted);width:30px;height:30px;flex:0 0 auto;display:flex;
+  align-items:center;justify-content:center;cursor:pointer;padding:0}
+.searchbtn:hover{color:var(--ink);border-color:var(--muted)}
+.searchov{position:fixed;inset:0;background:rgba(8,8,10,.55);z-index:90;
+  display:flex;align-items:flex-start;justify-content:center;padding:11vh 20px 0}
+.searchov[hidden]{display:none}
+.searchpanel{width:100%;max-width:580px;background:var(--card);
+  border:1px solid var(--rule);border-radius:3px;overflow:hidden;
+  box-shadow:0 18px 60px rgba(0,0,0,.45)}
+.searchinput{width:100%;padding:14px 16px;font:inherit;font-size:15px;
+  color:var(--ink);background:none;border:none;border-bottom:1px solid var(--rule)}
+.searchinput:focus{outline:none}
+.searchresults{max-height:52vh;overflow-y:auto}
+.sr{display:flex;align-items:baseline;gap:10px;padding:10px 16px;
+  border-bottom:1px solid var(--rule);cursor:pointer}
+.sr:last-child{border-bottom:none}
+.sr.on,.sr:hover{background:var(--card2)}
+.sr .sk{font-size:9px;letter-spacing:1.6px;text-transform:uppercase;
+  color:var(--gold);flex:0 0 92px}
+.sr .st{color:var(--ink);font-size:14px;font-weight:600;white-space:nowrap}
+.sr .ss{color:var(--muted);font-size:12px;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.snone{padding:14px 16px;color:var(--muted);font-size:13px}
+.searchhint{padding:8px 16px;font-size:10px;letter-spacing:1px;
+  color:var(--muted2);border-top:1px solid var(--rule)}
 """
 
 NIGHT_CLASS = ' class="night"' if (PRESS and SCHEME == "night") else ""
@@ -890,6 +989,16 @@ def ticker(season_data, limit=14):
     return f'<div class="ticker"><div class="track">{strip}{strip}</div></div>'
 
 
+SEARCH_BTN = """<button class="searchbtn" type="button" aria-label="Search the site" title="Search (press /)">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+</button>"""
+
+SEARCH_OV = """<div class="searchov" hidden><div class="searchpanel">
+<input class="searchinput" type="search" placeholder="Search coaches, teams, results, content&hellip;" aria-label="Search the site" autocomplete="off">
+<div class="searchresults"></div>
+<div class="searchhint">&uarr;&darr; to navigate &middot; Enter to open &middot; Esc to close</div>
+</div></div>"""
+
 MODE_BTN = """<button class="modebtn" type="button" aria-label="Switch color scheme">
 <svg class="sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
 <svg class="moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -906,6 +1015,7 @@ def shell(title, active, body, hero=None, bug="", desc=None, path=None):
     page = path or active
     canonical = SITE_URL + ("" if page == "index.html" else page)
     mode_btn = MODE_BTN if (DYNAMIC and PRESS) else ""
+    search_ui = (SEARCH_BTN, SEARCH_OV) if DYNAMIC else ("", "")
     return f"""<!DOCTYPE html>
 <html lang="en"{NIGHT_CLASS}><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -926,7 +1036,8 @@ def shell(title, active, body, hero=None, bug="", desc=None, path=None):
 <style>{CSS}</style></head><body>
 <div class="navbar"><div class="inner">
 <a class="brand" href="index.html">{CROWN}<span class="name">Campus <span>Kings</span></span></a>
-<nav>{nav}</nav>{mode_btn}</div></div>
+<nav>{nav}</nav>{search_ui[0]}{mode_btn}</div></div>
+{search_ui[1]}
 {bug}
 {hero or ""}
 <div class="wrap">{body}</div>
@@ -1777,6 +1888,52 @@ def main():
         (SITE / article_path(c)).write_text(
             build_article(c, body, bug), encoding="utf-8")
         posts += 1
+
+    # Site search index: one JSON the navbar palette fetches on first open.
+    # Everything searchable gets a row -- kind, title, subtitle, href.
+    if DYNAMIC:
+        ix = []
+        for href, label, sub in (
+                ("standings.html", "The Belt", "standings and weekly results"),
+                ("coaches.html", "Coaches", "every coach, rings, game logs"),
+                ("content.html", "The Archive", "every graphic and write-up"),
+                ("rules.html", "Rulebook", "settings, bans, scheduling"),
+                ("history.html", "History", "champions, brackets, moves")):
+            ix.append({"k": "Page", "t": label, "s": sub, "h": href})
+        for cid in roster:
+            cname = next(c["name"] for c in league["coaches"] if c["id"] == cid)
+            team = profiles.current_team(league, cid, cur)
+            ix.append({"k": "Coach", "t": cname,
+                       "s": team or "former coach", "h": "coach-%s.html" % cid})
+            if team:
+                ix.append({"k": "Team", "t": team,
+                           "s": "coached by %s" % cname, "h": "coach-%s.html" % cid})
+        for c in content["content"]:
+            ix.append({"k": c["kind"], "t": c["title"],
+                       "s": "Season %d · %s" % (c["season"], fmt_date(c["date"])),
+                       "h": article_path(c)})
+        ROUNDS = {"R1": "first round", "QF": "quarterfinal",
+                  "SF": "semifinal", "NC": "national championship"}
+        for s in all_seasons:
+            sn = s["season"]
+            h = "history.html" if s.get("status") == "complete" else "standings.html"
+            def game(g, sub):
+                ix.append({"k": "Result",
+                           "t": "%s %d–%d %s" % (g["winner"], g["score"][0],
+                                                 g["score"][1], g["loser"]),
+                           "s": sub, "h": h})
+            for r in s.get("results", []):
+                wk = r["week"] if isinstance(r["week"], str) else "Week %s" % r["week"]
+                game(r, "Season %d · %s%s"
+                     % (sn, wk, " · GOTW" if r.get("gotw") else ""))
+            for g in s.get("conference_championships", []):
+                game(g, "Season %d · %s championship" % (sn, g["conference"]))
+            for g in s.get("playoffs", []):
+                game(g, "Season %d · %s" % (sn, ROUNDS.get(g["round"], "playoff")))
+            for g in s.get("bowls", []):
+                game(g, "Season %d · bowl game" % sn)
+        (SITE / "search-index.json").write_text(
+            json.dumps(ix, ensure_ascii=False), encoding="utf-8")
 
     # 404 for GitHub Pages. Links are absolute -- a bad URL can be arbitrarily
     # deep, and relative links would 404 right back.
