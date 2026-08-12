@@ -352,6 +352,7 @@ h1.page em{font-style:normal;color:var(--gold)}
 .psub{color:var(--muted);font-size:15px;font-style:italic;margin:0;line-height:1.6;max-width:700px}
 .pagehead{padding:52px 0 34px;border-bottom:1px solid var(--rule)}
 
+.secintro{color:var(--muted);font-size:16px;line-height:1.7;max-width:720px;margin:-6px 0 28px}
 .pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--rule)}
 .pillar{background:var(--card);padding:26px 24px}
 .pillar .n{font-family:'Anton',Impact,sans-serif;font-size:13px;color:var(--golddim);letter-spacing:2px}
@@ -608,7 +609,7 @@ h1.page{font-size:clamp(24px,3.4vw,34px);line-height:1.12;letter-spacing:0}
 .ticker::before{font-size:10px;letter-spacing:1.4px}
 
 /* ---- prose gets a serif; tables and chrome stay in Inter ---- */
-.hero p.lede,.psub,.article p,.article li,.pillar p,.step p,.belt .meta,
+.hero p.lede,.psub,.secintro,.article p,.article li,.pillar p,.step p,.belt .meta,
 .quick .qd,.card .bl,.dt{font-family:var(--serif)}
 .article p,.article li{font-size:16.5px;line-height:1.72}
 .psub{font-size:16px;font-style:normal}
@@ -1017,7 +1018,6 @@ def build_index(league, all_seasons, content, pts, about, bug="",
             f'<div class="eyebrow">Campus Kings &middot; Season '
             f'{league["league"]["current_season"]} in progress</div>'
             f'<h1>{about.get("hero_html") or "Twenty seasons.<br>One dynasty.<br><em>One belt.</em>"}</h1>'
-            f'<p class="lede">{about["intro"]}</p>'
             f'<div class="scrollcue">Scroll'
             f'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#dfa839" '
             f'stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></div>'
@@ -1039,7 +1039,10 @@ def build_index(league, all_seasons, content, pts, about, bug="",
             + "</div></div>")
 
 
-    b = ['<div class="section"><h2 class="sec">Who we are</h2><div class="pillars">'
+    # The league description leads the first section rather than crowding the
+    # hero, which stays headline-and-video only.
+    b = ['<div class="section"><h2 class="sec">Who we are</h2>'
+         f'<p class="secintro">{about["intro"]}</p><div class="pillars">'
          + "".join(f"<div class='pillar'><div class='n'>{p['num']}</div>"
                    f"<h3>{p['title']}</h3><p>{p['body']}</p></div>"
                    for p in about["pillars"]) + "</div></div>"]
