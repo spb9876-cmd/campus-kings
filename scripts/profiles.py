@@ -9,7 +9,8 @@ from collections import defaultdict
 from points import coach_for, stamp
 
 PROFILED = set()
-clink = None   # injected by build.py
+clink = None     # injected by build.py
+DYNAMIC = False  # injected by build.py; gates the search bar / sortable hooks
 
 
 def _cname(league, cid):
@@ -176,10 +177,17 @@ def index_page(league, prof, shell, bug, season):
         })
     rows.sort(key=lambda r: (-r["rings"], -r["w"], r["name"]))
 
+    search = ('<input class="searchbar" type="search" '
+              'placeholder="Find a coach or team&hellip;" '
+              'data-filter="#coachtable tr:not(:first-child)" '
+              'aria-label="Find a coach or team">' if DYNAMIC else "")
+    table_open = ('<table id="coachtable" class="sortable">' if DYNAMIC
+                  else "<table>")
     b = ['<div class="pagehead"><h1 class="page">The <em>Coaches</em></h1>'
          '<p class="psub">Every coach, every game we have on record. Ring counts go '
          'all the way back; the Belt only counts the current 20-season run.</p></div>'
-         '<div class="section"><table><tr><th>Coach</th><th>Current team</th>'
+         f'<div class="section">{search}{table_open}'
+         '<tr><th>Coach</th><th>Current team</th>'
          '<th>Rings</th><th>Tracked W&ndash;L</th></tr>']
     for r in rows:
         team = r["team"] or "<span style='color:var(--muted2)'>&mdash;</span>"
@@ -192,7 +200,9 @@ def index_page(league, prof, shell, bug, season):
                  f"<td style='color:var(--muted)'>{team}</td>"
                  f"<td class='s'>{rings}</td><td>{rec}</td></tr>")
     b.append("</table></div>")
-    return shell("Coaches", "coaches.html", "\n".join(b), None, bug)
+    return shell("Coaches", "coaches.html", "\n".join(b), None, bug,
+                 desc="Every Campus Kings coach — rings, records, and full "
+                      "game logs.")
 
 
 def coach_page(league, cid, prof, shell, bug, season):
@@ -276,4 +286,9 @@ def coach_page(league, cid, prof, shell, bug, season):
     b.append('<div class="dt" style="padding-top:18px">'
              '<a href="coaches.html" style="color:var(--gold)">&larr; All coaches</a></div></div>')
 
-    return shell(name, "coaches.html", "\n".join(b), hero, bug)
+    rec = "%d-%d" % (p["w"], p["l"])
+    return shell(name, "coaches.html", "\n".join(b), hero, bug,
+                 desc="%s — %s%s, %d lifetime ring%s in Campus Kings."
+                      % (name, ("coach of %s, " % team) if team else "",
+                         rec, rings, "" if rings == 1 else "s"),
+                 path="coach-%s.html" % cid)

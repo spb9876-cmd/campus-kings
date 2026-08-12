@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://spb9876-cmd.github.io/campus-kings/sitemap.xml

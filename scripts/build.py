@@ -59,6 +59,17 @@ MOTION = True
 # banner without removing the files.
 HERO_VIDEO = True
 
+# Client-side interactivity: sortable tables, the live coach search, the
+# archive filter chips, and the manual day/night toggle in the navbar. False
+# removes all of it -- markup hooks, CSS and JS -- and the pages read exactly
+# as they did before.
+DYNAMIC = True
+
+# Where the site is served from. Canonical links, Open Graph URLs and the
+# sitemap all need absolute URLs -- crawlers and link unfurlers ignore
+# relative ones.
+SITE_URL = "https://spb9876-cmd.github.io/campus-kings/"
+
 # Runs synchronously in <head>, before anything paints, so the correct palette is
 # in place on the first frame -- set it from a deferred script and every visitor
 # after 7pm sees a white flash first. Intl with an IANA zone is used rather than
@@ -72,11 +83,15 @@ CLOCK_JS = """<script>
     return parseInt(h,10)%24;           /* some ICU builds say 24 for midnight */
   }
   function apply(){
+    /* a manual choice from the navbar toggle beats the clock */
+    var s=null; try{s=localStorage.getItem('ck-scheme');}catch(e){}
+    if(s==='day'||s==='night'){root.classList.toggle('night',s==='night');return;}
     var h;
     try{h=easternHour();}catch(e){h=new Date().getHours();}  /* no Intl: local */
     root.classList.toggle('night',h>=19||h<7);
   }
   apply();
+  window.ckClock=apply;                 /* the toggle re-runs this on "auto" */
   setInterval(apply,60000);             /* flip a page that's been left open */
 })();
 </script>"""
@@ -240,6 +255,141 @@ MOTION_JS = r"""<script>
   }
 })();
 </script>"""
+
+DYNAMIC_JS = r"""<script>
+(function(){
+  /* ---- theme toggle: cycles auto -> day -> night. "auto" hands control back
+     to the 7am/7pm clock in <head>; an explicit choice persists per browser
+     and is honoured before first paint by the same head script. ---- */
+  var KEY='ck-scheme', root=document.documentElement;
+  var btn=document.querySelector('.modebtn');
+  function stored(){ try{return localStorage.getItem(KEY);}catch(e){return null;} }
+  function paint(){
+    var m=stored()||'auto';
+    if(m==='day') root.classList.remove('night');
+    else if(m==='night') root.classList.add('night');
+    if(btn) btn.title={auto:'Theme: automatic (dark 7pm–7am ET) — click for day',
+                       day:'Theme: day — click for night',
+                       night:'Theme: night — click for automatic'}[m];
+  }
+  if(btn){
+    btn.addEventListener('click',function(){
+      var order=['auto','day','night'];
+      var next=order[(order.indexOf(stored()||'auto')+1)%3];
+      try{ next==='auto'?localStorage.removeItem(KEY):localStorage.setItem(KEY,next); }catch(e){}
+      if(next==='auto'&&window.ckClock) window.ckClock();
+      paint();
+    });
+    paint();
+  }
+
+  /* ---- sortable tables: click a header to sort, click again to flip.
+     Numbers sort numerically ("3-1" and "12 pts" read their leading number,
+     blank em-dashes sink to the bottom); everything else sorts as text. ---- */
+  document.querySelectorAll('table.sortable').forEach(function(tbl){
+    var hrow=tbl.querySelector('tr');
+    if(!hrow) return;
+    var ths=hrow.querySelectorAll('th');
+    function key(tr,ci){
+      var td=tr.children[ci];
+      var t=td?td.textContent.trim():'';
+      var n=parseFloat(t.replace(/[–—].*$/,'').replace(/[^0-9.\-]/g,''));
+      return isNaN(n)?t.toLowerCase():n;
+    }
+    ths.forEach(function(th,ci){
+      th.addEventListener('click',function(){
+        var rows=[].slice.call(tbl.querySelectorAll('tr')).slice(1);
+        var numeric=rows.some(function(r){return typeof key(r,ci)==='number';});
+        /* first click: numbers biggest-first, text A-Z; second click flips */
+        var dir=th.dataset.dir?(th.dataset.dir==='desc'?'asc':'desc')
+                              :(numeric?'desc':'asc');
+        ths.forEach(function(t){t.removeAttribute('data-dir');});
+        th.dataset.dir=dir;
+        rows.sort(function(a,b){
+          var ka=key(a,ci),kb=key(b,ci);
+          var na=typeof ka==='number',nb=typeof kb==='number';
+          /* rows with no value stay below rows with one, whichever way */
+          if(na!==nb) return na?-1:1;
+          var c=na?ka-kb:(ka<kb?-1:ka>kb?1:0);
+          return dir==='asc'?c:-c;
+        });
+        rows.forEach(function(r){r.parentNode.appendChild(r);});
+      });
+    });
+  });
+
+  /* ---- archive filter + live search. The chips and the search box are one
+     filter -- a card shows only when it matches both -- and season sections
+     with nothing left disappear rather than leaving a stranded heading. ---- */
+  var cards=document.querySelectorAll('.card[data-kind]');
+  var chips=document.querySelectorAll('.chip[data-kind]');
+  var kind='all', query='';
+  function applyCards(){
+    cards.forEach(function(card){
+      var ok=(kind==='all'||card.dataset.kind===kind)&&
+             (!query||card.textContent.toLowerCase().indexOf(query)>-1);
+      card.style.display=ok?'':'none';
+    });
+    document.querySelectorAll('.section').forEach(function(sec){
+      var cs=sec.querySelectorAll('.card[data-kind]');
+      if(!cs.length) return;
+      var any=[].some.call(cs,function(c){return c.style.display!=='none';});
+      sec.style.display=any?'':'none';
+    });
+  }
+  chips.forEach(function(ch){
+    ch.addEventListener('click',function(){
+      chips.forEach(function(c){c.classList.remove('on');});
+      ch.classList.add('on');
+      kind=ch.dataset.kind;
+      applyCards();
+    });
+  });
+
+  /* ---- live search: any input[data-filter] hides non-matching elements of
+     its CSS-selector target as you type. Card targets route through the
+     combined filter above so search and chips don't fight. ---- */
+  document.querySelectorAll('input[data-filter]').forEach(function(inp){
+    var sel=inp.dataset.filter;
+    inp.addEventListener('input',function(){
+      var q=inp.value.trim().toLowerCase();
+      if(cards.length&&sel.indexOf('.card')===0){query=q;applyCards();return;}
+      document.querySelectorAll(sel).forEach(function(el){
+        el.style.display=!q||el.textContent.toLowerCase().indexOf(q)>-1?'':'none';
+      });
+    });
+  });
+})();
+</script>"""
+
+DYNAMIC_CSS = """
+/* ---- interactivity (DYNAMIC = True) ---- */
+.modebtn{background:none;border:1px solid var(--rule);border-radius:2px;
+  color:var(--muted);width:30px;height:30px;flex:0 0 auto;display:flex;
+  align-items:center;justify-content:center;cursor:pointer;padding:0}
+.modebtn:hover{color:var(--ink);border-color:var(--muted)}
+.modebtn .moon{display:none}
+html.night .modebtn .moon{display:block}
+html.night .modebtn .sun{display:none}
+
+table.sortable th{cursor:pointer;user-select:none;white-space:nowrap}
+table.sortable th:hover{color:var(--ink)}
+table.sortable th[data-dir=desc]::after{content:" \\2193"}
+table.sortable th[data-dir=asc]::after{content:" \\2191"}
+
+.searchbar{display:block;width:100%;max-width:340px;margin:0 0 18px;
+  padding:9px 12px;font:inherit;font-size:13.5px;color:var(--ink);
+  background:var(--card);border:1px solid var(--rule);border-radius:2px}
+.searchbar::placeholder{color:var(--muted2)}
+.searchbar:focus{outline:none;border-color:var(--golddim)}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
+.chip{font:inherit;font-size:12px;letter-spacing:.3px;color:var(--muted);
+  background:var(--card);border:1px solid var(--rule);border-radius:2px;
+  padding:6px 12px;cursor:pointer}
+.chip:hover{color:var(--ink);border-color:var(--muted)}
+.chip.on{color:var(--gold);border-color:var(--golddim)}
+"""
 
 NIGHT_CLASS = ' class="night"' if (PRESS and SCHEME == "night") else ""
 HEAD_JS = CLOCK_JS if (PRESS and SCHEME == "clock") else ""
@@ -670,6 +820,9 @@ h2.sec::after{background:var(--rule)}
 if PRESS:
     CSS = CSS + PRESS_CSS
 
+if DYNAMIC:
+    CSS = CSS + DYNAMIC_CSS
+
 CROWN = '<img class="mark" src="media/logo-mark.png" alt="">' 
 
 FIELD = ('<svg class="field" width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 1000 380">'
@@ -737,32 +890,48 @@ def ticker(season_data, limit=14):
     return f'<div class="ticker"><div class="track">{strip}{strip}</div></div>'
 
 
-def shell(title, active, body, hero=None, bug=""):
+MODE_BTN = """<button class="modebtn" type="button" aria-label="Switch color scheme">
+<svg class="sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+<svg class="moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+</button>"""
+
+
+def shell(title, active, body, hero=None, bug="", desc=None, path=None):
     nav = ""
     for href, label in NAV:
         on = " class='on'" if href == active else ""
         nav += "<a href='%s'%s>%s</a>" % (href, on, label)
+    desc = html.escape(desc or "Campus Kings — a 20-season CFB 27 online "
+                       "dynasty league. One belt.", quote=True)
+    page = path or active
+    canonical = SITE_URL + ("" if page == "index.html" else page)
+    mode_btn = MODE_BTN if (DYNAMIC and PRESS) else ""
     return f"""<!DOCTYPE html>
 <html lang="en"{NIGHT_CLASS}><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 {HEAD_JS}
 <title>{title} — Campus Kings</title>
-<meta name="description" content="Campus Kings — a 20-season CFB 27 online dynasty league.">
-<meta property="og:title" content="Campus Kings">
-<meta property="og:description" content="A 20-season CFB 27 online dynasty. One belt.">
+<meta name="description" content="{desc}">
+<link rel="canonical" href="{canonical}">
+<meta property="og:title" content="{html.escape(title, quote=True)} — Campus Kings">
+<meta property="og:description" content="{desc}">
 <meta property="og:type" content="website">
-<meta property="og:image" content="media/logo.png">
+<meta property="og:url" content="{canonical}">
+<meta property="og:image" content="{SITE_URL}media/logo.png">
+<meta name="twitter:card" content="summary">
 <link rel="icon" href="media/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?{FONT_QUERY}&display=swap" rel="stylesheet">
 <style>{CSS}</style></head><body>
 <div class="navbar"><div class="inner">
 <a class="brand" href="index.html">{CROWN}<span class="name">Campus <span>Kings</span></span></a>
-<nav>{nav}</nav></div></div>
+<nav>{nav}</nav>{mode_btn}</div></div>
 {bug}
 {hero or ""}
 <div class="wrap">{body}</div>
 <footer>Campus Kings &middot; CFB 27 Online Dynasty<br>Updated {fmt_date(date.today().isoformat())}</footer>
-{MOTION_JS if MOTION else ""}</body></html>
+{MOTION_JS if MOTION else ""}{DYNAMIC_JS if DYNAMIC else ""}</body></html>
 """
 
 
@@ -1123,14 +1292,16 @@ The belt goes to the coach with the most titles across
 <p style="font-size:14.5px;color:var(--muted);line-height:1.7;max-width:660px;margin:0">
 {about['join']['body']}</p></div>""")
 
-    return shell("Overview", "index.html", "\n".join(b), hero, bug)
+    return shell("Overview", "index.html", "\n".join(b), hero, bug,
+                 desc=about.get("tagline"))
 
 
 def content_card(c):
     """One card in a content grid. Links to the write-up when there is one."""
     tag = '<span class="tag">Write-up</span>' if c.get("article") else ""
-    return (f'<a class="card" href="{article_path(c)}">'
-            f'<img src="media/{c["file"]}" alt="{html.escape(c["title"], quote=True)}" loading="lazy">'
+    kind = html.escape(c["kind"], quote=True)
+    return (f'<a class="card" data-kind="{kind}" href="{article_path(c)}">'
+            f'<img src="media/{c["file"]}" alt="{html.escape(c["title"], quote=True)}" loading="lazy" decoding="async">'
             f'<div class="body"><div class="kind">{c["kind"]} &middot; S{c["season"]}</div>'
             f'<div class="ttl">{c["title"]}{tag}</div><div class="bl">{c["blurb"]}</div>'
             f'<div class="dte">{fmt_date(c["date"])}</div></div></a>')
@@ -1151,12 +1322,24 @@ def build_content(content, bug=""):
     b = [f"""<div class="pagehead"><h1 class="page">The <em>Archive</em></h1>
 <p class="psub">{blurb}</p></div>"""]
 
+    if DYNAMIC:
+        kinds = sorted({c["kind"] for c in items})
+        chips = ['<button class="chip on" type="button" data-kind="all">All</button>']
+        chips += ['<button class="chip" type="button" data-kind="%s">%s</button>'
+                  % (html.escape(k, quote=True), html.escape(k)) for k in kinds]
+        b.append('<div class="section" style="padding-bottom:0;border-bottom:none">'
+                 '<input class="searchbar" type="search" placeholder="Search the archive&hellip;" '
+                 'data-filter=".card[data-kind]" aria-label="Search the archive">'
+                 '<div class="chips">' + "".join(chips) + "</div></div>")
+
     for season in sorted(by_season, reverse=True):
         b.append(f'<div class="section"><h2 class="sec">Season {season}</h2><div class="grid">')
         for c in sorted(by_season[season], key=lambda c: c["date"], reverse=True):
             b.append(content_card(c))
         b.append("</div></div>")
-    return shell("Archive", "content.html", "\n".join(b), None, bug)
+    return shell("Archive", "content.html", "\n".join(b), None, bug,
+                 desc="Every recap, power ranking, and graphic Campus Kings "
+                      "has published, season by season.")
 
 
 def build_article(c, body_md, bug=""):
@@ -1173,7 +1356,7 @@ def build_article(c, body_md, bug=""):
         label = cap or "Open the full graphic &rarr;"
         posters.append(
             f'<a class="poster" href="media/{f}">'
-            f'<img src="media/{f}" alt="{html.escape(cap or c["title"], quote=True)}" loading="lazy">'
+            f'<img src="media/{f}" alt="{html.escape(cap or c["title"], quote=True)}" loading="lazy" decoding="async">'
             f'<div class="cap">{label}</div></a>')
 
     b = [f'<div class="section" style="border-bottom:none">',
@@ -1182,7 +1365,8 @@ def build_article(c, body_md, bug=""):
          f'<div class="article">{markdown(body_md)}</div>',
          f'<div class="backlink"><a href="content.html">&larr; All content</a></div>',
          f'</div>']
-    return shell(c["title"], "content.html", "\n".join(b), hero, bug)
+    return shell(c["title"], "content.html", "\n".join(b), hero, bug,
+                 desc=c.get("blurb"), path=article_path(c))
 
 
 def build_rules(rules, bug=""):
@@ -1213,7 +1397,9 @@ def build_rules(rules, bug=""):
              f'<p class="psub">{rules["preamble"]}</p></div>'
              f'<div class="section"><div class="rulegrid"><div class="toc">{toc}</div>'
              f'<div>{"".join(body)}</div></div></div>')
-    return shell("Rules", "rules.html", inner, None, bug)
+    return shell("Rules", "rules.html", inner, None, bug,
+                 desc="The Campus Kings rulebook — league settings, bans, "
+                      "scheduling, and how Playoff Points are earned.")
 
 
 def build_standings(league, s2, pts, bug="", n_seasons=1,
@@ -1269,7 +1455,8 @@ move in the postseason, so the standings hold still until a bracket finishes.</p
              'conference bonus (SEC / B1G / Big 12 +2, ACC +1). Ties break on '
              'championships, then title-game appearances, then Final Fours, then total '
              'playoff appearances. "This season" is league games only.</p>'
-             '<table><tr><th>#</th><th>Coach</th><th>Team</th><th>Pts</th>'
+             f'<table{" class=sortable" if DYNAMIC else ""}>'
+             '<tr><th>#</th><th>Coach</th><th>Team</th><th>Pts</th>'
              '<th>Titles</th><th class="tb">Title&nbsp;games</th>'
              '<th class="tb">Final&nbsp;Fours</th><th class="tb">Playoffs</th>'
              '<th>This season</th></tr>')
@@ -1374,7 +1561,9 @@ move in the postseason, so the standings hold still until a bracket finishes.</p
             b.append("</table>")
         b.append("</div>")
 
-    return shell("The Belt", "standings.html", "\n".join(b), None, bug)
+    return shell("The Belt", "standings.html", "\n".join(b), None, bug,
+                 desc="Playoff Points standings, weekly results, and the race "
+                      "for the Campus King Belt.")
 
 
 ORDINALS = ("Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven",
@@ -1466,7 +1655,9 @@ def build_history(league, all_seasons, bug=""):
                  f"<td class='s' style='font-size:13px'>{t['from']}</td>"
                  f"<td style='color:var(--muted);font-size:12.5px'>{t['note']}</td></tr>")
     b.append("</table></div>")
-    return shell("History", "history.html", "\n".join(b), None, bug)
+    return shell("History", "history.html", "\n".join(b), None, bug,
+                 desc="Every champion, playoff bracket, and coaching move in "
+                      "Campus Kings history.")
 
 
 def load_all_seasons(league):
@@ -1564,6 +1755,7 @@ def main():
     PROFILED.update(roster)
     profiles.PROFILED = PROFILED
     profiles.clink = clink
+    profiles.DYNAMIC = DYNAMIC
 
     (SITE / "index.html").write_text(build_index(league, all_seasons, content, pts, about, bug, belt, belt_titles, len(seasons), clips), encoding="utf-8")
     (SITE / "standings.html").write_text(build_standings(league, cur_season, pts, bug, len(seasons), belt, belt_titles), encoding="utf-8")
@@ -1586,9 +1778,39 @@ def main():
             build_article(c, body, bug), encoding="utf-8")
         posts += 1
 
+    # 404 for GitHub Pages. Links are absolute -- a bad URL can be arbitrarily
+    # deep, and relative links would 404 right back.
+    not_found = (f'<div class="pagehead"><h1 class="page">Fourth <em>down</em></h1>'
+                 f'<p class="psub">That page doesn\'t exist &mdash; it may have '
+                 f'moved when the site was rebuilt.</p></div>'
+                 f'<div class="section"><p class="dt" style="font-size:14px">'
+                 f'<a href="{SITE_URL}" style="color:var(--gold)">Back to the '
+                 f'homepage &rarr;</a></p></div>')
+    (SITE / "404.html").write_text(
+        shell("Page not found", "index.html", not_found, None, ""),
+        encoding="utf-8")
+
+    # Sitemap + robots. Every page written above, absolute, stamped with the
+    # build date -- crawlers find the coach pages and write-ups on their own.
+    pages = (["index.html", "standings.html", "rules.html", "history.html",
+              "coaches.html", "content.html"]
+             + ["coach-%s.html" % cid for cid in roster]
+             + [article_path(c) for c in content["content"] if c.get("article")])
+    today = date.today().isoformat()
+    sm = ['<?xml version="1.0" encoding="UTF-8"?>',
+          '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for pg in pages:
+        loc = SITE_URL + ("" if pg == "index.html" else pg)
+        sm.append("<url><loc>%s</loc><lastmod>%s</lastmod></url>" % (loc, today))
+    sm.append("</urlset>")
+    (SITE / "sitemap.xml").write_text("\n".join(sm), encoding="utf-8")
+    (SITE / "robots.txt").write_text(
+        "User-agent: *\nAllow: /\nSitemap: %ssitemap.xml\n" % SITE_URL,
+        encoding="utf-8")
+
     n = len(roster)
     print("Built %d pages (%d coach profiles, %d write-ups), copied %d/%d media -> %s"
-          % (6 + n + posts, n, posts, copied, total, SITE))
+          % (7 + n + posts, n, posts, copied, total, SITE))
 
 
 if __name__ == "__main__":
