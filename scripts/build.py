@@ -55,6 +55,10 @@ SCHEME = "clock"
 # prefers-reduced-motion for visitors who've turned motion off.
 MOTION = True
 
+# Gameplay clips behind the homepage hero. Set False to go back to the still
+# banner without removing the files.
+HERO_VIDEO = True
+
 # Runs synchronously in <head>, before anything paints, so the correct palette is
 # in place on the first frame -- set it from a deferred script and every visitor
 # after 7pm sees a white flash first. Intl with an IANA zone is used rather than
@@ -78,9 +82,38 @@ CLOCK_JS = """<script>
 </script>"""
 
 
-MOTION_JS = """<script>
+MOTION_JS = r"""<script>
 (function(){
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  /* Hero clips: play through them in order rather than looping one. */
+  var hv = document.querySelector('.herovid');
+  if (hv){
+    var list = [];
+    try { list = JSON.parse(hv.dataset.clips || '[]'); } catch(e){}
+    if (list.length > 1){
+      hv.removeAttribute('loop');
+      var idx = Math.floor(Math.random() * list.length);   /* vary per visit */
+      /* Each entry is the format list for ONE clip. Rebuild the <source>
+         children rather than assigning .src, so the browser keeps choosing a
+         format it can decode. */
+      var show = function(){
+        hv.innerHTML = '';
+        list[idx].forEach(function(u){
+          var sc = document.createElement('source');
+          sc.src = u;
+          sc.type = /\.webm$/.test(u) ? 'video/webm' : 'video/mp4';
+          hv.appendChild(sc);
+        });
+        hv.load();
+        hv.play().catch(function(){});
+      };
+      hv.addEventListener('ended', function(){
+        idx = (idx + 1) % list.length; show();
+      });
+      show();
+    }
+  }
 
   /* Counters: any element with data-count rolls up from 0 when scrolled in. */
   function roll(el){
@@ -403,6 +436,27 @@ footer{border-top:1px solid var(--rule);padding:26px 0 34px;font-size:10.5px;let
   nav a{white-space:nowrap;flex:0 0 auto}}
 .section{overflow-x:auto}
 """
+
+HERO_CSS = """
+/* ---- hero gameplay video ---- */
+.hero .herovid{position:absolute;inset:-2px;width:calc(100% + 4px);
+  height:calc(100% + 4px);object-fit:cover;z-index:0;
+  /* the banner still sits underneath as the paint-first layer */
+  filter:saturate(.92) contrast(1.04) brightness(.86)}
+.hero .scrim{z-index:1}
+.hero .inner{position:relative;z-index:2}
+@media(prefers-reduced-motion:reduce){
+  /* poster only -- never autoplay motion at someone who asked us not to */
+  .hero .herovid{display:none}
+}
+@media(max-width:720px){
+  /* a few MB of video on cell data is a real cost; keep the still on phones */
+  .hero .herovid{display:none}
+}
+"""
+
+if HERO_VIDEO:
+    CSS = CSS + HERO_CSS
 
 MOTION_CSS = """
 /* ---- homepage motion (MOTION = True) ---- */
@@ -875,9 +929,24 @@ def glance_cell(g, league, season):
 
 
 def build_index(league, all_seasons, content, pts, about, bug="",
-                belt=None, belt_titles=0, n_seasons=1):
+                belt=None, belt_titles=0, n_seasons=1, clips=None):
     s2 = all_seasons[-1]
     season = s2.get("season", league["league"]["current_season"])
+    # Gameplay behind the hero. The poster frame paints first so there is never
+    # a blank band, and it is all that shows for reduced-motion visitors -- the
+    # CSS hides the video element rather than letting it autoplay.
+    if clips and HERO_VIDEO:
+        srcs = "".join('<source src="%s" type="video/%s">'
+                       % (u, "webm" if u.endswith(".webm") else "mp4")
+                       for u in clips[0])
+        banner_html = (
+            '<div class="banner"></div>'
+            '<video class="herovid" autoplay muted loop playsinline preload="auto" '
+            'poster="media/video/hero-poster.jpg" '
+            'data-clips=\'%s\'>%s</video>' % (json.dumps(clips), srcs))
+    else:
+        banner_html = '<div class="banner"></div>'
+
     heroflash_html = ""
     if MOTION:
         latest = _latest_result(s2)
@@ -891,7 +960,7 @@ def build_index(league, all_seasons, content, pts, about, bug="",
                    w, sc, l, lab))
 
     hero = (f'<div class="hero">'
-            f'<div class="banner"></div><div class="scrim"></div>'
+            f'{banner_html}<div class="scrim"></div>'
             f'{heroflash_html}'
             f'<div class="inner">'
             f'<div class="eyebrow">Campus Kings &middot; Season '
@@ -1379,6 +1448,27 @@ def main():
         if src.exists():
             shutil.copy(src, SITE / "media" / f)
 
+    # Hero clips. Any mp4 in media_src/video/ is picked up automatically, so
+    # adding a highlight is dropping a file in -- no code change.
+    clips = []
+    vsrc = MEDIA_SRC / "video"
+    if vsrc.is_dir():
+        (SITE / "media" / "video").mkdir(exist_ok=True)
+        groups = {}
+        for f in sorted(vsrc.iterdir()):
+            if f.suffix.lower() not in (".webm", ".mp4", ".jpg"):
+                continue
+            shutil.copy(f, SITE / "media" / "video" / f.name)
+            if f.suffix.lower() in (".webm", ".mp4"):
+                # one entry per highlight, listing whichever formats exist, so
+                # rotation advances between clips and not between encodings
+                groups.setdefault(f.stem, []).append("media/video/" + f.name)
+        for stem in sorted(groups):
+            # webm first where present; mp4 is the universal fallback
+            clips.append(sorted(groups[stem], key=lambda u: not u.endswith(".webm")))
+        if clips:
+            print("  %d hero clip(s)" % len(clips))
+
     copied = 0
     total = 0
     missing = []
@@ -1418,7 +1508,7 @@ def main():
     profiles.PROFILED = PROFILED
     profiles.clink = clink
 
-    (SITE / "index.html").write_text(build_index(league, all_seasons, content, pts, about, bug, belt, belt_titles, len(seasons)), encoding="utf-8")
+    (SITE / "index.html").write_text(build_index(league, all_seasons, content, pts, about, bug, belt, belt_titles, len(seasons), clips), encoding="utf-8")
     (SITE / "standings.html").write_text(build_standings(league, cur_season, pts, bug, len(seasons), belt, belt_titles), encoding="utf-8")
     (SITE / "rules.html").write_text(build_rules(rules, bug), encoding="utf-8")
     (SITE / "history.html").write_text(build_history(league, all_seasons, bug), encoding="utf-8")
