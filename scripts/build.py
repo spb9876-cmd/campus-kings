@@ -48,6 +48,13 @@ PRESS = THEME == "press"
 #   "night"  always the dark palette
 SCHEME = "clock"
 
+# Homepage motion: counters rolling up on the belt panel, the 20-season progress
+# bar, the newest final flashing in the hero before the ticker, and a one-time
+# confetti burst when a season's title game is fresh. False removes every bit of
+# it -- no CSS, no JS, no markup hooks -- and all of it already sits behind
+# prefers-reduced-motion for visitors who've turned motion off.
+MOTION = True
+
 # Runs synchronously in <head>, before anything paints, so the correct palette is
 # in place on the first frame -- set it from a deferred script and every visitor
 # after 7pm sees a white flash first. Intl with an IANA zone is used rather than
@@ -67,6 +74,86 @@ CLOCK_JS = """<script>
   }
   apply();
   setInterval(apply,60000);             /* flip a page that's been left open */
+})();
+</script>"""
+
+
+MOTION_JS = """<script>
+(function(){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  /* Counters: any element with data-count rolls up from 0 when scrolled in. */
+  function roll(el){
+    var end = parseFloat(el.dataset.count), dur = 900, t0 = null;
+    function step(t){
+      if (t0 === null) t0 = t;
+      var p = Math.min((t - t0) / dur, 1);
+      p = 1 - Math.pow(1 - p, 3);                     /* ease-out cubic */
+      el.textContent = Math.round(end * p);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var seen = new WeakSet();
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if (e.isIntersecting && !seen.has(e.target)){
+        seen.add(e.target); roll(e.target); io.unobserve(e.target);
+      }
+    });
+  }, {threshold:.6});
+  document.querySelectorAll('[data-count]').forEach(function(el){io.observe(el);});
+
+  /* Belt bar: markup ships pre-lit so no-JS and reduced-motion users see the
+     true state; with motion we strip the classes and replay them in sequence. */
+  document.querySelectorAll('.beltbar').forEach(function(bar){
+    var done = +bar.dataset.done || 0, live = +bar.dataset.live || 0;
+    var segs = bar.querySelectorAll('i');
+    segs.forEach(function(seg){seg.classList.remove('on','live');});
+    segs.forEach(function(seg, i){
+      if (i < done) setTimeout(function(){seg.classList.add('on');}, 350 + i*140);
+      else if (i < done + live)
+        setTimeout(function(){seg.classList.add('live');}, 350 + i*140);
+    });
+  });
+
+  /* Hero flash: the newest final, big, once per result per browser. */
+  var hf = document.querySelector('.heroflash');
+  if (hf){
+    var key = 'ck-flash-' + hf.dataset.key;
+    try {
+      if (!localStorage.getItem(key)){
+        hf.classList.add('play');
+        localStorage.setItem(key, '1');
+      }
+    } catch(e){ hf.classList.add('play'); }
+  }
+
+  /* Champion confetti: only when the newest season's title game is fresh. */
+  var pop = document.querySelector('[data-champion]');
+  if (pop){
+    var ckey = 'ck-champ-' + pop.dataset.champion;
+    var fresh = false;
+    try { fresh = !localStorage.getItem(ckey); if (fresh) localStorage.setItem(ckey,'1'); }
+    catch(e){ fresh = true; }
+    if (fresh){
+      pop.classList.add('champpop');
+      var wrap = document.createElement('div');
+      wrap.className = 'confetti';
+      var colors = ['#dfa839','#f4f2ea','#9e2b25','#a9863f'];
+      for (var i = 0; i < 90; i++){
+        var f = document.createElement('i');
+        f.style.left = (Math.random()*100) + 'vw';
+        f.style.background = colors[i % colors.length];
+        f.style.animationDuration = (2.6 + Math.random()*2.4) + 's';
+        f.style.animationDelay = (Math.random()*1.4) + 's';
+        f.style.transform = 'rotate(' + (Math.random()*360) + 'deg)';
+        wrap.appendChild(f);
+      }
+      document.body.appendChild(wrap);
+      setTimeout(function(){ wrap.remove(); }, 6800);
+    }
+  }
 })();
 </script>"""
 
@@ -300,6 +387,8 @@ footer{border-top:1px solid var(--rule);padding:26px 0 34px;font-size:10.5px;let
 .tk .gw{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#0b0b0d;
   background:var(--golddim);border-radius:2px;padding:2px 5px}
 @media(prefers-reduced-motion:reduce){.ticker .track{animation:none}}
+
+
 @media(max-width:720px){.rulegrid{grid-template-columns:1fr}.toc{display:none}
   /* tiebreaker columns are reference detail; drop them rather than let the
      table push the whole page sideways on a phone */
@@ -314,6 +403,48 @@ footer{border-top:1px solid var(--rule);padding:26px 0 34px;font-size:10.5px;let
   nav a{white-space:nowrap;flex:0 0 auto}}
 .section{overflow-x:auto}
 """
+
+MOTION_CSS = """
+/* ---- homepage motion (MOTION = True) ---- */
+.beltbar{display:flex;gap:4px;margin-top:16px}
+.beltbar i{flex:1;height:5px;background:var(--rule);border-radius:1px;
+  transition:background .4s ease}
+.beltbar i.on{background:var(--gold)}
+.beltbar i.live{background:var(--golddim);opacity:.65}
+.beltbar-lab{font-size:10px;letter-spacing:1.6px;color:var(--muted2);margin-top:8px}
+
+.heroflash{position:absolute;left:0;right:0;bottom:26px;text-align:center;
+  opacity:0;pointer-events:none;z-index:3}
+.heroflash .in{display:inline-block;padding:10px 22px;background:rgba(10,10,12,.82);
+  border:1px solid var(--golddim);border-radius:2px}
+.heroflash .fw{font-family:'Anton','DejaVu Sans Condensed',Impact,sans-serif;
+  font-size:22px;letter-spacing:.5px;color:#f4f2ea;text-transform:uppercase}
+.heroflash .fs{color:var(--gold);margin:0 10px}
+.heroflash .fl{display:block;color:#8d8b82;font-size:10px;
+  letter-spacing:2px;text-transform:uppercase;margin-top:6px}
+.heroflash .fk{display:block;font-size:9px;letter-spacing:2.6px;color:var(--gold);
+  margin-bottom:5px;text-transform:uppercase}
+.heroflash.play{animation:flashin 3.4s ease forwards}
+@keyframes flashin{0%{opacity:0;transform:translateY(14px)}
+  8%{opacity:1;transform:translateY(0)}78%{opacity:1}100%{opacity:0}}
+
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden}
+.confetti i{position:absolute;top:-14px;width:7px;height:11px;opacity:.9;
+  animation:cfall linear forwards}
+@keyframes cfall{to{transform:translateY(105vh) rotate(660deg);opacity:.15}}
+.champpop{animation:champin 1.1s cubic-bezier(.16,1.2,.3,1) both}
+@keyframes champin{0%{opacity:0;transform:scale(.82)}100%{opacity:1;transform:scale(1)}}
+
+@media(prefers-reduced-motion:reduce){
+  .heroflash{display:none}
+  .confetti{display:none}
+  .champpop{animation:none}
+  .beltbar i{transition:none}
+}
+"""
+
+if MOTION:
+    CSS = CSS + MOTION_CSS
 
 # --------------------------------------------------------------------------
 # Everything below is layered on top of the sheet above. It redefines; it never
@@ -522,7 +653,7 @@ def shell(title, active, body, hero=None, bug=""):
 {hero or ""}
 <div class="wrap">{body}</div>
 <footer>Campus Kings &middot; CFB 27 Online Dynasty<br>Updated {fmt_date(date.today().isoformat())}</footer>
-</body></html>
+{MOTION_JS if MOTION else ""}</body></html>
 """
 
 
@@ -715,12 +846,53 @@ def glance_figure(g, league, season):
     return fig
 
 
+def _latest_result(season_data):
+    """(label, winner, score, loser) for the biggest most-recent game, or None."""
+    entries = []
+    for r in season_data.get("results", []):
+        entries.append(((0, r["week"]), "Week %s" % r["week"], r))
+    for cc in season_data.get("conference_championships") or []:
+        entries.append(((1, 0), "%s title" % cc["conference"], cc))
+    for g in season_data.get("playoffs") or []:
+        rnd = g.get("round")
+        lab = {"R1": "Playoff round 1", "QF": "Quarterfinal",
+               "SF": "Semifinal", "NC": "National Championship"}.get(rnd, "Playoff")
+        entries.append(((2, PO_ORDER.get(rnd, 0)), lab, g))
+    if not entries:
+        return None
+    entries.sort(key=lambda e: e[0], reverse=True)
+    lab, g = entries[0][1], entries[0][2]
+    sc = "%d&ndash;%d" % tuple(g["score"]) if g.get("score") else "TBD"
+    return lab, g["winner"], sc, g["loser"]
+
+
+def glance_cell(g, league, season):
+    """A glance figure, wrapped for the counter roll when it is a plain number."""
+    v = glance_figure(g, league, season)
+    if MOTION and str(v).isdigit():
+        return "<span data-count='%s'>%s</span>" % (v, v)
+    return v
+
+
 def build_index(league, all_seasons, content, pts, about, bug="",
                 belt=None, belt_titles=0, n_seasons=1):
     s2 = all_seasons[-1]
     season = s2.get("season", league["league"]["current_season"])
+    heroflash_html = ""
+    if MOTION:
+        latest = _latest_result(s2)
+        if latest:
+            lab, w, sc, l = latest
+            heroflash_html = (
+                "<div class='heroflash' data-key='s%d-%s-%s'><span class='in'>"
+                "<span class='fw'>%s <span class='fs'>%s</span> %s</span>"
+                "<span class='fl'>%s &middot; final</span></span></div>"
+                % (season, lab.lower().replace(" ", ""), w.lower().replace(" ", "-"),
+                   w, sc, l, lab))
+
     hero = (f'<div class="hero">'
             f'<div class="banner"></div><div class="scrim"></div>'
+            f'{heroflash_html}'
             f'<div class="inner">'
             f'<div class="eyebrow">Campus Kings &middot; Season '
             f'{league["league"]["current_season"]} in progress</div>'
@@ -741,7 +913,7 @@ def build_index(league, all_seasons, content, pts, about, bug="",
             f'<div class="qd">Champions, brackets, moves</div></a>'
             f'</div>'
             f'<div class="glance"><div class="inner">'
-            + "".join(f"<div class='cell'><div class='fig'>{glance_figure(g, league, season)}</div>"
+            + "".join(f"<div class='cell'><div class='fig'>{glance_cell(g, league, season)}</div>"
                       f"<div class='lab'>{g['label']}</div></div>"
                       for g in about["at_a_glance"])
             + "</div></div>")
@@ -759,8 +931,10 @@ def build_index(league, all_seasons, content, pts, about, bug="",
 
     if belt:
         belt_names = " &middot; ".join(clink(league, r["coach"]) for r in belt)
-        belt_line = "%d national championship%s" % (belt_titles,
-                                                   "" if belt_titles == 1 else "s")
+        _n = ("<span data-count='%d'>%d</span>" % (belt_titles, belt_titles)
+              if MOTION else str(belt_titles))
+        belt_line = "%s national championship%s" % (_n,
+                                                    "" if belt_titles == 1 else "s")
         if len(belt) > 1:
             belt_line += " each"
     else:
@@ -773,12 +947,33 @@ def build_index(league, all_seasons, content, pts, about, bug="",
     if live_now:
         pts_label += " &middot; season %d in progress" % sn
 
+    total = league["league"]["accredited_seasons"]
+    live_ct = 1 if live_now else 0
+    if MOTION:
+        segs = "".join(
+            "<i class='on'></i>" if i < n_seasons else
+            ("<i class='live'></i>" if i < n_seasons + live_ct else "<i></i>")
+            for i in range(total))
+        beltbar_html = (
+            "<div class='beltbar' data-done='%d' data-live='%d'>%s</div>"
+            "<div class='beltbar-lab'>%d of %d seasons decided</div>"
+            % (n_seasons, live_ct, segs, n_seasons, total))
+        # one-time confetti when the newest season's title game is fresh
+        if bracket_is_final(s2):
+            champ = s2.get("champion") or next(g["winner"] for g in s2["playoffs"]
+                                               if g["round"] == "NC")
+            beltbar_html += ("<span data-champion='s%d-%s' style='display:none'></span>"
+                             % (season, champ.lower().replace(" ", "-")))
+    else:
+        beltbar_html = ""
+
     b.append(f"""<div class="section"><h2 class="sec">The Campus King Belt</h2>
 <div class="belt"><div class="lbl">Current leader</div>
 <div class="who">{belt_names}</div>
 <div class="meta">{belt_line} &middot;
 The belt goes to the coach with the most titles across
-{league['league']['accredited_seasons']} accredited seasons. Rings matter most.</div></div>
+{league['league']['accredited_seasons']} accredited seasons. Rings matter most.</div>
+{beltbar_html}</div>
 <h2 class="sec" style="margin-top:36px">Playoff Points &middot; {pts_label}</h2>""")
     for r in pts[:8]:
         b.append(f"""<div class="row"><span class="num">{r['rank']}</span><div class="bd">
