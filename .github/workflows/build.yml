@@ -1,9 +1,9 @@
 name: build
 
 on:
-  # Pull the Sheet on the hour and check it still builds
-  schedule: [{ cron: "0 * * * *" }]
-  # "Run workflow" button in the Actions tab
+  # Pull the Sheet twice a day: 9am and 9pm Central (14:00 / 02:00 UTC)
+  schedule: [{ cron: "0 2,14 * * *" }]
+  # "Run workflow" button in the Actions tab fires it on demand
   workflow_dispatch:
   # Validate every push
   push:
