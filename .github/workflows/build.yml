@@ -13,12 +13,13 @@ concurrency:
   group: build
   cancel-in-progress: false
 
-# Read-only. This workflow does not publish and does not commit -- Pages deploys
-# from the docs/ folder on main, which your own `git push` updates. That is why
-# there are no configure-pages / upload-pages-artifact steps here: those fail
-# unless Settings > Pages > Source is set to "GitHub Actions".
+# Scheduled and manual runs pull the Sheet, rebuild, and commit the result --
+# Pages deploys from the docs/ folder on main, so that commit IS the publish.
+# Push runs stay validate-only: they build exactly what was committed, and the
+# auto-commit itself triggers one, which is how a scheduled publish gets its
+# green check without looping.
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -48,8 +49,18 @@ jobs:
       - name: Build site
         run: python3 scripts/build.py
 
-      # Nothing is committed or deployed. If the Sheet had new scores, this run
-      # proves they ingest and build cleanly; run ingest locally and push to
-      # publish them.
-      - name: Summary
-        run: echo "Validated. Deploys happen from committed docs/ on push."
+      # New scores flow straight to the live site: if ingest changed the season
+      # data, commit it together with the rebuilt docs/ and push. Pages picks
+      # the commit up on its own. Push-triggered runs never reach this step.
+      - name: Publish refreshed data
+        if: github.event_name != 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data docs
+          if git diff --cached --quiet; then
+            echo "No new scores - nothing to publish."
+          else
+            git commit -m "Auto-publish: new results from the Sheet"
+            git push
+          fi
