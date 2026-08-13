@@ -113,16 +113,28 @@ MOTION_JS = r"""<script>
          is driven explicitly below instead */
       hv.removeAttribute('autoplay');
       var idx = Math.floor(Math.random() * list.length);   /* vary per visit */
+      var skips = 0;                     /* cap error-skips so two dead files
+                                            can't chase each other forever */
       /* Each entry is the format list for ONE clip. Rebuild the <source>
          children rather than assigning .src, so the browser keeps choosing a
          format it can decode. */
       var setClip = function(v, i){
+        v._ci = i;
         v.innerHTML = '';
+        var last = null;
         list[i].forEach(function(u){
           var sc = document.createElement('source');
           sc.src = u;
           sc.type = /\.webm$/.test(u) ? 'video/webm' : 'video/mp4';
           v.appendChild(sc);
+          last = sc;
+        });
+        /* the browser fires 'error' on the LAST source when no format worked;
+           a clip that can't decode gets skipped instead of wedging the show */
+        if (last) last.addEventListener('error', function(){
+          if (skips++ > list.length * 2) return;
+          setClip(v, (v._ci + 1) % list.length);
+          if (v === cur) v.play().catch(function(){});
         });
         v.load();
       };
@@ -154,9 +166,10 @@ MOTION_JS = r"""<script>
         top.style.opacity = (off === top) ? 1 : 0;
         setTimeout(function(){
           cur.pause();
-          idx = (idx + 1) % list.length;
           var t = cur; cur = off; off = t;
-          setClip(off, (idx + 1) % list.length);
+          /* derive the next preload from what is actually playing, so an
+             error-skip above can't desynchronize the rotation */
+          setClip(off, (cur._ci + 1) % list.length);
           fading = false;
         }, 850);                        /* just past the .8s opacity fade */
       };
