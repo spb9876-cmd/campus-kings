@@ -49,6 +49,16 @@ jobs:
       - name: Build site
         run: python3 scripts/build.py
 
+      # Tripwire for the class of bug that once shipped a video-less hero from
+      # this runner (Windows/Linux folder-case mismatch): if the built homepage
+      # has no clip rotation or the poster is missing, fail loudly instead of
+      # publishing. Remove this check only if hero video is retired on purpose.
+      - name: Hero clips sanity check
+        run: |
+          grep -q "data-clips" docs/index.html
+          test -f docs/media/video/hero-poster.jpg
+          test "$(ls docs/media/video/*.mp4 | wc -l)" -ge 4
+
       # New scores flow straight to the live site: if ingest changed the season
       # data, commit it together with the rebuilt docs/ and push. Pages picks
       # the commit up on its own. Push-triggered runs never reach this step.
