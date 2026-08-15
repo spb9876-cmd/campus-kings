@@ -1823,7 +1823,12 @@ def main():
     # Hero clips. Any mp4 in media_src/video/ is picked up automatically, so
     # adding a highlight is dropping a file in -- no code change.
     clips = []
-    vsrc = MEDIA_SRC / "video"
+    # Accept any casing of the folder name: Windows treats video/ and Video/
+    # as the same directory, but the Actions runner is case-sensitive Linux,
+    # and a mismatch there silently built a hero with no clips at all.
+    vsrc = next((d for d in MEDIA_SRC.iterdir()
+                 if d.is_dir() and d.name.lower() == "video"),
+                MEDIA_SRC / "video")
     if vsrc.is_dir():
         (SITE / "media" / "video").mkdir(exist_ok=True)
         groups = {}
