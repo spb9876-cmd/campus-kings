@@ -1,0 +1,106 @@
+{
+  "season": 3,
+  "status": "in_progress",
+  "results": [
+    {
+      "week": 1,
+      "winner": "Washington",
+      "loser": "Florida State",
+      "score": [
+        31,
+        28
+      ]
+    },
+    {
+      "week": 1,
+      "winner": "Florida",
+      "loser": "Arizona State",
+      "score": [
+        31,
+        23
+      ]
+    },
+    {
+      "week": 1,
+      "winner": "SMU",
+      "loser": "BYU",
+      "score": [
+        44,
+        19
+      ]
+    },
+    {
+      "week": 1,
+      "winner": "Oklahoma",
+      "loser": "Notre Dame",
+      "score": [
+        28,
+        3
+      ]
+    },
+    {
+      "week": 1,
+      "winner": "Oregon",
+      "loser": "Tennessee",
+      "score": [
+        45,
+        27
+      ]
+    },
+    {
+      "week": 1,
+      "winner": "Miami",
+      "loser": "Alabama",
+      "score": [
+        28,
+        20
+      ]
+    },
+    {
+      "week": 2,
+      "winner": "Penn State",
+      "loser": "Texas",
+      "score": [
+        43,
+        40
+      ]
+    },
+    {
+      "week": 2,
+      "winner": "Oregon",
+      "loser": "Baylor",
+      "score": [
+        35,
+        10
+      ]
+    },
+    {
+      "week": 2,
+      "winner": "Michigan",
+      "loser": "Florida",
+      "score": [
+        45,
+        14
+      ]
+    },
+    {
+      "week": 2,
+      "winner": "Washington",
+      "loser": "UCLA",
+      "score": [
+        45,
+        32
+      ]
+    },
+    {
+      "week": 2,
+      "winner": "Ole Miss",
+      "loser": "Notre Dame",
+      "score": [
+        42,
+        38
+      ]
+    }
+  ],
+  "current_week": 2
+}
