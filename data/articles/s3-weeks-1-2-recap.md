@@ -12,7 +12,7 @@ Tayne's own scouting report afterward, in the chat, verbatim: "My team is worse 
 
 ## The Stream Game
 
-**Ole Miss 42, Notre Dame 38.** Played live on stream for the whole league, and the group chat did not disappoint. Pat outgained Tayne 499-480, survived four Notre Dame fourth-down conversions without needing one of his own, and escaped by four in a game that produced a solid hour of film-room litigation afterward — prayers versus dropped picks, a 6'6" tight end posting up a 6'5" safety, and Tayne's closing verdict on the sport itself: "This game wack asf."
+**Ole Miss 42, Notre Dame 38.** Played live on stream for the whole league, and the group chat did not disappoint. Tayne outgained Pat 499-480 and went for it on fourth down four times to Pat's zero — and still lost by four, in a game that produced a solid hour of film-room litigation afterward — prayers versus dropped picks, a 6'6" tight end posting up a 6'5" safety, and Tayne's closing verdict on the sport itself: "This game wack asf."
 
 His summary of the standings was better. **"Nothing is free in Campus Kings."** No it is not, and Notre Dame is 0-2 with the AD already circling: "We ain't making playoffs so I'm gonna get fired cause the AD was expecting me to go undefeated and win a natty."
 
