@@ -1,0 +1,73 @@
+name: announce-content
+
+# Fires only when a commit on main touches the content manifest -- which is
+# how content ships (a merged content PR or a manual post). The twice-daily
+# score auto-publish never edits content.json, so it can't trigger this.
+on:
+  push:
+    branches: [main]
+    paths: [data/content.json]
+
+permissions:
+  contents: read
+
+jobs:
+  announce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 2 }
+
+      # Diff the manifest against the previous commit; every genuinely new
+      # entry gets one @everyone post in the #website channel via webhook.
+      # No webhook secret -> skip quietly rather than fail the pipeline.
+      - name: Post new content to Discord
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          if [ -z "$WEBHOOK" ]; then
+            echo "DISCORD_WEBHOOK_URL secret not set - skipping announcement."
+            exit 0
+          fi
+          python3 - <<'EOF'
+          import json, os, re, subprocess, urllib.request
+
+          SITE = "https://spb9876-cmd.github.io/campus-kings/"
+
+          def entries(rev):
+              try:
+                  raw = subprocess.check_output(
+                      ["git", "show", "%s:data/content.json" % rev],
+                      stderr=subprocess.DEVNULL)
+                  return json.loads(raw)["content"]
+              except Exception:
+                  return []
+
+          def slug(text):
+              return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+
+          old = {(c["title"], c["date"]) for c in entries("HEAD^")}
+          new = [c for c in entries("HEAD") if (c["title"], c["date"]) not in old]
+          if not new:
+              print("content.json changed but no new entries - nothing to announce")
+              raise SystemExit(0)
+
+          for c in new:
+              if c.get("article"):
+                  url = SITE + "post-%s.html" % slug(c.get("slug") or c["title"])
+              else:
+                  url = SITE + "content.html"
+              msg = ("@everyone New on the site: **%s**\n%s\n%s"
+                     % (c["title"], c.get("blurb", ""), url))
+              body = json.dumps({
+                  "content": msg,
+                  "allowed_mentions": {"parse": ["everyone"]},
+              }).encode()
+              req = urllib.request.Request(
+                  os.environ["WEBHOOK"], data=body,
+                  headers={"Content-Type": "application/json",
+                           "User-Agent": "campus-kings-announce"})
+              urllib.request.urlopen(req, timeout=20)
+              print("announced:", c["title"])
+          EOF
