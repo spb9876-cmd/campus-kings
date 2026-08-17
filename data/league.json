@@ -290,6 +290,10 @@
     {
       "id": "fields",
       "name": "Fields Finest"
+    },
+    {
+      "id": "jt",
+      "name": "JT"
     }
   ],
   "tenures": [
@@ -504,6 +508,12 @@
       "coach": "fields",
       "from": "S3W0",
       "note": "hired for Season Three; Auburn CPU-held since S2W2"
+    },
+    {
+      "team": "Missouri",
+      "coach": "jt",
+      "from": "S3W3",
+      "note": "joined league Season Three; Missouri CPU-held since S2W0"
     }
   ],
   "legacy_championships": {
@@ -530,7 +540,6 @@
       "Cal"
     ],
     "S3": [
-      "Missouri",
       "Kansas",
       "Utah",
       "Oklahoma State",
