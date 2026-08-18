@@ -45,7 +45,8 @@
       "score": [
         45,
         27
-      ]
+      ],
+      "gotw": true
     },
     {
       "week": 1,
@@ -63,7 +64,8 @@
       "score": [
         43,
         40
-      ]
+      ],
+      "gotw": true
     },
     {
       "week": 2,
@@ -81,7 +83,8 @@
       "score": [
         45,
         14
-      ]
+      ],
+      "gotw": true
     },
     {
       "week": 2,
@@ -100,7 +103,82 @@
         42,
         38
       ]
+    },
+    {
+      "week": 2,
+      "winner": "Georgia",
+      "loser": "Ohio State",
+      "score": [
+        35,
+        31
+      ]
+    },
+    {
+      "week": 2,
+      "winner": "TCU",
+      "loser": "Texas Tech",
+      "score": [
+        47,
+        7
+      ],
+      "note": "FW"
+    },
+    {
+      "week": 3,
+      "winner": "Alabama",
+      "loser": "SMU",
+      "score": [
+        34,
+        14
+      ]
+    },
+    {
+      "week": 3,
+      "winner": "Notre Dame",
+      "loser": "Texas",
+      "score": [
+        41,
+        21
+      ],
+      "gotw": true
+    },
+    {
+      "week": 3,
+      "winner": "Georgia",
+      "loser": "Florida State",
+      "score": [
+        27,
+        14
+      ]
+    },
+    {
+      "week": 3,
+      "winner": "Arizona State",
+      "loser": "Texas Tech",
+      "score": [
+        48,
+        31
+      ]
+    },
+    {
+      "week": 3,
+      "winner": "LSU",
+      "loser": "BYU",
+      "score": [
+        48,
+        34
+      ],
+      "note": "FW"
+    },
+    {
+      "week": 4,
+      "winner": "Ohio State",
+      "loser": "UCLA",
+      "score": [
+        80,
+        21
+      ]
     }
   ],
-  "current_week": 2
+  "current_week": 4
 }
