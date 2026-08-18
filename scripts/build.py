@@ -968,7 +968,8 @@ def ticker(season_data, limit=14):
     for r in season_data.get("results", []):
         entries.append(((0, r["week"]), "W%s" % r["week"], r["winner"],
                         r.get("score"), r["loser"],
-                        "GOTW" if r.get("gotw") else ""))
+                        profiles.exempt_tag(r)
+                        or ("GOTW" if r.get("gotw") else "")))
 
     for cc in season_data.get("conference_championships") or []:
         entries.append(((1, 0), cc["conference"], cc["winner"],
@@ -1202,14 +1203,20 @@ def league_records(season_data, league, season_no):
             if cid:
                 rec[cid][idx] += 1
 
+    # FW/SIM games (see profiles.exempt_tag) show on the site but stay out
+    # of the user-vs-user records entirely.
     for r in season_data.get("results", []):
-        add(r["winner"], r["loser"], r["week"])
+        if not profiles.exempt_tag(r):
+            add(r["winner"], r["loser"], r["week"])
     for cc in season_data.get("conference_championships") or []:
-        add(cc["winner"], cc["loser"], "PO")
+        if not profiles.exempt_tag(cc):
+            add(cc["winner"], cc["loser"], "PO")
     for bg in season_data.get("bowls") or []:
-        add(bg["winner"], bg["loser"], "PO")
+        if not profiles.exempt_tag(bg):
+            add(bg["winner"], bg["loser"], "PO")
     for g in season_data.get("playoffs") or []:
-        add(g["winner"], g["loser"], "PO")
+        if not profiles.exempt_tag(g):
+            add(g["winner"], g["loser"], "PO")
 
     out = [{"coach": cid, "w": w, "l": l} for cid, (w, l) in rec.items()]
     out.sort(key=lambda r: (-(r["w"] - r["l"]), -r["w"], r["coach"]))
@@ -1608,6 +1615,9 @@ move in the postseason, so the standings hold still until a bracket finishes.</p
         for r in by[wk]:
             sc = "%d&ndash;%d" % tuple(r["score"]) if r["score"] else "TBD"
             tag = '<span class="tag">GOTW</span>' if r.get("gotw") else ""
+            ex = profiles.exempt_tag(r)
+            if ex:
+                tag += '<span class="tag">%s</span>' % ex
             b.append(f"<tr><td class='w'>{r['winner']}{tag}</td>"
                      f"<td style='color:var(--muted)'>over {r['loser']}</td>"
                      f"<td class='s'>{sc}</td></tr>")
@@ -1624,6 +1634,9 @@ move in the postseason, so the standings hold still until a bracket finishes.</p
             wc = coach_for(league, cc["winner"], sn)
             lc = coach_for(league, cc["loser"], sn)
             sc = ("%d&ndash;%d" % tuple(cc["score"])) if cc.get("score") else "TBD"
+            ex = profiles.exempt_tag(cc)
+            if ex:
+                sc += ' <span class="tag">%s</span>' % ex
             b.append("<tr><td class='s' style='width:66px'>%s</td>"
                      "<td class='w'>%s</td>"
                      "<td style='color:var(--muted)'>over %s</td>"
@@ -1644,6 +1657,9 @@ move in the postseason, so the standings hold still until a bracket finishes.</p
             wc = coach_for(league, bg["winner"], sn)
             lc = coach_for(league, bg["loser"], sn)
             sc = ("%d&ndash;%d" % tuple(bg["score"])) if bg.get("score") else "TBD"
+            ex = profiles.exempt_tag(bg)
+            if ex:
+                sc += ' <span class="tag">%s</span>' % ex
             b.append("<tr><td class='s' style='width:96px'>%s</td>"
                      "<td class='w'>%s <span style='color:var(--muted2)'>(%s)</span></td>"
                      "<td style='color:var(--muted)'>over %s "
@@ -1936,10 +1952,11 @@ def main():
             sn = s["season"]
             h = "history.html" if s.get("status") == "complete" else "standings.html"
             def game(g, sub):
+                ex = profiles.exempt_tag(g)
                 ix.append({"k": "Result",
                            "t": "%s %d–%d %s" % (g["winner"], g["score"][0],
                                                  g["score"][1], g["loser"]),
-                           "s": sub, "h": h})
+                           "s": sub + (" · %s" % ex if ex else ""), "h": h})
             for r in s.get("results", []):
                 wk = r["week"] if isinstance(r["week"], str) else "Week %s" % r["week"]
                 game(r, "Season %d · %s%s"

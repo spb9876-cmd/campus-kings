@@ -4,6 +4,7 @@
 Derives everything from the season data — records, GOTW appearances, playoff
 runs, and a game log that names the opposing coach where there was one.
 """
+import re
 from collections import defaultdict
 
 from points import coach_for, stamp
@@ -41,6 +42,19 @@ def lifetime_rings(league, cid, prof):
     return legacy + earned
 
 
+def exempt_tag(game):
+    """FW (forfeit win) / SIM (simmed) marker from a game's note column.
+
+    Exempt games still appear in logs and on the site -- badged -- but stay
+    out of every user-vs-user W-L record.
+    """
+    note = (game.get("note") or "").upper()
+    for t in ("FW", "SIM"):
+        if re.search(r"\b%s\b" % t, note):
+            return t
+    return None
+
+
 def gather(league, seasons):
     """Build a per-coach dossier keyed by coach id."""
     prof = defaultdict(lambda: {
@@ -55,6 +69,7 @@ def gather(league, seasons):
 
         # Regular-season / league games
         for r in sdata.get("results", []):
+            ex = exempt_tag(r)
             for team, won in ((r["winner"], True), (r["loser"], False)):
                 cid = coach_for(league, team, sn, r["week"])
                 if not cid:
@@ -62,22 +77,24 @@ def gather(league, seasons):
                 opp = r["loser"] if won else r["winner"]
                 opp_cid = coach_for(league, opp, sn, r["week"])
                 p = prof[cid]
-                p["w" if won else "l"] += 1
-                if r.get("gotw"):
-                    p["gotw_w" if won else "gotw_l"] += 1
+                if not ex:
+                    p["w" if won else "l"] += 1
+                    if r.get("gotw"):
+                        p["gotw_w" if won else "gotw_l"] += 1
                 p["games"].append({
                     "season": sn, "week": r["week"], "team": team,
                     "won": won, "opp": opp,
                     "opp_coach": _cname(league, opp_cid) if opp_cid else None,
                     "opp_cid": opp_cid,
                     "score": r["score"], "gotw": bool(r.get("gotw")),
-                    "kind": "reg",
+                    "kind": "reg", "exempt": ex,
                 })
 
         # Playoffs
         labels = {"R1": "Round 1", "QF": "Quarterfinal",
                   "SF": "Semifinal", "NC": "Championship"}
         for g in sdata.get("playoffs", []):
+            ex = exempt_tag(g)
             for team, won in ((g["winner"], True), (g["loser"], False)):
                 cid = coach_for(league, team, sn)
                 if not cid:
@@ -85,7 +102,10 @@ def gather(league, seasons):
                 opp = g["loser"] if won else g["winner"]
                 opp_cid = coach_for(league, opp, sn)
                 p = prof[cid]
-                p["po_w" if won else "po_l"] += 1
+                if not ex:
+                    p["po_w" if won else "po_l"] += 1
+                # a title decided by forfeit is still a title -- only the
+                # user-vs-user W-L record leaves the game out
                 if g["round"] == "NC":
                     p["titles" if won else "runner_up"] += 1
                 p["games"].append({
@@ -94,12 +114,13 @@ def gather(league, seasons):
                     "opp_coach": _cname(league, opp_cid) if opp_cid else None,
                     "opp_cid": opp_cid,
                     "score": g["score"], "gotw": False,
-                    "kind": "playoff", "bowl": g.get("bowl"),
+                    "kind": "playoff", "bowl": g.get("bowl"), "exempt": ex,
                 })
 
         # Bowl games. Real games, so they count in the record and the log, but
         # they are outside the bracket and earn no Playoff Points.
         for bg in sdata.get("bowls") or []:
+            ex = exempt_tag(bg)
             for team, won in ((bg["winner"], True), (bg["loser"], False)):
                 cid = coach_for(league, team, sn)
                 if not cid:
@@ -107,18 +128,20 @@ def gather(league, seasons):
                 opp = bg["loser"] if won else bg["winner"]
                 opp_cid = coach_for(league, opp, sn)
                 p = prof[cid]
-                p["w" if won else "l"] += 1
+                if not ex:
+                    p["w" if won else "l"] += 1
                 p["games"].append({
                     "season": sn, "week": bg.get("bowl", "Bowl"),
                     "team": team, "won": won, "opp": opp,
                     "opp_coach": _cname(league, opp_cid) if opp_cid else None,
                     "opp_cid": opp_cid,
                     "score": bg.get("score"), "gotw": False,
-                    "kind": "bowl", "bowl": bg.get("bowl"),
+                    "kind": "bowl", "bowl": bg.get("bowl"), "exempt": ex,
                 })
 
         # Conference titles
         for cc in sdata.get("conference_championships", []):
+            ex = exempt_tag(cc)
             for team, won in ((cc["winner"], True), (cc["loser"], False)):
                 cid = coach_for(league, team, sn)
                 if not cid:
@@ -126,7 +149,9 @@ def gather(league, seasons):
                 opp = cc["loser"] if won else cc["winner"]
                 opp_cid = coach_for(league, opp, sn)
                 p = prof[cid]
-                p["w" if won else "l"] += 1
+                if not ex:
+                    p["w" if won else "l"] += 1
+                # like titles, a conference crown stands even on a forfeit
                 if won:
                     p["conf"] += 1
                 p["games"].append({
@@ -135,7 +160,7 @@ def gather(league, seasons):
                     "opp_coach": _cname(league, opp_cid) if opp_cid else None,
                     "opp_cid": opp_cid,
                     "score": cc.get("score"), "gotw": False,
-                    "kind": "conf", "conference": cc["conference"],
+                    "kind": "conf", "conference": cc["conference"], "exempt": ex,
                 })
 
     # Newest season first; within a season: regular games by week, then the
@@ -264,6 +289,8 @@ def coach_page(league, cid, prof, shell, bug, season):
             else:
                 opp += " <span class='tag'>CPU</span>"
             tags = ""
+            if g.get("exempt"):
+                tags += '<span class="tag">%s</span>' % g["exempt"]
             if g["gotw"]:
                 tags += '<span class="tag">GOTW</span>'
             # a bowl game already shows its name in the week column

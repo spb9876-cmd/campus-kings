@@ -36,6 +36,11 @@ DATA = Path(__file__).resolve().parent.parent / "data"
 #                 berth. Teams that play in the first round need no row at all.
 #   SEED       -> optional: full field with seed numbers, number in "week", team
 #                 in "winner". BYE is the short version and is usually enough.
+#
+# The optional "note" column rides along onto every game entry. Two tokens in
+# it are special (case-insensitive, anywhere in the note): "FW" marks a forfeit
+# win and "SIM" a simmed game. The site badges those games and leaves them out
+# of every user-vs-user W-L record; titles and conference crowns still stand.
 STAGES = ("R1", "QF", "SF", "NC")
 EXTRA_STAGES = ("BOWL", "SEED", "BYE")
 # The points rules call the quarterfinal "round two", so accept R2 for it.
