@@ -172,7 +172,8 @@
     },
     {
       "id": "jarvis",
-      "name": "Jarvis"
+      "name": "Jarvis",
+      "status": "departed"
     },
     {
       "id": "kj",
@@ -470,6 +471,7 @@
       "team": "Nebraska",
       "coach": "jarvis",
       "from": "S2W1",
+      "to": "S3W3",
       "note": "joined league; returning from hiatus"
     },
     {
@@ -510,10 +512,10 @@
       "note": "hired for Season Three; Auburn CPU-held since S2W2"
     },
     {
-      "team": "Missouri",
+      "team": "Nebraska",
       "coach": "jt",
       "from": "S3W3",
-      "note": "joined league Season Three; Missouri CPU-held since S2W0"
+      "note": "joined league Season Three; takes Nebraska from Jarvis"
     }
   ],
   "legacy_championships": {
@@ -540,6 +542,7 @@
       "Cal"
     ],
     "S3": [
+      "Missouri",
       "Kansas",
       "Utah",
       "Oklahoma State",
