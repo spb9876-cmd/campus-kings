@@ -1,6 +1,15 @@
 {
   "content": [
     {
+      "title": "Season Three: Weeks One and Two",
+      "kind": "Recap",
+      "season": 3,
+      "date": "2026-08-16",
+      "file": "campus_kings_s3_weeks_1_2_recap.png",
+      "blurb": "Stew opens the three-peat bid with a 28-3 statement, Tayne falls to 0-2 on stream, and the redemption wing wakes up angry.",
+      "article": "s3-weeks-1-2-recap.md"
+    },
+    {
       "title": "Season Two Final Power Rankings",
       "kind": "Power Rankings",
       "season": 2,
