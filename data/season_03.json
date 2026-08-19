@@ -178,7 +178,91 @@
         80,
         21
       ]
+    },
+    {
+      "week": 4,
+      "winner": "Ole Miss",
+      "loser": "BYU",
+      "score": [
+        34,
+        7
+      ]
+    },
+    {
+      "week": 4,
+      "winner": "Texas A&M",
+      "loser": "South Carolina",
+      "score": [
+        24,
+        16
+      ],
+      "gotw": true
+    },
+    {
+      "week": 4,
+      "winner": "Oklahoma",
+      "loser": "Auburn",
+      "score": [
+        35,
+        18
+      ],
+      "note": "FW"
+    },
+    {
+      "week": 5,
+      "winner": "Arizona State",
+      "loser": "BYU",
+      "score": [
+        37,
+        28
+      ]
+    },
+    {
+      "week": 5,
+      "winner": "Michigan",
+      "loser": "Texas A&M",
+      "score": [
+        28,
+        20
+      ]
+    },
+    {
+      "week": 5,
+      "winner": "Penn State",
+      "loser": "Nebraska",
+      "score": [
+        42,
+        21
+      ]
+    },
+    {
+      "week": 5,
+      "winner": "Washington",
+      "loser": "Indiana",
+      "score": [
+        38,
+        0
+      ],
+      "gotw": true
+    },
+    {
+      "week": 5,
+      "winner": "Florida",
+      "loser": "LSU",
+      "score": [
+        35,
+        23
+      ]
+    },
+    {
+      "week": 5,
+      "winner": "Oklahoma",
+      "loser": "Alabama",
+      "score": [
+        40,
+        35
+      ]
     }
   ],
-  "current_week": 4
+  "current_week": 5
 }
