@@ -262,6 +262,16 @@
         40,
         35
       ]
+    },
+    {
+      "week": 5,
+      "winner": "Texas Tech",
+      "loser": "Baylor",
+      "score": [
+        38,
+        20
+      ],
+      "note": "FW"
     }
   ],
   "current_week": 5
