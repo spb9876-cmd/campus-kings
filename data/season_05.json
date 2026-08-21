@@ -1,0 +1,16 @@
+{
+  "season": 5,
+  "status": "in_progress",
+  "results": [
+    {
+      "week": 7,
+      "winner": "Indiana",
+      "loser": "UCLA",
+      "score": [
+        42,
+        28
+      ]
+    }
+  ],
+  "current_week": 7
+}
