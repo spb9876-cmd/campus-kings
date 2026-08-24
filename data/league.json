@@ -295,6 +295,10 @@
     {
       "id": "jt",
       "name": "JT"
+    },
+    {
+      "id": "lux",
+      "name": "Lux"
     }
   ],
   "tenures": [
@@ -516,6 +520,12 @@
       "coach": "jt",
       "from": "S3W3",
       "note": "joined league Season Three; takes Nebraska from Jarvis"
+    },
+    {
+      "team": "Cal",
+      "coach": "lux",
+      "from": "S3W10",
+      "note": "joined league Season Three; Cal CPU-held since Quan left at S2W10"
     }
   ],
   "legacy_championships": {
@@ -546,8 +556,7 @@
       "Kansas",
       "Utah",
       "Oklahoma State",
-      "Memphis",
-      "Cal"
+      "Memphis"
     ]
   }
 }
