@@ -1,6 +1,24 @@
 {
   "content": [
     {
+      "title": "CK Rankings: The Launch Edition",
+      "kind": "CK Rankings",
+      "season": 3,
+      "date": "2026-08-24",
+      "file": "campus_kings_ck_rankings_launch.png",
+      "blurb": "One continuous board across every accredited season, and Pat's 49-10 win over Stew still doesn't touch No. 1.",
+      "article": "ck-rankings-launch.md"
+    },
+    {
+      "title": "Season Three: Weeks Six Through Nine",
+      "kind": "Recap",
+      "season": 3,
+      "date": "2026-08-24",
+      "file": "campus_kings_s3_weeks_6_9_recap.png",
+      "blurb": "Pat drops 49 on Stew in the Week 9 GOTW, Penn State answers a loss with a 42-14 blowout, and Michigan won't stop scoring.",
+      "article": "s3-weeks-6-9-recap.md"
+    },
+    {
       "title": "Season Three: Weeks Three Through Five",
       "kind": "Recap",
       "season": 3,
