@@ -513,6 +513,43 @@
         42,
         20
       ]
+    },
+    {
+      "week": 10,
+      "winner": "LSU",
+      "loser": "Texas A&M",
+      "score": [
+        31,
+        13
+      ],
+      "gotw": true
+    },
+    {
+      "week": 10,
+      "winner": "Georgia",
+      "loser": "Florida",
+      "score": [
+        35,
+        14
+      ]
+    },
+    {
+      "week": 10,
+      "winner": "Alabama",
+      "loser": "South Carolina",
+      "score": [
+        37,
+        13
+      ]
+    },
+    {
+      "week": 10,
+      "winner": "SMU",
+      "loser": "Cal",
+      "score": [
+        42,
+        17
+      ]
     }
   ],
   "current_week": 10
