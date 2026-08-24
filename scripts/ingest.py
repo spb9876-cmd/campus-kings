@@ -172,6 +172,16 @@ def main():
         except (ValueError, KeyError):
             errors.append("line %d: season must be a number" % i)
             continue
+        # A mistyped season number silently births a phantom season file and
+        # the whole site flips its "current season" to it (it happened: a
+        # season-5 row created season_05.json holding one game). league.json
+        # knows the real current season; anything past it is a typo.
+        current = league["league"]["current_season"]
+        if not 1 <= season <= current:
+            errors.append("line %d: season %d is outside 1-%d (league.json "
+                          "current_season) — fix the season cell"
+                          % (i, season, current))
+            continue
 
         # stage routes the row: blank = regular season, otherwise postseason
         stage = (row.get("stage") or "").strip().upper()

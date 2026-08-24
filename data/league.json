@@ -530,6 +530,7 @@
   ],
   "legacy_championships": {
     "_note": "Titles won BEFORE the 20-season accredited cycle. Profile pages add any titles won inside the cycle on top of these automatically.",
+    "lux": 4,
     "stew": 9,
     "jarvis": 4,
     "dre": 2,
