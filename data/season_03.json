@@ -645,7 +645,136 @@
         42,
         20
       ]
+    },
+    {
+      "week": 12,
+      "winner": "Tennessee",
+      "loser": "Florida",
+      "score": [
+        24,
+        13
+      ],
+      "note": "FW"
+    },
+    {
+      "week": 12,
+      "winner": "UCLA",
+      "loser": "USC",
+      "score": [
+        21,
+        14
+      ],
+      "note": "FW"
+    },
+    {
+      "week": 12,
+      "winner": "Clemson",
+      "loser": "Florida State",
+      "score": [
+        35,
+        17
+      ]
+    },
+    {
+      "week": 13,
+      "winner": "Michigan",
+      "loser": "Ohio State",
+      "score": [
+        50,
+        48
+      ],
+      "gotw": true,
+      "note": "4OT"
+    },
+    {
+      "week": 13,
+      "winner": "Texas",
+      "loser": "Texas A&M",
+      "score": [
+        35,
+        14
+      ]
+    },
+    {
+      "week": 13,
+      "winner": "Notre Dame",
+      "loser": "USC",
+      "score": [
+        56,
+        21
+      ]
+    },
+    {
+      "week": 13,
+      "winner": "Penn State",
+      "loser": "UCLA",
+      "score": [
+        36,
+        35
+      ],
+      "note": "FW"
+    },
+    {
+      "week": 13,
+      "winner": "Miami",
+      "loser": "Cal",
+      "score": [
+        41,
+        23
+      ],
+      "note": "FW"
+    },
+    {
+      "week": 13,
+      "winner": "Oklahoma",
+      "loser": "LSU",
+      "score": [
+        47,
+        36
+      ],
+      "note": "FW"
+    },
+    {
+      "week": 13,
+      "winner": "Alabama",
+      "loser": "Auburn",
+      "score": [
+        63,
+        44
+      ],
+      "note": "FW"
+    },
+    {
+      "week": 13,
+      "winner": "Florida State",
+      "loser": "Florida",
+      "score": [
+        28,
+        20
+      ],
+      "note": "FW"
+    },
+    {
+      "week": 13,
+      "winner": "Clemson",
+      "loser": "South Carolina",
+      "score": [
+        42,
+        13
+      ],
+      "note": "FW"
     }
   ],
-  "current_week": 12
+  "current_week": 13,
+  "conference_championships": [
+    {
+      "conference": "SEC",
+      "winner": "Ole Miss",
+      "loser": "Oklahoma",
+      "score": [
+        33,
+        26
+      ]
+    }
+  ]
 }

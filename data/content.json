@@ -1,22 +1,42 @@
 {
   "content": [
     {
-      "title": "Postseason Preview",
+      "title": "Championship Week",
       "kind": "Playoff Preview",
       "season": 3,
       "date": "2026-08-27",
-      "file": "campus_kings_s3_postseason_preview.png",
-      "blurb": "Twelve weeks down, nothing official yet — Pat and Stew have all four bye spots split down the middle with the B1G, and the belt hangs on a rematch.",
-      "article": "s3-postseason-preview.md"
+      "file": "campus_kings_s3_championship_week.png",
+      "blurb": "Pat takes the SEC crown out of Norman 33-26 — the first coach to ever beat Stew twice in a season — and three title games still stand between the league and the bracket.",
+      "article": "s3-championship-week.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s3_championship_week.png",
+          "caption": "Four title games — the SEC is already decided"
+        },
+        {
+          "file": "ck_biggame_s3_sec_title.jpg",
+          "caption": "Ole Miss 33, Oklahoma 26 — SEC Champions, via Bowzer in #big-games"
+        }
+      ]
     },
     {
-      "title": "Season Three: Weeks Ten Through Twelve",
+      "title": "Season Three: Weeks Ten Through Thirteen",
       "kind": "Recap",
       "season": 3,
       "date": "2026-08-27",
-      "file": "campus_kings_s3_weeks_10_12_recap.png",
-      "blurb": "Alabama rips off three straight to crash the bubble, Stew survives a shootout with Tennessee, and Penn State drops 61 on USC.",
-      "article": "s3-weeks-10-12-recap.md"
+      "file": "campus_kings_s3_weeks_10_13_recap.png",
+      "blurb": "Michigan erases 21 in The Shoe and wins a 4OT classic, Alabama rips off three straight, and Penn State drops 61.",
+      "article": "s3-weeks-10-13-recap.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s3_weeks_10_13_recap.png",
+          "caption": "Weeks 10-13 — the stretch run"
+        },
+        {
+          "file": "ck_biggame_s3w13_michigan_osu.jpg",
+          "caption": "Michigan 50, Ohio State 48 in four overtimes — via Bowzer in #big-games"
+        }
+      ]
     },
     {
       "title": "CK Rankings: The Launch Edition",
