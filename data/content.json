@@ -1,6 +1,24 @@
 {
   "content": [
     {
+      "title": "Postseason Preview",
+      "kind": "Playoff Preview",
+      "season": 3,
+      "date": "2026-08-27",
+      "file": "campus_kings_s3_postseason_preview.png",
+      "blurb": "Twelve weeks down, nothing official yet — Pat and Stew have all four bye spots split down the middle with the B1G, and the belt hangs on a rematch.",
+      "article": "s3-postseason-preview.md"
+    },
+    {
+      "title": "Season Three: Weeks Ten Through Twelve",
+      "kind": "Recap",
+      "season": 3,
+      "date": "2026-08-27",
+      "file": "campus_kings_s3_weeks_10_12_recap.png",
+      "blurb": "Alabama rips off three straight to crash the bubble, Stew survives a shootout with Tennessee, and Penn State drops 61 on USC.",
+      "article": "s3-weeks-10-12-recap.md"
+    },
+    {
       "title": "CK Rankings: The Launch Edition",
       "kind": "CK Rankings",
       "season": 3,
