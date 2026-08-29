@@ -197,10 +197,10 @@ def index_page(league, prof, shell, bug, season):
         rows.append({
             "id": cid, "name": c["name"], "team": team,
             "rings": rings,
-            # mirrors the "League record" stat on the coach's own page --
-            # playoffs are their own stat there, so they stay out here too
-            "w": p.get("w", 0),
-            "l": p.get("l", 0),
+            # League record includes playoff games, here and on the coach
+            # page -- the Playoffs stat there is a breakout, not an exclusion
+            "w": p.get("w", 0) + p.get("po_w", 0),
+            "l": p.get("l", 0) + p.get("po_l", 0),
         })
     rows.sort(key=lambda r: (-r["rings"], -r["w"], r["name"]))
 
@@ -241,7 +241,7 @@ def coach_page(league, cid, prof, shell, bug, season):
 
     stats = [
         (str(rings), "Lifetime rings"),
-        ("%d-%d" % (p["w"], p["l"]), "League record"),
+        ("%d-%d" % (p["w"] + p["po_w"], p["l"] + p["po_l"]), "League record"),
         ("%d-%d" % (p["gotw_w"], p["gotw_l"]), "Game of the Week"),
         ("%d-%d" % (p["po_w"], p["po_l"]), "Playoffs"),
         (str(p["conf"]), "Conference titles"),
@@ -315,7 +315,7 @@ def coach_page(league, cid, prof, shell, bug, season):
     b.append('<div class="dt" style="padding-top:18px">'
              '<a href="coaches.html" style="color:var(--gold)">&larr; All coaches</a></div></div>')
 
-    rec = "%d-%d" % (p["w"], p["l"])
+    rec = "%d-%d" % (p["w"] + p["po_w"], p["l"] + p["po_l"])
     return shell(name, "coaches.html", "\n".join(b), hero, bug,
                  desc="%s — %s%s, %d lifetime ring%s in Campus Kings."
                       % (name, ("coach of %s, " % team) if team else "",
