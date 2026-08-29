@@ -197,8 +197,10 @@ def index_page(league, prof, shell, bug, season):
         rows.append({
             "id": cid, "name": c["name"], "team": team,
             "rings": rings,
-            "w": p.get("w", 0) + p.get("po_w", 0),
-            "l": p.get("l", 0) + p.get("po_l", 0),
+            # mirrors the "League record" stat on the coach's own page --
+            # playoffs are their own stat there, so they stay out here too
+            "w": p.get("w", 0),
+            "l": p.get("l", 0),
         })
     rows.sort(key=lambda r: (-r["rings"], -r["w"], r["name"]))
 
@@ -213,7 +215,7 @@ def index_page(league, prof, shell, bug, season):
          'all the way back; the Belt only counts the current 20-season run.</p></div>'
          f'<div class="section">{search}{table_open}'
          '<tr><th>Coach</th><th>Current team</th>'
-         '<th>Rings</th><th>Tracked W&ndash;L</th></tr>']
+         '<th>Rings</th><th>League record</th></tr>']
     for r in rows:
         team = r["team"] or "<span style='color:var(--muted2)'>&mdash;</span>"
         rings = ("<span class='s'>%d</span>" % r["rings"]) if r["rings"] else \
