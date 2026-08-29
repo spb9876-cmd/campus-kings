@@ -35,6 +35,15 @@ in-game. Title game site: **Tampa, FL — Raymond James Stadium**.
 - Sugar Bowl: 11 Alabama vs 3 Ole Miss (Jason vs Pat)
 - Orange Bowl: 10 Tennessee vs 2 Clemson (Purp vs LT)
 
+## OWNER UPDATE (2026-08-28) — through the semifinals
+
+- The bracket has played through the quarterfinals AND semifinals.
+- **National Championship: Oregon (Bowzer) vs Ole Miss (Pat)** — Tampa, Raymond James Stadium.
+- **Semifinal, owner-confirmed: Oregon beat OKLAHOMA after trailing 15-0 at halftime** — Bowzer personally ended Stew's three-peat from fifteen down. Final score from the Sheet or Discord — do not invent it.
+- Bracket implication (safe to state): for Oklahoma to reach that semifinal, the 8-seed had to win the Rose Bowl quarterfinal over undefeated No. 1 Michigan — Stew knocked out Dre's perfect season, then Bowzer knocked out Stew. Exact scores from the Sheet only.
+- Implications that are safe to state: Stew's three-peat bid is over — the two-time champ is out of the bracket. Neither finalist has an accredited-cycle ring; whoever wins gets their first, and the winner's case in the CK Rankings changes materially. The belt (most titles) stays with Stew at two unless/until someone passes him in future seasons — but the aura conversation is a different matter.
+- Quarterfinal and semifinal winners/scores beyond the above: take ONLY from the refreshed Sheet data or verbatim Discord/big-games posts.
+
 ## Storyline notes
 
 - Stew was an 8 seed in Season 1 and won the whole thing from there. He is an
