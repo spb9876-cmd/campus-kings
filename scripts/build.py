@@ -973,15 +973,18 @@ def ticker(season_data, limit=14):
 
     for cc in season_data.get("conference_championships") or []:
         entries.append(((1, 0), cc["conference"], cc["winner"],
-                        cc.get("score"), cc["loser"], "CONF"))
+                        cc.get("score"), cc["loser"],
+                        profiles.exempt_tag(cc) or "CONF"))
 
     for bg in season_data.get("bowls") or []:
         entries.append(((1, 0), bg.get("bowl", "Bowl"), bg["winner"],
-                        bg.get("score"), bg["loser"], "BOWL"))
+                        bg.get("score"), bg["loser"],
+                        profiles.exempt_tag(bg) or "BOWL"))
 
     for g in season_data.get("playoffs") or []:
         rnd = g.get("round")
-        tag = "TITLE" if rnd == "NC" else (g.get("bowl") or "")
+        tag = (profiles.exempt_tag(g)
+               or ("TITLE" if rnd == "NC" else (g.get("bowl") or "")))
         entries.append(((2, PO_ORDER.get(rnd, 0)), rnd or "PO", g["winner"],
                         g.get("score"), g["loser"], tag))
 
@@ -1371,7 +1374,7 @@ def build_index(league, all_seasons, content, pts, about, bug="",
     pts_label = ("season one" if n_seasons == 1
                  else "through %d seasons" % n_seasons)
     if live_now:
-        pts_label += " &middot; season %d in progress" % sn
+        pts_label += " &middot; season %d in progress" % season
 
     total = league["league"]["accredited_seasons"]
     live_ct = 1 if live_now else 0

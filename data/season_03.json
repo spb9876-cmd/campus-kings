@@ -775,6 +775,117 @@
         33,
         26
       ]
+    },
+    {
+      "conference": "B1G",
+      "winner": "Michigan",
+      "loser": "Oregon",
+      "score": [
+        40,
+        28
+      ]
+    },
+    {
+      "conference": "ACC",
+      "winner": "Clemson",
+      "loser": "Miami",
+      "score": [
+        35,
+        14
+      ]
+    },
+    {
+      "conference": "BIG12",
+      "winner": "TCU",
+      "loser": "Arizona State",
+      "score": [
+        41,
+        9
+      ]
+    }
+  ],
+  "playoffs": [
+    {
+      "round": "R1",
+      "winner": "Tennessee",
+      "loser": "TCU",
+      "score": [
+        21,
+        7
+      ]
+    },
+    {
+      "round": "R1",
+      "winner": "Oklahoma",
+      "loser": "Notre Dame",
+      "score": [
+        31,
+        14
+      ]
+    },
+    {
+      "round": "R1",
+      "winner": "Alabama",
+      "loser": "Penn State",
+      "score": [
+        38,
+        24
+      ]
+    },
+    {
+      "round": "QF",
+      "winner": "Ole Miss",
+      "loser": "Alabama",
+      "score": [
+        31,
+        28
+      ]
+    },
+    {
+      "round": "QF",
+      "winner": "Oklahoma",
+      "loser": "Michigan",
+      "score": [
+        35,
+        32
+      ]
+    },
+    {
+      "round": "QF",
+      "winner": "Oregon",
+      "loser": "Miami",
+      "score": [
+        38,
+        37
+      ]
+    },
+    {
+      "round": "QF",
+      "winner": "Tennessee",
+      "loser": "Clemson",
+      "score": [
+        52,
+        17
+      ],
+      "note": "FW"
+    },
+    {
+      "round": "SF",
+      "winner": "Oregon",
+      "loser": "Oklahoma",
+      "score": [
+        23,
+        15
+      ]
+    },
+    {
+      "round": "SF",
+      "winner": "Ole Miss",
+      "loser": "Tennessee",
+      "score": [
+        45,
+        28
+      ]
     }
   ]
 }
