@@ -1,18 +1,18 @@
-He's No. 1. Let's get that out of the way in the first paragraph, because the whole point of this format is that we don't bury the call.
+He's still No. 1. Let's get that out of the way in the first paragraph, because the whole point of this format is that we don't bury the call.
 
-**Pat is No. 1.** Not because of one loud regular-season score — we already told you that doesn't move this board, back when a 49-10 win over Stew didn't touch the top spot. This is different math entirely. The permanent rule here is that the belt-race leader stays No. 1 until somebody actually dethrones him — beats him in the bracket, or passes him in titles — and only then does the board weigh the full picture. Stew got dethroned twice in eight days. Bowzer beat him in the bracket, erasing a 15-0 halftime hole to end the three-peat before it started. And Pat beat him twice at stakes this season before the bracket ever opened — 49-10 in the Week 9 Game of the Week, then 33-26 for the SEC crown, the first time anyone's swept him in a season. Then Pat went and won the whole thing. A ring, an SEC title, and a clean head-to-head over the two-time champ, all in the same eight weeks. Stew still leads the belt race 2-1. He does not lead this board anymore.
+**Stew holds.** And understand exactly what that top line just survived: Bowzer beat him in the bracket, erasing nothing less than Stew's own 15-0 halftime lead to end the three-peat. Pat swept him at stakes — 49-10 in the Week 9 Game of the Week, 33-26 for the SEC crown, the first sweep of his accredited life — and then went and won the whole thing. That is the worst eight weeks Stew has ever had in this league. And the math at the top of a board built on ALL seasons still reads the same way it did in August: **two rings to one.** Nobody else's résumé says "two-time national champion." Until somebody matches that line or takes it from him again, the seat is his. What changed is the distance to it: the gap at the top used to be a canyon. After Tampa, it's a coin flip. But a coin flip means the champ keeps the chair.
 
-Here's the exchange that tells you Stew knows it, too — before the bracket even opened, in the league chat: **"we will have a new champion this year, Oklahoma will be back next season,"** he wrote. Pat's answer: **"Heard that bullshit before."** Stew, needling back: **"Win 3 straight you have to switch."** Pat: **"So ya been letting me win huh."** Stew: **"Hell no."** Two weeks later Pat had the ring and Stew was watching the final from home. And when the bracket had run its course, Pat's own accounting of the season landed harder than anything we could write: **"Beat the mf twice an I can't get no help."** He didn't get help. He didn't need it.
+Here's the exchange that tells you the pressure at the top was real — before the bracket even opened, in the league chat: **"we will have a new champion this year, Oklahoma will be back next season,"** Stew wrote. Pat's answer: **"Heard that bullshit before."** Stew, needling back: **"Win 3 straight you have to switch."** Pat: **"So ya been letting me win huh."** Stew: **"Hell no."** Two weeks later Pat had the ring and Stew was watching the final from home. And Pat's own accounting of the season landed harder than anything we could write: **"Beat the mf twice an I can't get no help."** He didn't get help. He didn't need it. And it still wasn't enough to take the top line — that's how heavy two rings are.
 
 ---
 
 ## No. 1
 
-**Pat — Ole Miss.** A ring, an SEC Championship, and a 2-0 season sweep of the two-time champ, capped by an 18-point comeback in the title game itself — down 31-17 at the half in Tampa, won by one. That is not a résumé that argues for No. 1. It's a résumé that ends the argument.
+**Stew — Oklahoma.** Still the only two-time champion in the accredited cycle, and on a board built from the whole body of work, that is still the trump card. Yes: swept by Pat this season. Yes: beaten in the bracket by Bowzer from fifteen up at the half. The worst season of his tenure — and his résumé is still the one everybody else is chasing. The chair doesn't change hands on a bad month. It changes hands when somebody matches two rings, and nobody has.
 
 ## No. 2
 
-**Stew — Oklahoma.** Still the only two-time champion in the accredited cycle, and that number is real — it just isn't the whole board anymore. Beaten twice by Pat this season, then beaten in the bracket by Bowzer from fifteen down at the half. Two rings is a floor most of this league will never sniff. It is no longer a ceiling nobody can touch.
+**Pat — Ole Miss.** A ring, an SEC Championship, and a 2-0 season sweep of the two-time champ, capped by an 18-point comeback in the title game itself — down 31-17 at the half in Tampa, won by one. The strongest single season anyone has played in the accredited era, and it moves him to within a coin flip of the top line. One more season like this and the argument ends the other way.
 
 ## The Bridesmaids
 
@@ -36,4 +36,4 @@ Here's the exchange that tells you Stew knows it, too — before the bracket eve
 
 ---
 
-*That's the board after Tampa. The belt race is 2-1 Stew, and this board is 1-0 Pat. Those are two different arguments, and for the first time in this league's history, they don't agree.*
+*That's the board after Tampa. The belt race is 2-1 Stew, and so is the top of this board. Pat has never been closer. Nobody has. Season Four decides whether the coin flip lands.*

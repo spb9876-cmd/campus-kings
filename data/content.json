@@ -7,7 +7,17 @@
       "date": "2026-08-30",
       "file": "campus_kings_s3_championship_recap.png",
       "blurb": "Down 31-17 at the half, Pat's Rebels come all the way back to beat Bowzer's Oregon by one and win Season Three — the first champion in the accredited era not named Stew.",
-      "article": "s3-championship-recap.md"
+      "article": "s3-championship-recap.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s3_championship_recap.png",
+          "caption": "Ole Miss 35, Oregon 34 — the full title-game story"
+        },
+        {
+          "file": "ck_biggame_s3_champions.jpg",
+          "caption": "Ole Miss wins the National Championship — Pat's 3rd overall Campus Kings natty, via Bowzer in #big-games"
+        }
+      ]
     },
     {
       "title": "CK Rankings: Post-Tampa Edition",
@@ -15,7 +25,7 @@
       "season": 3,
       "date": "2026-08-30",
       "file": "campus_kings_ck_rankings_post_tampa.png",
-      "blurb": "Stew still leads the title race 2-1, but he was beaten in the bracket and swept by Pat this season. For the first time, the belt race and this board disagree — Pat is No. 1.",
+      "blurb": "Swept by Pat, beaten in the bracket by Bowzer — and Stew still holds No. 1, because nobody has matched two rings. Pat closes to a coin flip, and Season Four decides how it lands.",
       "article": "ck-rankings-post-tampa.md"
     },
     {
