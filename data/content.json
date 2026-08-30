@@ -1,6 +1,24 @@
 {
   "content": [
     {
+      "title": "Ole Miss 35, Oregon 34: Pat Wins It in Tampa",
+      "kind": "Recap",
+      "season": 3,
+      "date": "2026-08-30",
+      "file": "campus_kings_s3_championship_recap.png",
+      "blurb": "Down 31-17 at the half, Pat's Rebels come all the way back to beat Bowzer's Oregon by one and win Season Three — the first champion in the accredited era not named Stew.",
+      "article": "s3-championship-recap.md"
+    },
+    {
+      "title": "CK Rankings: Post-Tampa Edition",
+      "kind": "CK Rankings",
+      "season": 3,
+      "date": "2026-08-30",
+      "file": "campus_kings_ck_rankings_post_tampa.png",
+      "blurb": "Stew still leads the title race 2-1, but he was beaten in the bracket and swept by Pat this season. For the first time, the belt race and this board disagree — Pat is No. 1.",
+      "article": "ck-rankings-post-tampa.md"
+    },
+    {
       "title": "Road to Tampa",
       "kind": "Recap",
       "season": 3,
