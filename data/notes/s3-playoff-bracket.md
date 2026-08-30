@@ -44,6 +44,18 @@ in-game. Title game site: **Tampa, FL — Raymond James Stadium**.
 - Implications that are safe to state: Stew's three-peat bid is over — the two-time champ is out of the bracket. Neither finalist has an accredited-cycle ring; whoever wins gets their first, and the winner's case in the CK Rankings changes materially. The belt (most titles) stays with Stew at two unless/until someone passes him in future seasons — but the aura conversation is a different matter.
 - Quarterfinal and semifinal winners/scores beyond the above: take ONLY from the refreshed Sheet data or verbatim Discord/big-games posts.
 
+## OWNER UPDATE (2026-08-29) — NATIONAL CHAMPIONSHIP FINAL
+
+**Ole Miss 35, Oregon 34. Pat is the Season 3 national champion — the first champion in the accredited era not named Stew.**
+
+Owner-confirmed game details (usable as fact):
+- Ole Miss trailed **31-17 at halftime** and came back to win by one.
+- **Caleb Cunningham: 4 receptions, 118 yards, 2 TD.**
+- Freshman QB **Deshaun Oden: 11/19, 272 yards, 2 TD, 2 INT.**
+- The owner's description: a crazy back-and-forth, turnover-heavy game.
+- Symmetry worth noting: Bowzer reached Tampa by erasing 15-0 at half against Stew; he then lost Tampa to a 31-17 halftime comeback going the other way.
+- Title race after Season 3: **Stew 2, Pat 1**, seventeen seasons remaining. The belt is NOT awarded now — end of twenty seasons only.
+
 ## Storyline notes
 
 - Stew was an 8 seed in Season 1 and won the whole thing from there. He is an
