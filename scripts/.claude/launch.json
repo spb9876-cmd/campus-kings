@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "site",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8123", "-d", "../docs"],
+      "port": 8123
+    },
+    {
+      "name": "webboys-worker",
+      "runtimeExecutable": "C:/Program Files/nodejs/npx.cmd",
+      "runtimeArgs": ["wrangler", "dev", "--cwd", "C:/Users/Patrick/Desktop/the-web-boys", "--port", "8787"],
+      "port": 8787
+    }
+  ]
+}
