@@ -27,24 +27,17 @@ from points import (compute, compute_all, completed_seasons, belt_leaders,
 import profiles
 
 # ---------------------------------------------------------------------------
-# LOOK AND FEEL  --  flip this one constant to change or revert the whole thing.
+# LOOK AND FEEL -- the "Primetime" system. One design, two palettes.
 #
-#   "press"    newsprint editorial: warm off-white page, ink-red accent,
-#              Graduate display face, serif prose, sentence-case labels.
-#   "classic"  the original: near-black page, gold accent, Anton, and the
-#              small letterspaced uppercase labels throughout.
-#
-# "classic" appends no overrides and changes no copy, so setting it here
-# reproduces the previous site exactly. Nothing below this line is deleted for
-# "press" -- it is all layered on top, so the revert is total.
+# The site is the broadcast package: the same near-black, championship-gold,
+# Anton-numeral house style every published graphic already uses. Night is
+# the primary palette; day is the matinee variant of the same design.
 # ---------------------------------------------------------------------------
-THEME = "press"
-PRESS = THEME == "press"
 
-# Palette schedule, only meaningful when THEME == "press":
+# Palette schedule:
 #   "clock"  dark 7pm-7am Eastern, light 7am-7pm, for every visitor regardless
 #            of their own timezone or device setting
-#   "day"    always the light newsprint palette
+#   "day"    always the light palette
 #   "night"  always the dark palette
 SCHEME = "clock"
 
@@ -100,6 +93,16 @@ CLOCK_JS = """<script>
 MOTION_JS = r"""<script>
 (function(){
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  /* Reveal-on-scroll: html.rv arms the CSS, so no-JS and reduced-motion
+     visitors always see every section without it. */
+  document.documentElement.classList.add('rv');
+  var rio = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if (e.isIntersecting){ e.target.classList.add('in'); rio.unobserve(e.target); }
+    });
+  }, {threshold:.1, rootMargin:'0px 0px -30px 0px'});
+  document.querySelectorAll('[data-rv]').forEach(function(el){ rio.observe(el); });
 
   /* Hero clips: play through them in order rather than looping one. */
   var hv = document.querySelector('.herovid');
@@ -449,43 +452,48 @@ DYNAMIC_JS = r"""<script>
 
 DYNAMIC_CSS = """
 /* ---- interactivity (DYNAMIC = True) ---- */
-.modebtn{background:none;border:1px solid var(--rule);border-radius:2px;
-  color:var(--muted);width:30px;height:30px;flex:0 0 auto;display:flex;
-  align-items:center;justify-content:center;cursor:pointer;padding:0}
-.modebtn:hover{color:var(--ink);border-color:var(--muted)}
+.modebtn{background:none;border:1px solid var(--rule);border-radius:50%;
+  color:var(--muted);width:32px;height:32px;flex:0 0 auto;display:flex;
+  align-items:center;justify-content:center;cursor:pointer;padding:0;
+  transition:color .15s,border-color .15s}
+.modebtn:hover{color:var(--gold);border-color:var(--golddim)}
 .modebtn .moon{display:none}
 html.night .modebtn .moon{display:block}
 html.night .modebtn .sun{display:none}
 
 table.sortable th{cursor:pointer;user-select:none;white-space:nowrap}
-table.sortable th:hover{color:var(--ink)}
-table.sortable th[data-dir=desc]::after{content:" \\2193"}
-table.sortable th[data-dir=asc]::after{content:" \\2191"}
+table.sortable th:hover{color:var(--gold)}
+table.sortable th[data-dir=desc]::after{content:" \\2193";color:var(--gold)}
+table.sortable th[data-dir=asc]::after{content:" \\2191";color:var(--gold)}
 
-.searchbar{display:block;width:100%;max-width:340px;margin:0 0 18px;
-  padding:9px 12px;font:inherit;font-size:13.5px;color:var(--ink);
-  background:var(--card);border:1px solid var(--rule);border-radius:2px}
+.searchbar{display:block;width:100%;max-width:360px;margin:0 0 18px;
+  padding:10px 14px;font:inherit;font-size:13.5px;color:var(--ink);
+  background:var(--card);border:1px solid var(--rule);border-radius:4px;
+  transition:border-color .15s}
 .searchbar::placeholder{color:var(--muted2)}
-.searchbar:focus{outline:none;border-color:var(--golddim)}
+.searchbar:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--glow)}
 
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
-.chip{font:inherit;font-size:12px;letter-spacing:.3px;color:var(--muted);
-  background:var(--card);border:1px solid var(--rule);border-radius:2px;
-  padding:6px 12px;cursor:pointer}
+.chip{font:inherit;font-size:12px;letter-spacing:.4px;color:var(--muted);
+  background:var(--card);border:1px solid var(--rule);border-radius:999px;
+  padding:7px 15px;cursor:pointer;transition:color .15s,border-color .15s,background .15s}
 .chip:hover{color:var(--ink);border-color:var(--muted)}
-.chip.on{color:var(--gold);border-color:var(--golddim)}
+.chip.on{color:var(--bg);border-color:var(--gold);font-weight:700;
+  background:linear-gradient(135deg,var(--gold2),var(--gold))}
+html.night .chip.on{color:#171204}
 
-.searchbtn{background:none;border:1px solid var(--rule);border-radius:2px;
-  color:var(--muted);width:30px;height:30px;flex:0 0 auto;display:flex;
-  align-items:center;justify-content:center;cursor:pointer;padding:0}
-.searchbtn:hover{color:var(--ink);border-color:var(--muted)}
-.searchov{position:fixed;inset:0;background:rgba(8,8,10,.55);z-index:90;
+.searchbtn{background:none;border:1px solid var(--rule);border-radius:50%;
+  color:var(--muted);width:32px;height:32px;flex:0 0 auto;display:flex;
+  align-items:center;justify-content:center;cursor:pointer;padding:0;
+  transition:color .15s,border-color .15s}
+.searchbtn:hover{color:var(--gold);border-color:var(--golddim)}
+.searchov{position:fixed;inset:0;background:rgba(5,5,8,.68);z-index:90;
   display:flex;align-items:flex-start;justify-content:center;padding:11vh 20px 0}
 .searchov[hidden]{display:none}
-.searchpanel{width:100%;max-width:580px;background:var(--card);
-  border:1px solid var(--rule);border-radius:3px;overflow:hidden;
-  box-shadow:0 18px 60px rgba(0,0,0,.45)}
-.searchinput{width:100%;padding:14px 16px;font:inherit;font-size:15px;
+.searchpanel{width:100%;max-width:600px;background:var(--card);
+  border:1px solid var(--golddim);border-radius:8px;overflow:hidden;
+  box-shadow:0 24px 80px rgba(0,0,0,.5)}
+.searchinput{width:100%;padding:15px 18px;font:inherit;font-size:15px;
   color:var(--ink);background:none;border:none;border-bottom:1px solid var(--rule)}
 .searchinput:focus{outline:none}
 .searchresults{max-height:52vh;overflow-y:auto}
@@ -503,21 +511,15 @@ table.sortable th[data-dir=asc]::after{content:" \\2191"}
   color:var(--muted2);border-top:1px solid var(--rule)}
 """
 
-NIGHT_CLASS = ' class="night"' if (PRESS and SCHEME == "night") else ""
-HEAD_JS = CLOCK_JS if (PRESS and SCHEME == "clock") else ""
+NIGHT_CLASS = ' class="night"' if SCHEME == "night" else ""
+HEAD_JS = CLOCK_JS if SCHEME == "clock" else ""
 
-STANDINGS_WORD = ("&mdash; <em>The Belt</em>" if PRESS else "<em>Standings</em>")
+FONT_QUERY = "family=Anton&family=Inter:wght@400;500;600;700"
 
-FONT_QUERY = ("family=Graduate&family=Source+Serif+4:ital,wght@0,400;0,600;1,400"
-              "&family=Inter:wght@400;500;600;700" if PRESS else
-              "family=Anton&family=Inter:wght@400;600;700")
-
-NAV = ([("index.html", "Home"), ("standings.html", "The Belt"),
-        ("coaches.html", "Coaches"), ("content.html", "Archive"),
-        ("rules.html", "Rulebook"), ("history.html", "History")] if PRESS else
-       [("index.html", "Overview"), ("standings.html", "Standings"),
-        ("coaches.html", "Coaches"), ("content.html", "Archive"),
-        ("rules.html", "Rules"), ("history.html", "History")])
+NAV = [("index.html", "Home"), ("standings.html", "The Belt"),
+       ("coaches.html", "Coaches"), ("records.html", "Records"),
+       ("content.html", "Archive"), ("rules.html", "Rulebook"),
+       ("history.html", "History")]
 
 _MONTHS = ("Jan", "Feb", "March", "April", "May", "June",
            "July", "Aug", "Sept", "Oct", "Nov", "Dec")
@@ -525,8 +527,6 @@ _MONTHS = ("Jan", "Feb", "March", "April", "May", "June",
 
 def fmt_date(d):
     """'2026-08-06' -> 'Aug 6, 2026'. Nobody writes ISO dates on a website."""
-    if not PRESS:
-        return d
     try:
         y, m, day = (int(p) for p in str(d).split("-")[:3])
         return "%s %d, %d" % (_MONTHS[m - 1], day, y)
@@ -534,27 +534,59 @@ def fmt_date(d):
         return d
 
 CSS = """
+/* ============================================================
+   CAMPUS KINGS "PRIMETIME"
+   Day tokens on :root, night on html.night -- the 7am/7pm clock
+   and the navbar toggle flip that class before first paint.
+   ============================================================ */
 :root{
-  --bg:#08080a; --ink:#f4f2ea; --muted:#8d8b82; --muted2:#5a5852;
-  --gold:#dfa839; --golddim:#a9863f; --rule:#212120; --card:#101012; --card2:#141416;
-  --turf:#0d1410;
+  --bg:#f4f0e3; --ink:#171410; --muted:#5d574a; --muted2:#8f8878;
+  --gold:#96700f; --gold2:#c2952b; --golddim:#7a5a0e;
+  --rule:#ded5bd; --card:#fbf7ec; --card2:#ebe5d2; --turf:#e9e3d0;
+  --nav:rgba(244,240,227,.97);
+  --onphoto:#f6f3e8; --onphoto-dim:rgba(246,243,232,.84);
+  --onphoto-accent:#f0c65e;
+  --glow:rgba(150,112,15,.10);
+  --shadow:0 22px 60px rgba(23,20,16,.14);
+  --display:'Anton',Impact,'Arial Narrow',sans-serif;
+}
+html.night{
+  --bg:#08080b; --ink:#f4f1e6; --muted:#a09a8c; --muted2:#645f53;
+  --gold:#dfa839; --gold2:#f2cd6f; --golddim:#a9863f;
+  --rule:#232017; --card:#0f0f13; --card2:#16161b; --turf:#0d1410;
+  --nav:rgba(8,8,11,.96);
+  --onphoto-accent:#f2cd6f;
+  --glow:rgba(223,168,57,.14);
+  --shadow:0 26px 70px rgba(0,0,0,.55);
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:var(--bg)}
-body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+body{font-family:'Inter',system-ui,sans-serif;font-size:15px;color:var(--ink);
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 a{color:inherit;text-decoration:none}
-.wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:2px}
+::selection{background:var(--gold);color:var(--bg)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+.skip{position:absolute;left:-9999px;top:0;z-index:200;background:var(--gold);
+  color:#0a0a0c;padding:10px 18px;font-weight:700;font-size:13px}
+.skip:focus{left:0}
 
-.navbar{border-bottom:1px solid var(--rule);position:sticky;top:0;z-index:20;
-  background:rgba(8,8,10,.92);backdrop-filter:blur(8px)}
-.navbar .inner{max-width:1000px;margin:0 auto;padding:16px 24px;display:flex;
-  align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+/* No backdrop-filter here: blurring the page beneath a sticky bar froze the
+   renderer outright on scroll (reproduced in two browsers). A near-opaque
+   background reads the same at none of the cost. */
+.navbar{position:sticky;top:0;z-index:40;background:var(--nav)}
+.navbar::after{content:"";display:block;height:2px;background:
+  linear-gradient(90deg,transparent,var(--gold) 15%,var(--gold2) 50%,var(--gold) 85%,transparent)}
+.navbar .inner{max-width:1080px;margin:0 auto;padding:14px 24px;display:flex;
+  align-items:center;justify-content:space-between;gap:16px}
+.navside{display:flex;align-items:center;gap:15px;min-width:0;flex:0 1 auto}
 .brand{display:flex;align-items:center;gap:11px}
-.brand .mark{width:30px;height:30px;display:block;border-radius:50%}
-.brand .name{font-family:'Anton',Impact,sans-serif;font-size:20px;letter-spacing:1.5px;text-transform:uppercase}
+.brand .mark{width:32px;height:32px;display:block;border-radius:50%;
+  box-shadow:0 0 0 1px var(--rule),0 0 18px var(--glow)}
+.brand .name{font-family:var(--display);font-size:19px;letter-spacing:2px;text-transform:uppercase}
 .brand .name span{color:var(--gold)}
-nav{display:flex;gap:20px;font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted)}
-nav a{padding:4px 0;border-bottom:1.5px solid transparent}
+nav{display:flex;gap:19px;font-size:11.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted)}
+nav a{padding:5px 0;border-bottom:2px solid transparent;transition:color .15s}
 nav a:hover{color:var(--ink)}
 nav a.on{color:var(--gold);border-bottom-color:var(--gold)}
 
@@ -567,126 +599,218 @@ nav a.on{color:var(--gold);border-bottom-color:var(--gold)}
   filter:blur(7px) saturate(1.05)}
 /* layer 2 - the scrim. without this the text is unreadable over the photo */
 .hero .scrim{position:absolute;inset:0;background:
-  linear-gradient(180deg,rgba(8,8,10,.70) 0%,rgba(8,8,10,.82) 58%,
-    rgba(8,8,10,.82) 84%,var(--bg) 100%),
-  radial-gradient(ellipse 700px 300px at 50% 8%,rgba(223,168,57,.16),transparent 72%)}
+  linear-gradient(180deg,rgba(6,6,9,.62) 0%,rgba(6,6,9,.52) 42%,
+    rgba(6,6,9,.80) 80%,var(--bg) 100%),
+  radial-gradient(ellipse 900px 420px at 50% 0%,rgba(223,168,57,.20),transparent 70%)}
 /* text hugs the top of the box; the fat bottom pad keeps the hero tall so the
    gameplay clip stays in view under the headline */
-.hero .inner{position:relative;max-width:1000px;margin:0 auto;padding:48px 24px 198px;text-align:center}
+.hero .inner{position:relative;z-index:2;max-width:1080px;margin:0 auto;
+  padding:64px 24px 230px;text-align:center}
+/* only the homepage hero sits on the dark photo/video; the coach and article
+   heroes have no .banner and keep page-colored text */
+.hero .banner ~ .inner{color:var(--onphoto)}
+.hero .banner ~ .inner h1{text-shadow:0 4px 44px rgba(0,0,0,.55)}
 .hero .crest{width:118px;height:118px;display:block;margin:0 auto 22px;border-radius:50%;
   box-shadow:0 0 44px rgba(223,168,57,.22)}
-.scrollcue{display:flex;flex-direction:column;align-items:center;gap:7px;margin-top:26px;
-  font-size:9.5px;letter-spacing:2.4px;text-transform:uppercase;color:var(--muted2)}
+.scrollcue{display:flex;flex-direction:column;align-items:center;gap:7px;margin-top:30px;
+  font-size:10px;letter-spacing:2.6px;text-transform:uppercase;color:rgba(246,243,232,.55)}
 .scrollcue svg{animation:bob 1.9s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
 @media(prefers-reduced-motion:reduce){.scrollcue svg{animation:none}}
-.quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
-  background:var(--rule);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
-.quick a{background:var(--card);padding:17px 18px;display:block;transition:background .15s}
+.quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:1px;
+  background:var(--rule);border-bottom:1px solid var(--rule)}
+.quick a{background:var(--card);padding:20px 22px;display:block;position:relative;
+  overflow:hidden;transition:background .2s}
+.quick a::after{content:"";position:absolute;left:0;top:0;bottom:0;width:0;
+  background:linear-gradient(180deg,var(--gold2),var(--gold));transition:width .2s}
 .quick a:hover{background:var(--card2)}
-.quick .qk{font-family:\'Anton\',Impact,sans-serif;font-size:14px;text-transform:uppercase;
-  letter-spacing:1px;margin-bottom:3px}
-.quick .qd{font-size:11.5px;color:var(--muted);line-height:1.45}
-.quick .qk span{color:var(--gold)}
-.eyebrow{font-size:11px;letter-spacing:3.5px;text-transform:uppercase;color:var(--golddim);margin-bottom:20px}
-.hero h1{font-family:'Anton',Impact,sans-serif;font-size:clamp(38px,6.4vw,68px);line-height:.97;
-  text-transform:uppercase;margin:0 0 18px;letter-spacing:1px}
-.hero h1 em{font-style:normal;color:var(--gold)}
-.hero p.lede{max-width:620px;margin:0 auto;color:var(--muted);font-size:15.5px;line-height:1.65}
-.hero .cta{margin-top:32px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.quick a:hover::after{width:3px}
+.quick .qk{font-family:var(--display);font-size:15px;text-transform:uppercase;
+  letter-spacing:1.4px;margin-bottom:4px}
+.quick .qd{font-size:11.5px;color:var(--muted);line-height:1.5}
+.quick .qk span{color:var(--gold);display:inline-block;transition:transform .2s}
+.quick a:hover .qk span{transform:translateX(4px)}
+.eyebrow{font-size:11px;letter-spacing:3.5px;text-transform:uppercase;color:var(--gold);font-weight:700}
+.hero .banner ~ .inner .eyebrow{display:inline-flex;align-items:center;gap:10px;
+  color:var(--onphoto-accent);border:1px solid rgba(240,198,94,.38);border-radius:999px;
+  padding:8px 18px;background:rgba(6,6,9,.42)}
+.hero h1{font-family:var(--display);font-size:clamp(46px,7.4vw,94px);line-height:.94;
+  text-transform:uppercase;margin:24px 0 0;letter-spacing:1px}
+.hero h1 em{font-style:normal;color:#e9b545}
+.stinger{display:inline-flex;align-items:center;gap:12px;margin-top:26px;padding:10px 20px;
+  background:rgba(6,6,9,.6);border:1px solid rgba(240,198,94,.45);border-radius:3px;
+  font-size:12px;letter-spacing:2.4px;text-transform:uppercase;color:var(--onphoto)}
+.stinger b{color:var(--onphoto-accent);font-weight:700}
+.stinger .sep{color:rgba(246,243,232,.4)}
+.hero p.lede{max-width:640px;margin:18px auto 0;color:var(--muted);font-size:15.5px;line-height:1.65}
+.hero .banner ~ .inner .lede{color:var(--onphoto-dim)}
 .btn{font-size:12px;letter-spacing:1.6px;text-transform:uppercase;padding:11px 22px;
   border:1px solid var(--golddim);color:var(--gold);border-radius:2px;transition:.15s}
-.btn:hover{background:var(--gold);color:#111}
-.btn.ghost{border-color:var(--rule);color:var(--muted)}
-.btn.ghost:hover{border-color:var(--muted);color:var(--ink)}
+.btn:hover{background:var(--gold);color:var(--bg)}
 
 .glance{border-bottom:1px solid var(--rule);background:var(--card)}
-.glance .inner{max-width:1000px;margin:0 auto;padding:0 24px;display:grid;
+.glance .inner{max-width:1080px;margin:0 auto;padding:0 24px;display:grid;
   grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
-.glance .cell{padding:24px 8px;text-align:center;border-left:1px solid var(--rule)}
+.glance .cell{padding:26px 8px;text-align:center;border-left:1px solid var(--rule)}
 .glance .cell:first-child{border-left:none}
-.glance .fig{font-family:'Anton',Impact,sans-serif;font-size:32px;color:var(--gold);line-height:1}
-.glance .lab{font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);margin-top:8px}
+.glance .fig{font-family:var(--display);font-size:36px;line-height:1;color:var(--gold)}
+.glance .lab{font-size:10.5px;letter-spacing:2.2px;text-transform:uppercase;color:var(--muted2);margin-top:9px}
 
-.section{padding:56px 0;border-bottom:1px solid var(--rule)}
+.section{padding:64px 0;border-bottom:1px solid var(--rule)}
 .section:last-of-type{border-bottom:none}
-h2.sec{display:flex;align-items:center;gap:14px;font-size:11.5px;letter-spacing:3px;
-  font-weight:600;color:var(--gold);text-transform:uppercase;margin:0 0 26px}
+h2.sec{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:3.4px;
+  font-weight:700;color:var(--muted);text-transform:uppercase;margin:0 0 26px}
+h2.sec::before{content:"";width:24px;height:11px;flex:0 0 auto;
+  background:linear-gradient(135deg,var(--gold2),var(--gold));
+  transform:skewX(-16deg)}
 h2.sec::after{content:"";flex:1;height:1px;background:var(--rule)}
-h1.page{font-family:'Anton',Impact,sans-serif;font-size:clamp(32px,5vw,46px);line-height:1.03;
-  text-transform:uppercase;margin:0 0 12px;letter-spacing:1px}
+h1.page{font-family:var(--display);font-size:clamp(38px,6vw,64px);line-height:.98;
+  text-transform:uppercase;margin:0 0 14px;letter-spacing:1px}
 h1.page em{font-style:normal;color:var(--gold)}
-.psub{color:var(--muted);font-size:15px;font-style:italic;margin:0;line-height:1.6;max-width:700px}
-.pagehead{padding:52px 0 34px;border-bottom:1px solid var(--rule)}
+.psub{color:var(--muted);font-size:15.5px;margin:0;line-height:1.65;max-width:720px}
+.pagehead{padding:60px 0 38px;border-bottom:1px solid var(--rule);position:relative}
+.pagehead::before{content:"";position:absolute;left:-24px;right:-24px;top:0;bottom:0;
+  background:radial-gradient(ellipse 640px 200px at 18% 0%,var(--glow),transparent 70%);
+  pointer-events:none}
 
-.secintro{color:var(--muted);font-size:16px;line-height:1.7;max-width:720px;margin:-6px 0 28px}
+.secintro{color:var(--muted);font-size:16px;line-height:1.7;max-width:740px;margin:-6px 0 28px}
 .pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--rule)}
-.pillar{background:var(--card);padding:26px 24px}
-.pillar .n{font-family:'Anton',Impact,sans-serif;font-size:13px;color:var(--golddim);letter-spacing:2px}
-.pillar h3{font-size:16px;margin:10px 0 9px;letter-spacing:.2px}
+.pillar{background:var(--card);padding:28px 26px;position:relative;overflow:hidden}
+.pillar .n{font-family:var(--display);font-size:44px;line-height:1;color:transparent;
+  -webkit-text-stroke:1px var(--golddim);opacity:.55;position:absolute;right:16px;top:12px}
+.pillar h3{font-size:16px;margin:0 0 9px;letter-spacing:.2px;padding-right:52px}
 .pillar p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.62}
 
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px}
 .step{border-top:2px solid var(--golddim);padding-top:16px}
-.step .k{font-family:'Anton',Impact,sans-serif;font-size:15px;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px}
+.step .k{font-family:var(--display);font-size:15px;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:7px}
 .step p{margin:0;font-size:13px;color:var(--muted);line-height:1.6}
 
-.belt{background:linear-gradient(135deg,var(--card2),var(--card));
-  border:1px solid var(--rule);border-left:3px solid var(--gold);border-radius:3px;padding:26px 28px}
-.belt .lbl{font-size:10.5px;letter-spacing:2.8px;color:var(--golddim);text-transform:uppercase}
-.belt .who{font-family:'Anton',Impact,sans-serif;font-size:34px;margin:9px 0 5px;text-transform:uppercase;letter-spacing:.5px}
-.belt .meta{font-size:13px;color:var(--muted);line-height:1.6;max-width:560px}
+.belt{position:relative;overflow:hidden;background:linear-gradient(160deg,var(--card2),var(--card));
+  border:1px solid var(--rule);border-radius:6px;padding:28px 30px}
+.belt::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;
+  background:linear-gradient(90deg,var(--golddim),var(--gold2) 40%,var(--gold) 70%,var(--golddim))}
+.belt::after{content:"";position:absolute;right:-70px;top:-70px;width:260px;height:260px;
+  border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 70%);pointer-events:none}
+.belt .lbl{font-size:10.5px;letter-spacing:2.8px;color:var(--gold);text-transform:uppercase;font-weight:700}
+.belt .who{font-family:var(--display);font-size:clamp(28px,4vw,42px);margin:10px 0 6px;
+  text-transform:uppercase;letter-spacing:.5px;line-height:1.02}
+.belt .meta{font-size:13px;color:var(--muted);line-height:1.65;max-width:600px}
 
-.row{display:flex;align-items:flex-start;gap:18px;padding:13px 4px;border-bottom:1px solid var(--rule)}
-.row:last-child{border-bottom:none}
-.num{font-family:'Anton',Impact,sans-serif;font-size:23px;color:var(--gold);width:38px;flex-shrink:0;line-height:1.15}
-.bd{flex:1;min-width:0}
+.row{position:relative;display:flex;align-items:center;gap:18px;padding:14px 18px;
+  margin-bottom:8px;background:var(--card);border:1px solid var(--rule);border-radius:5px;
+  overflow:hidden;transition:border-color .15s}
+.row:hover{border-color:var(--golddim)}
+.row .ptbar{position:absolute;left:0;top:0;bottom:0;width:var(--w,0%);
+  background:linear-gradient(90deg,var(--glow),transparent);pointer-events:none}
+.row.lead{border-color:var(--golddim)}
+.num{font-family:var(--display);font-size:24px;color:var(--gold);width:40px;flex-shrink:0;line-height:1.1}
+.bd{flex:1;min-width:0;position:relative}
 .tm{font-size:15px;font-weight:700}
 .co{font-size:11px;color:var(--muted2);text-transform:uppercase;letter-spacing:.6px;margin-left:8px}
 .dt{font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.5}
-.rt{font-family:'Anton',Impact,sans-serif;font-size:15px;color:var(--golddim);flex-shrink:0;white-space:nowrap;padding-top:4px}
+.rt{font-family:var(--display);font-size:19px;color:var(--ink);flex-shrink:0;
+  white-space:nowrap;position:relative}
+.rt small{font-size:10px;letter-spacing:1.6px;color:var(--muted2);font-family:'Inter',sans-serif;
+  text-transform:uppercase;margin-left:5px}
 table{width:100%;border-collapse:collapse;font-size:14px}
 th{text-align:left;font-size:10.5px;letter-spacing:1.6px;text-transform:uppercase;
-  color:var(--muted2);font-weight:600;padding:0 10px 10px 0;border-bottom:1px solid var(--rule)}
-td{padding:11px 10px 11px 0;border-bottom:1px solid var(--rule)}
+  color:var(--muted2);font-weight:700;padding:0 10px 10px 0;border-bottom:2px solid var(--rule)}
+td{padding:12px 10px 12px 0;border-bottom:1px solid var(--rule)}
+tr:hover td{background:var(--glow)}
 td.w{font-weight:700}
-td.s{font-family:'Anton',Impact,sans-serif;color:var(--gold);white-space:nowrap}
+td.s{font-family:var(--display);color:var(--gold);white-space:nowrap;letter-spacing:.5px}
 a.clink{color:inherit;border-bottom:1px dotted var(--muted2);transition:color .12s,border-color .12s}
 a.clink:hover{color:var(--gold);border-bottom-color:var(--gold)}
 .tm a.clink{border-bottom-color:var(--rule)}
 .tag{font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:var(--golddim);
   border:1px solid var(--rule);border-radius:2px;padding:2px 6px;margin-left:8px;white-space:nowrap}
-.wklabel{font-size:10.5px;color:var(--golddim);letter-spacing:2.2px;text-transform:uppercase;margin:24px 0 7px}
+.wklabel{font-family:var(--display);font-size:13px;color:var(--gold);letter-spacing:2px;
+  text-transform:uppercase;margin:26px 0 8px}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));gap:16px}
-.card{background:var(--card);border:1px solid var(--rule);border-radius:3px;overflow:hidden;
-  display:block;transition:border-color .15s,transform .15s}
-.card:hover{border-color:var(--golddim);transform:translateY(-2px)}
-.card img{width:100%;display:block;border-bottom:1px solid var(--rule);height:142px;object-fit:cover;object-position:top}
-.card .body{padding:14px 16px}
-.card .kind{font-size:10px;letter-spacing:2px;color:var(--golddim);text-transform:uppercase}
-.card .ttl{font-size:14.5px;font-weight:700;margin:6px 0 5px}
-.card .bl{font-size:12.5px;color:var(--muted);line-height:1.5}
-.card .dte{font-size:10.5px;color:var(--muted2);margin-top:9px;letter-spacing:.5px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(238px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:6px;overflow:hidden;
+  display:block;transition:border-color .2s,transform .2s,box-shadow .2s}
+.card:hover{border-color:var(--golddim);transform:translateY(-3px);box-shadow:var(--shadow)}
+.card img{width:100%;display:block;height:150px;object-fit:cover;object-position:top;
+  border-bottom:1px solid var(--rule);transition:transform .4s ease}
+.card:hover img{transform:scale(1.045)}
+.card .body{padding:15px 17px}
+.card .kind{font-size:10px;letter-spacing:2px;color:var(--gold);font-weight:700;text-transform:uppercase}
+.card .ttl{font-size:14.5px;font-weight:700;margin:7px 0 5px;line-height:1.35}
+.card .bl{font-size:12.5px;color:var(--muted);line-height:1.55}
+.card .dte{font-size:10.5px;color:var(--muted2);margin-top:10px;letter-spacing:.5px}
+
+/* ---- the throne: reigning champ + belt race, side by side ---- */
+.throne{display:grid;grid-template-columns:1.15fr 1fr;gap:16px}
+.race{display:flex;gap:30px;margin:16px 0 4px;flex-wrap:wrap}
+.race .rc .n{font-family:var(--display);font-size:46px;line-height:1;color:var(--gold)}
+.race .rc .w{font-size:12px;font-weight:700;margin-top:5px}
+.race .rc .w a{border-bottom:1px dotted var(--muted2)}
+.race .rc .w a:hover{color:var(--gold);border-bottom-color:var(--gold)}
+.dynasty{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.dyn{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--rule);
+  border-radius:4px;padding:10px 14px;font-size:12.5px;transition:border-color .15s}
+.dyn:hover{border-color:var(--golddim)}
+.dyn .s{font-family:var(--display);color:var(--gold);font-size:14px;letter-spacing:1px}
+.dyn b{font-weight:700}
+.dyn .c{color:var(--muted)}
+
+/* ---- record book ---- */
+.recgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:14px}
+.rec{background:var(--card);border:1px solid var(--rule);border-radius:6px;padding:20px 22px;
+  position:relative;overflow:hidden;transition:border-color .2s,transform .2s}
+.rec:hover{border-color:var(--golddim);transform:translateY(-2px)}
+.rec::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--gold2),var(--golddim))}
+.rec .k{font-size:10px;letter-spacing:2.2px;text-transform:uppercase;color:var(--gold);font-weight:700}
+.rec .v{font-family:var(--display);font-size:24px;margin:9px 0 5px;text-transform:uppercase;line-height:1.08}
+.rec .d{font-size:12.5px;color:var(--muted);line-height:1.55}
+
+/* ---- coach cards + dossier ---- */
+.coachgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(236px,1fr));gap:14px}
+.ccard{display:block;background:var(--card);border:1px solid var(--rule);border-radius:6px;
+  padding:22px;position:relative;overflow:hidden;
+  transition:transform .2s,border-color .2s,box-shadow .2s}
+.ccard:hover{transform:translateY(-3px);border-color:var(--golddim);box-shadow:var(--shadow)}
+.ccard::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;
+  background:linear-gradient(90deg,var(--golddim),var(--gold2),var(--golddim));
+  opacity:0;transition:opacity .2s}
+.ccard:hover::before{opacity:1}
+.ccard .nm{font-family:var(--display);font-size:23px;text-transform:uppercase;letter-spacing:.5px}
+.ccard .tmm{color:var(--muted);font-size:13px;margin-top:4px}
+.ccard .line{display:flex;gap:16px;margin-top:14px;font-size:11.5px;color:var(--muted2);
+  letter-spacing:.4px}
+.ccard .line b{color:var(--ink);font-weight:700}
+.ringrow{display:flex;gap:5px;margin-top:13px;min-height:14px}
+.ring{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--gold);
+  background:radial-gradient(circle at 35% 30%,var(--gold2),var(--golddim));
+  box-shadow:0 0 8px var(--glow)}
+.form{display:inline-flex;gap:4px;vertical-align:middle}
+.form i{width:9px;height:9px;border-radius:2px;background:var(--rule)}
+.form i.w{background:var(--gold)}
+.form i.l{background:var(--muted2);opacity:.55}
 
 /* --- long-form write-ups --- */
-.poster{display:block;margin:0 0 40px;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.poster{display:block;margin:0 0 40px;border:1px solid var(--rule);border-radius:6px;overflow:hidden;
+  transition:border-color .2s,box-shadow .2s}
+.poster:hover{border-color:var(--golddim);box-shadow:var(--shadow)}
 .poster img{width:100%;display:block}
-.poster .cap{padding:10px 14px;font-size:10.5px;letter-spacing:1.6px;text-transform:uppercase;
+.poster .cap{padding:11px 15px;font-size:10.5px;letter-spacing:1.8px;text-transform:uppercase;
   color:var(--muted2);border-top:1px solid var(--rule);background:var(--card)}
 .poster:hover .cap{color:var(--gold)}
-.article{max-width:660px}
-.article h2{font-family:'Anton',Impact,sans-serif;font-size:26px;text-transform:uppercase;
+.article{max-width:680px}
+.article h2{font-family:var(--display);font-size:26px;text-transform:uppercase;
   letter-spacing:.8px;margin:44px 0 16px;padding-bottom:10px;border-bottom:1px solid var(--rule)}
 .article h3{font-size:16.5px;font-weight:700;letter-spacing:.2px;margin:30px 0 12px;color:var(--gold)}
-.article p{font-size:15px;color:var(--muted);line-height:1.78;margin:0 0 18px}
+.article p{font-size:15.5px;color:var(--muted);line-height:1.8;margin:0 0 18px}
 .article strong{color:var(--ink);font-weight:700}
 .article em{color:var(--ink);font-style:italic}
 .article a{color:var(--gold);border-bottom:1px dotted var(--golddim)}
 .article ul{margin:0 0 18px;padding-left:0;list-style:none}
 .article li{position:relative;padding:7px 0 7px 20px;font-size:14px;color:var(--muted);line-height:1.7}
 .article li::before{content:"";position:absolute;left:0;top:15px;width:6px;height:6px;
-  border:1.5px solid var(--golddim);border-radius:1px}
+  background:linear-gradient(135deg,var(--gold2),var(--golddim));border-radius:1px}
 .article li strong{color:var(--ink)}
 .article hr{border:none;border-top:1px solid var(--rule);margin:36px 0}
 .article > *:first-child{margin-top:0}
@@ -695,62 +819,87 @@ a.clink:hover{color:var(--gold);border-bottom-color:var(--gold)}
 .backlink{padding-top:34px;margin-top:34px;border-top:1px solid var(--rule);font-size:13px}
 .backlink a{color:var(--gold)}
 
-.rulegrid{display:grid;grid-template-columns:200px 1fr;gap:40px;align-items:start}
-.toc{position:sticky;top:78px;font-size:12.5px}
-.toc a{display:block;padding:7px 0 7px 12px;color:var(--muted);border-left:1px solid var(--rule);line-height:1.4}
-.toc a:hover{color:var(--gold);border-left-color:var(--golddim)}
+.rulegrid{display:grid;grid-template-columns:210px 1fr;gap:44px;align-items:start}
+.toc{position:sticky;top:88px;font-size:12.5px}
+.toc a{display:block;padding:7px 0 7px 12px;color:var(--muted);border-left:2px solid var(--rule);line-height:1.4;
+  transition:color .15s,border-color .15s}
+.toc a:hover{color:var(--gold);border-left-color:var(--gold)}
 .rule{padding:0 0 34px;margin-bottom:34px;border-bottom:1px solid var(--rule)}
 .rule:last-child{border-bottom:none;margin-bottom:0}
-.rule h3{font-family:'Anton',Impact,sans-serif;font-size:21px;text-transform:uppercase;
-  letter-spacing:.8px;margin:0 0 14px;scroll-margin-top:90px}
+.rule h3{font-family:var(--display);font-size:22px;text-transform:uppercase;
+  letter-spacing:.8px;margin:0 0 14px;scroll-margin-top:100px}
 .rule p{font-size:14px;color:var(--muted);line-height:1.7;margin:0 0 14px}
 .rule ul{margin:0 0 14px;padding-left:0;list-style:none}
 .rule li{position:relative;padding:8px 0 8px 20px;font-size:13.5px;color:var(--ink);
   line-height:1.6;border-bottom:1px solid var(--rule)}
 .rule li:last-child{border-bottom:none}
 .rule li::before{content:"";position:absolute;left:0;top:15px;width:7px;height:7px;
-  border:1.5px solid var(--golddim);border-radius:1px}
-.flag{background:rgba(223,168,57,.08);border:1px solid var(--golddim);border-radius:2px;
-  padding:11px 14px;font-size:12.5px;color:var(--gold);margin-bottom:16px;line-height:1.55}
+  background:linear-gradient(135deg,var(--gold2),var(--golddim));border-radius:1px}
+.flag{background:var(--glow);border:1px solid var(--golddim);border-radius:4px;
+  padding:12px 15px;font-size:12.5px;color:var(--gold);margin-bottom:16px;line-height:1.55;font-weight:600}
 .foot-note{font-size:12.5px;color:var(--muted2);line-height:1.65;font-style:italic;margin:14px 0 0}
 .rt-tables{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px;margin-bottom:16px}
 
-footer{border-top:1px solid var(--rule);padding:26px 0 34px;font-size:10.5px;letter-spacing:2px;
-  color:var(--muted2);text-transform:uppercase;text-align:center;line-height:1.9}
-.ticker{position:relative;overflow:hidden;background:#0b0b0d;border-bottom:1px solid var(--rule);
-  height:42px;display:flex;align-items:center}
+footer{border-top:1px solid var(--rule);padding:40px 0 48px;text-align:center;position:relative}
+footer::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--golddim),transparent)}
+footer .fbrand{font-family:var(--display);font-size:18px;letter-spacing:2.4px;text-transform:uppercase}
+footer .fbrand span{color:var(--gold)}
+footer .fnav{display:flex;gap:8px 20px;justify-content:center;flex-wrap:wrap;margin:16px 0 12px;
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+footer .fnav a:hover{color:var(--gold)}
+footer .fnote{font-size:10.5px;color:var(--muted2);letter-spacing:1.6px;text-transform:uppercase;line-height:1.9}
+
+.ticker{position:relative;overflow:hidden;background:var(--card);border-bottom:1px solid var(--rule);
+  height:46px;display:flex;align-items:center}
 .ticker::before{content:"Latest";position:absolute;left:0;top:0;bottom:0;z-index:3;
-  display:flex;align-items:center;padding:0 14px;background:var(--gold);color:#0b0b0d;
-  font-family:'Anton',Impact,sans-serif;font-size:11.5px;letter-spacing:2px;text-transform:uppercase}
-.ticker::after{content:"";position:absolute;right:0;top:0;bottom:0;width:60px;z-index:2;
-  background:linear-gradient(90deg,transparent,#0b0b0d);pointer-events:none}
+  display:flex;align-items:center;padding:0 24px 0 15px;color:#171204;
+  font-family:var(--display);font-size:12px;letter-spacing:2.2px;text-transform:uppercase;
+  /* the angled trailing edge is a gradient hard-stop, not a clip-path */
+  background:linear-gradient(102deg,var(--gold2),var(--gold) 55%,
+    var(--gold) calc(100% - 14px),transparent calc(100% - 13px))}
+.ticker::after{content:"";position:absolute;right:0;top:0;bottom:0;width:70px;z-index:2;
+  background:linear-gradient(90deg,transparent,var(--card));pointer-events:none}
 .ticker .track{display:flex;align-items:center;gap:0;white-space:nowrap;
-  padding-left:96px;animation:slide 52s linear infinite;will-change:transform}
+  padding-left:104px;animation:slide 52s linear infinite;will-change:transform}
 .ticker:hover .track{animation-play-state:paused}
 @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .tk{display:inline-flex;align-items:center;gap:9px;padding:0 20px;font-size:12.5px;
   border-right:1px solid var(--rule)}
-.tk .wk{font-size:9.5px;letter-spacing:1.4px;color:var(--muted2);text-transform:uppercase}
+.tk .wk{font-size:9.5px;letter-spacing:1.4px;color:var(--muted2);text-transform:uppercase;font-weight:700}
 .tk .a{font-weight:700}
 .tk .b{color:var(--muted)}
-.tk .sc{font-family:'Anton',Impact,sans-serif;color:var(--gold);letter-spacing:.5px}
-.tk .gw{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#0b0b0d;
-  background:var(--golddim);border-radius:2px;padding:2px 5px}
+.tk .sc{font-family:var(--display);color:var(--gold);letter-spacing:.5px;font-size:14px}
+.tk .gw{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#171204;font-weight:700;
+  background:linear-gradient(135deg,var(--gold2),var(--gold));border-radius:2px;padding:2px 6px}
 @media(prefers-reduced-motion:reduce){.ticker .track{animation:none}}
 
 
+@media(max-width:1120px){
+  nav{gap:13px;font-size:11px;letter-spacing:1.2px}
+  .brand .name{font-size:17px;letter-spacing:1.2px}}
+@media(max-width:940px){
+  nav{overflow-x:auto;-webkit-overflow-scrolling:touch;min-width:0;
+    scrollbar-width:none;padding-bottom:2px}
+  nav::-webkit-scrollbar{display:none}
+  nav a{white-space:nowrap;flex:0 0 auto}}
+@media(max-width:820px){.throne{grid-template-columns:1fr}}
 @media(max-width:720px){.rulegrid{grid-template-columns:1fr}.toc{display:none}
   /* tiebreaker columns are reference detail; drop them rather than let the
      table push the whole page sideways on a phone */
   .tb{display:none}
-  /* six nav items don't fit at 390px and were dragging every page sideways.
-     Let the nav scroll on its own instead of widening the document. */
+  /* seven nav items don't fit at 390px. Let the nav scroll on its own
+     instead of widening the document. */
   .navbar .inner{gap:10px}
   nav{gap:14px;font-size:11px;letter-spacing:1px;overflow-x:auto;
     -webkit-overflow-scrolling:touch;max-width:100%;
     scrollbar-width:none;padding-bottom:2px}
   nav::-webkit-scrollbar{display:none}
-  nav a{white-space:nowrap;flex:0 0 auto}}
+  nav a{white-space:nowrap;flex:0 0 auto}
+  .brand .name{font-size:14px;letter-spacing:1px;white-space:nowrap}
+  .brand .mark{width:26px;height:26px}
+  .hero .inner{padding:52px 20px 190px}
+  .section{padding:48px 0}}
 .section{overflow-x:auto}
 """
 
@@ -776,11 +925,17 @@ if HERO_VIDEO:
 MOTION_CSS = """
 /* ---- homepage motion (MOTION = True) ---- */
 .beltbar{display:flex;gap:4px;margin-top:16px}
-.beltbar i{flex:1;height:5px;background:var(--rule);border-radius:1px;
+.beltbar i{flex:1;height:6px;background:var(--rule);border-radius:1px;
   transition:background .4s ease}
-.beltbar i.on{background:var(--gold)}
+.beltbar i.on{background:linear-gradient(180deg,var(--gold2),var(--gold))}
 .beltbar i.live{background:var(--golddim);opacity:.65}
 .beltbar-lab{font-size:10px;letter-spacing:1.6px;color:var(--muted2);margin-top:8px}
+
+/* sections fade up as they enter; html.rv is set by JS, so no-JS and
+   reduced-motion visitors always see everything */
+html.rv [data-rv]{opacity:0;transform:translateY(16px);
+  transition:opacity .55s ease,transform .55s ease}
+html.rv [data-rv].in{opacity:1;transform:none}
 
 .heroflash{position:absolute;left:0;right:0;bottom:26px;text-align:center;
   opacity:0;pointer-events:none;z-index:3}
@@ -815,140 +970,10 @@ MOTION_CSS = """
 if MOTION:
     CSS = CSS + MOTION_CSS
 
-# --------------------------------------------------------------------------
-# Everything below is layered on top of the sheet above. It redefines; it never
-# edits. Set THEME = "classic" and none of it is emitted.
-# --------------------------------------------------------------------------
-PRESS_CSS = """
-/* ---- palette. The custom-property names are kept so the ~200 var() calls in
-   the base sheet keep working; --gold is now an ink red.
-
-   Day tokens live on :root, night tokens on html.night. Only colours differ --
-   the type, copy and layout are the same around the clock, because those are
-   editorial choices and shouldn't change at 7pm. ---- */
-:root{
-  --bg:#f2efe7; --ink:#17160f; --muted:#57534a; --muted2:#8a8478;
-  --gold:#9e2b25; --golddim:#7d2420; --rule:#d9d3c4;
-  --card:#fbf9f3; --card2:#ebe7db;
-  /* --turf is the fallback hero background. Only the coach-profile hero uses
-     it (the homepage covers it with the banner photo, the article hero sets
-     its own), so on a light page it has to be light or the coach name sits
-     near-black on near-black. */
-  --turf:#eae5d8;
-  --nav:rgba(242,239,231,.93);
-  /* text sitting on the homepage banner photo, which is dark in both schemes */
-  --onphoto:#f7f4ec; --onphoto-dim:rgba(247,244,236,.78); --onphoto-accent:#e8b4a4;
-  --display:'Graduate',Georgia,serif;
-  --serif:'Source Serif 4',Georgia,serif;
-}
-html.night{
-  /* a warm near-black, not the old cold #08080a, so night reads as the same
-     design after dark rather than a different site */
-  --bg:#12110e; --ink:#f0ece2; --muted:#a8a29a; --muted2:#6f6a62;
-  --gold:#d9574a; --golddim:#b04a3f; --rule:#2b2924;
-  --card:#1a1915; --card2:#211f1a; --turf:#1c1a16;
-  --nav:rgba(18,17,14,.93);
-  --onphoto-accent:#e8918a;
-}
-html,body{background:var(--bg)}
-.navbar{background:var(--nav)}
-
-/* ---- display face. Graduate sets wider and shorter than Anton, so anything
-   that was sized for Anton needs bringing down. ---- */
-.brand .name,.quick .qk,.hero h1,.glance .fig,h1.page,.pillar .n,.step .k,
-.belt .who,.num,.rt,td.s,.article h2,.rule h3,.ticker::before{
-  font-family:var(--display)}
-.brand .name{font-size:16px;letter-spacing:.5px}
-.hero h1{font-size:clamp(28px,4.4vw,48px);line-height:1.06;letter-spacing:0}
-h1.page{font-size:clamp(24px,3.4vw,34px);line-height:1.12;letter-spacing:0}
-.belt .who{font-size:24px;letter-spacing:0}
-.glance .fig{font-size:26px}
-.article h2{font-size:19px;letter-spacing:0}
-.rule h3{font-size:17px}
-.quick .qk{font-size:13px;letter-spacing:0}
-.step .k{font-size:13px}
-.num{font-size:19px}
-.rt,td.s{font-size:13.5px}
-.ticker::before{font-size:10px;letter-spacing:1.4px}
-
-/* ---- prose gets a serif; tables and chrome stay in Inter ---- */
-.hero p.lede,.psub,.secintro,.article p,.article li,.pillar p,.step p,.belt .meta,
-.quick .qd,.card .bl,.dt{font-family:var(--serif)}
-.article p,.article li{font-size:16.5px;line-height:1.72}
-.psub{font-size:16px;font-style:normal}
-
-/* ---- the tell: small letterspaced uppercase labels. Caps are kept only on
-   the nav and the section rules; everything else goes sentence case. ---- */
-.eyebrow,.glance .lab,.byline,.card .kind,.poster .cap,.wklabel,.belt .lbl,
-th,.tag,.co,.scrollcue,footer,.tk .wk,.tk .gw,.pillar .n,.btn,
-.quick .qk,.step .k,.belt .who,h1.page,.hero h1{
-  text-transform:none;letter-spacing:0}
-.eyebrow{font-size:13px;color:var(--gold);font-weight:600;margin-bottom:14px}
-.glance .lab{font-size:12.5px;color:var(--muted)}
-.byline{font-size:13px;color:var(--muted)}
-.card .kind{font-size:12px;color:var(--gold);font-weight:600}
-.poster .cap{font-size:12.5px}
-.wklabel{font-size:13px;font-weight:600;color:var(--ink)}
-.belt .lbl{font-size:12.5px;color:var(--muted)}
-th{font-size:12px;color:var(--muted)}
-.tag{font-size:11px;padding:2px 6px}
-.co{font-size:12px}
-.scrollcue{font-size:12px}
-footer{font-size:12.5px;line-height:1.8}
-.tk .wk{font-size:11px}
-.tk .gw{font-size:10.5px}
-.btn{font-size:13px}
-h2.sec{letter-spacing:1.6px;font-size:11px;color:var(--muted)}
-h2.sec::after{background:var(--rule)}
-
-/* ---- red on white needs light text, not the near-black the dark theme used ---- */
-.btn:hover{background:var(--gold);color:var(--bg)}
-.tk .gw{background:var(--gold);color:var(--bg)}
-.ticker{background:var(--card2)}
-.ticker::before{background:var(--ink);color:var(--bg)}
-.ticker::after{background:linear-gradient(90deg,transparent,var(--card2))}
-
-/* ---- the homepage hero still sits on a dark photo, so its text stays light.
-   Scoped by the sibling combinator so the coach and article heroes, which have
-   no .banner, are untouched. ---- */
-.hero .banner ~ .inner{color:var(--onphoto)}
-.hero .banner ~ .inner .lede{color:var(--onphoto-dim)}
-.hero .banner ~ .inner .eyebrow{color:var(--onphoto-accent)}
-.hero .banner ~ .inner .scrollcue{color:rgba(247,244,236,.6)}
-.hero .banner ~ .inner h1 em{color:var(--onphoto-accent)}
-/* hold the dark scrim almost to the bottom edge -- blending toward the paper
-   background from 58% washed the lower half of the clip out white */
-.hero .scrim{background:linear-gradient(180deg,rgba(20,19,16,.62) 0%,
-  rgba(20,19,16,.80) 58%,rgba(20,19,16,.80) 84%,var(--bg) 100%)}
-
-/* ---- flourishes that read as generated polish ---- */
-.card:hover{transform:none;border-color:var(--muted2)}
-.hero .crest{box-shadow:none}
-.glow{display:none}
-.card{background:var(--card)}
-.card:hover .ttl{color:var(--gold)}
-"""
-
-if PRESS:
-    CSS = CSS + PRESS_CSS
-
 if DYNAMIC:
     CSS = CSS + DYNAMIC_CSS
 
 CROWN = '<img class="mark" src="media/logo-mark.png" alt="">' 
-
-FIELD = ('<svg class="field" width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 1000 380">'
-         '<defs><linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">'
-         '<stop offset="0" stop-color="#dfa839" stop-opacity=".22"/>'
-         '<stop offset="1" stop-color="#dfa839" stop-opacity="0"/></linearGradient></defs>'
-         + "".join('<line x1="%d" y1="0" x2="%d" y2="380" stroke="url(#fade)" stroke-width="%s"/>'
-                   % (x, x, "1.4" if i % 2 == 0 else ".6")
-                   for i, x in enumerate(range(50, 1000, 62)))
-         + "".join('<line x1="%d" y1="%d" x2="%d" y2="%d" stroke="#dfa839" '
-                   'stroke-opacity=".1" stroke-width="1"/>' % (x, y, x + 12, y)
-                   for y in (110, 210, 310) for x in range(20, 1000, 62))
-         + "</svg>")
-
 
 PO_ORDER = {"R1": 0, "QF": 1, "SF": 2, "NC": 3}
 
@@ -1031,8 +1056,9 @@ def shell(title, active, body, hero=None, bug="", desc=None, path=None):
                        "dynasty league. One belt.", quote=True)
     page = path or active
     canonical = SITE_URL + ("" if page == "index.html" else page)
-    mode_btn = MODE_BTN if (DYNAMIC and PRESS) else ""
+    mode_btn = MODE_BTN if DYNAMIC else ""
     search_ui = (SEARCH_BTN, SEARCH_OV) if DYNAMIC else ("", "")
+    fnav = "".join("<a href='%s'>%s</a>" % (href, label) for href, label in NAV)
     return f"""<!DOCTYPE html>
 <html lang="en"{NIGHT_CLASS}><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -1051,14 +1077,18 @@ def shell(title, active, body, hero=None, bug="", desc=None, path=None):
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?{FONT_QUERY}&display=swap" rel="stylesheet">
 <style>{CSS}</style></head><body>
+<a class="skip" href="#main">Skip to content</a>
 <div class="navbar"><div class="inner">
 <a class="brand" href="index.html">{CROWN}<span class="name">Campus <span>Kings</span></span></a>
-<nav>{nav}</nav>{search_ui[0]}{mode_btn}</div></div>
+<div class="navside"><nav>{nav}</nav>{search_ui[0]}{mode_btn}</div></div></div>
 {search_ui[1]}
 {bug}
 {hero or ""}
-<div class="wrap">{body}</div>
-<footer>Campus Kings &middot; CFB 27 Online Dynasty<br>Updated {fmt_date(date.today().isoformat())}</footer>
+<div class="wrap" id="main">{body}</div>
+<footer><div class="fbrand">Campus <span>Kings</span></div>
+<div class="fnav">{fnav}</div>
+<div class="fnote">CFB 27 online dynasty &middot; twenty seasons &middot; one belt<br>
+Updated {fmt_date(date.today().isoformat())}</div></footer>
 {MOTION_JS if MOTION else ""}{DYNAMIC_JS if DYNAMIC else ""}</body></html>
 """
 
@@ -1226,6 +1256,211 @@ def league_records(season_data, league, season_no):
     return out
 
 
+def _chrono_games(league, all_seasons):
+    """Every game ever played, in the order the league played them.
+
+    Each entry resolves both coaches (None for CPU), keeps the score, and
+    carries a human label ("Week 4", "SEC title", "Semifinal") so the record
+    book can cite games without re-deriving anything.
+    """
+    labels = {"R1": "Playoff first round", "QF": "Quarterfinal",
+              "SF": "Semifinal", "NC": "National Championship"}
+    out = []
+    for sd in all_seasons:
+        sn = sd.get("season", 0)
+        seq = []
+        for r in sd.get("results", []):
+            wk = r.get("week")
+            seq.append((0, wk if isinstance(wk, int) else 0, r, "reg",
+                        "Week %s" % wk, wk))
+        for cc in sd.get("conference_championships") or []:
+            seq.append((1, 0, cc, "conf", "%s title" % cc["conference"], "PO"))
+        for bg in sd.get("bowls") or []:
+            seq.append((2, 0, bg, "bowl", bg.get("bowl", "Bowl"), "PO"))
+        for g in sd.get("playoffs") or []:
+            seq.append((3, PO_ORDER.get(g.get("round"), 0), g, "playoff",
+                        labels.get(g.get("round"), "Playoff"), "PO"))
+        seq.sort(key=lambda e: (e[0], e[1]))
+        for _, _, g, kind, label, wk in seq:
+            out.append({
+                "season": sn, "label": label, "kind": kind,
+                "winner": g["winner"], "loser": g["loser"],
+                "wc": coach_for(league, g["winner"], sn, wk),
+                "lc": coach_for(league, g["loser"], sn, wk),
+                "score": g.get("score"), "gotw": bool(g.get("gotw")),
+                "exempt": profiles.exempt_tag(g),
+                "site": g.get("site"), "round": g.get("round"),
+            })
+    return out
+
+
+def compute_records(league, all_seasons, prof):
+    """The league record book, derived entirely from the season files.
+
+    Everything here respects the FW/SIM exemption -- a forfeit can't hold a
+    league record -- and the head-to-head lists only count games where both
+    sidelines had a user on them.
+    """
+    games = _chrono_games(league, all_seasons)
+    played = [g for g in games if g["score"] and not g["exempt"]]
+    h2h = [g for g in played if g["wc"] and g["lc"]]
+
+    def marg(g):
+        return g["score"][0] - g["score"][1]
+
+    def tot(g):
+        return g["score"][0] + g["score"][1]
+
+    blowouts = sorted(h2h, key=lambda g: (-marg(g), -tot(g)))[:5]
+    shootouts = sorted(h2h, key=lambda g: (-tot(g), marg(g)))[:5]
+    thrillers = sorted(h2h, key=lambda g: (marg(g), -tot(g)))[:5]
+
+    # Longest win streaks, counting every non-exempt game a coach played.
+    runs = defaultdict(lambda: {"cur": 0, "curstart": None,
+                                "best": 0, "span": None, "live": False})
+    for g in played:
+        for cid, won in ((g["wc"], True), (g["lc"], False)):
+            if not cid:
+                continue
+            r = runs[cid]
+            here = "S%d %s" % (g["season"], g["label"])
+            if won:
+                if r["cur"] == 0:
+                    r["curstart"] = here
+                r["cur"] += 1
+                if r["cur"] >= r["best"]:
+                    r["best"] = r["cur"]
+                    r["span"] = (r["curstart"], here)
+            else:
+                r["cur"] = 0
+    for r in runs.values():
+        r["live"] = r["cur"] == r["best"] and r["best"] > 0
+    streaks = sorted(
+        ({"coach": cid, "n": r["best"], "span": r["span"], "live": r["live"]}
+         for cid, r in runs.items() if r["best"] >= 3),
+        key=lambda x: (-x["n"], x["coach"]))[:6]
+
+    # Rivalries: every pairing, most-played first.
+    wins = defaultdict(lambda: defaultdict(int))
+    meetings = defaultdict(int)
+    for g in h2h:
+        key = frozenset((g["wc"], g["lc"]))
+        if len(key) < 2:
+            continue
+        meetings[key] += 1
+        wins[key][g["wc"]] += 1
+    rivalries = []
+    for key, n in sorted(meetings.items(), key=lambda kv: (-kv[1], sorted(kv[0]))):
+        a, b = sorted(key, key=lambda cid: (-wins[key][cid], cid))
+        rivalries.append({"a": a, "b": b, "aw": wins[key][a],
+                          "bw": wins[key][b], "n": n})
+
+    # GOTW ledger from the profile dossiers.
+    gotw = sorted(
+        ({"coach": cid, "w": p["gotw_w"], "l": p["gotw_l"]}
+         for cid, p in prof.items() if p["gotw_w"] or p["gotw_l"]),
+        key=lambda x: (-x["w"], x["l"], x["coach"]))
+
+    titles = [g for g in games if g.get("round") == "NC" and g["score"]]
+
+    return {"blowouts": blowouts, "shootouts": shootouts,
+            "thrillers": thrillers, "streaks": streaks,
+            "rivalries": rivalries, "gotw": gotw, "titles": titles}
+
+
+def _rec_game(league, g, stat):
+    """One record-book row for a single game, with the cited stat up front."""
+    return (f"<div class='rec'><div class='k'>{stat}</div>"
+            f"<div class='v'>{g['winner']} {g['score'][0]}&ndash;{g['score'][1]}"
+            f" {g['loser']}</div>"
+            f"<div class='d'>{clink(league, g['wc'])} over {clink(league, g['lc'])}"
+            f" &middot; Season {g['season']} &middot; {g['label']}</div></div>")
+
+
+def build_records(league, recs, bug=""):
+    """The Record Book: superlatives, streaks, rivalries, and the title ledger."""
+    b = ["""<div class="pagehead"><h1 class="page">The <em>Record Book</em></h1>
+<p class="psub">Every number on this page is pulled straight from the results
+&mdash; nothing is hand-kept. Forfeits and simmed games are exempt: a record has
+to be earned on the sticks. Head-to-head marks only count games with a user on
+both sidelines.</p></div>"""]
+    rv = " data-rv" if MOTION else ""
+
+    def game_section(title, note, rows, stat):
+        if not rows:
+            return
+        b.append(f'<div class="section"{rv}><h2 class="sec">{title}</h2>'
+                 f'<p class="secintro" style="font-size:14px;margin-top:-8px">{note}</p>'
+                 f'<div class="recgrid">')
+        b.extend(_rec_game(league, g, "%s #%d" % (stat, i + 1))
+                 for i, g in enumerate(rows))
+        b.append("</div></div>")
+
+    game_section("Beatdowns", "The widest margins ever laid on another coach.",
+                 recs["blowouts"], "Margin")
+    game_section("Shootouts", "The most combined points two coaches ever hung up.",
+                 recs["shootouts"], "Points")
+    game_section("Photo finishes", "The closest calls in league history.",
+                 recs["thrillers"], "Final margin")
+
+    if recs["streaks"]:
+        b.append(f'<div class="section"{rv}><h2 class="sec">Longest win streaks</h2>'
+                 f'<div class="recgrid">')
+        for s in recs["streaks"]:
+            span = "%s &rarr; %s" % s["span"] if s["span"] else ""
+            live = " &middot; <b style='color:var(--gold)'>active</b>" if s["live"] else ""
+            b.append(f"<div class='rec'><div class='k'>{s['n']} straight</div>"
+                     f"<div class='v'>{clink(league, s['coach'])}</div>"
+                     f"<div class='d'>{span}{live}</div></div>")
+        b.append("</div></div>")
+
+    if recs["titles"]:
+        b.append(f'<div class="section"{rv}><h2 class="sec">Title game ledger</h2>'
+                 '<table><tr><th>Season</th><th>Champion</th><th>Score</th>'
+                 '<th>Runner-up</th><th class="tb">Site</th></tr>')
+        for g in reversed(recs["titles"]):
+            b.append(f"<tr><td class='s'>S{g['season']}</td>"
+                     f"<td class='w'>{g['winner']} "
+                     f"<span style='color:var(--muted2)'>({clink(league, g['wc'])})</span></td>"
+                     f"<td class='s'>{g['score'][0]}&ndash;{g['score'][1]}</td>"
+                     f"<td style='color:var(--muted)'>{g['loser']} "
+                     f"<span style='color:var(--muted2)'>({clink(league, g['lc'])})</span></td>"
+                     f"<td class='tb' style='color:var(--muted)'>{g.get('site') or '&mdash;'}</td></tr>")
+        b.append("</table></div>")
+
+    if recs["rivalries"]:
+        b.append(f'<div class="section"{rv}><h2 class="sec">The rivalries</h2>'
+                 '<p class="secintro" style="font-size:14px;margin-top:-8px">'
+                 'Every head-to-head series with multiple meetings, most-played first.</p>'
+                 '<table><tr><th>Series</th><th>Meetings</th><th>Record</th><th>Edge</th></tr>')
+        for rvl in recs["rivalries"]:
+            if rvl["n"] < 2:
+                continue
+            edge = ("even" if rvl["aw"] == rvl["bw"]
+                    else clink(league, rvl["a"]))
+            b.append(f"<tr><td class='w'>{clink(league, rvl['a'])} "
+                     f"<span style='color:var(--muted2)'>vs</span> "
+                     f"{clink(league, rvl['b'])}</td>"
+                     f"<td style='color:var(--muted)'>{rvl['n']}</td>"
+                     f"<td class='s'>{rvl['aw']}&ndash;{rvl['bw']}</td>"
+                     f"<td>{edge}</td></tr>")
+        b.append("</table></div>")
+
+    if recs["gotw"]:
+        b.append(f'<div class="section"{rv}><h2 class="sec">Game of the Week ledger</h2>'
+                 '<p class="secintro" style="font-size:14px;margin-top:-8px">'
+                 'Records under the spotlight &mdash; GOTW games only.</p>'
+                 '<table><tr><th>Coach</th><th>W&ndash;L</th></tr>')
+        for row in recs["gotw"]:
+            b.append(f"<tr><td class='w'>{clink(league, row['coach'])}</td>"
+                     f"<td class='s'>{row['w']}&ndash;{row['l']}</td></tr>")
+        b.append("</table></div>")
+
+    return shell("The Record Book", "records.html", "\n".join(b), None, bug,
+                 desc="Campus Kings league records — the biggest blowouts, "
+                      "shootouts, streaks, rivalries, and every title game.")
+
+
 def career_line(r):
     """Short résumé under a coach's name on the points leaderboard."""
     bits = []
@@ -1287,7 +1522,7 @@ def glance_cell(g, league, season):
 
 
 def build_index(league, all_seasons, content, pts, about, bug="",
-                belt=None, belt_titles=0, n_seasons=1, clips=None):
+                belt=None, belt_titles=0, n_seasons=1, clips=None, recs=None):
     s2 = all_seasons[-1]
     season = s2.get("season", league["league"]["current_season"])
     # Gameplay behind the hero. The poster frame paints first so there is never
@@ -1317,24 +1552,47 @@ def build_index(league, all_seasons, content, pts, about, bug="",
                 % (season, lab.lower().replace(" ", ""), w.lower().replace(" ", "-"),
                    w, sc, l, lab))
 
+    # Reigning champion: the newest season whose title game has been played.
+    done = [d for d in all_seasons if bracket_is_final(d)]
+    champ_info = None
+    if done:
+        sd = done[-1]
+        nc = next(g for g in sd["playoffs"] if g["round"] == "NC")
+        cteam = sd.get("champion") or nc["winner"]
+        champ_info = {
+            "season": sd.get("season", 0), "team": cteam,
+            "coach": coach_for(league, cteam, sd.get("season", 0)),
+            "runner": sd.get("runner_up") or nc["loser"],
+            "score": nc.get("score"), "site": nc.get("site"),
+        }
+
+    stinger_html = ""
+    if champ_info:
+        stinger_html = (
+            "<div class='stinger'><b>Season %s champion</b>"
+            "<span class='sep'>&mdash;</span>%s &middot; %s</div>"
+            % (season_word(champ_info["season"]), champ_info["team"],
+               cname(league, champ_info["coach"]) if champ_info["coach"] else "CPU"))
+
     hero = (f'<div class="hero">'
             f'{banner_html}<div class="scrim"></div>'
             f'{heroflash_html}'
             f'<div class="inner">'
             f'<div class="eyebrow">Campus Kings &middot; Season '
-            f'{league["league"]["current_season"]} in progress</div>'
+            f'{league["league"]["current_season"]}</div>'
             f'<h1>{about.get("hero_html") or "Twenty seasons.<br>One dynasty.<br><em>One belt.</em>"}</h1>'
+            f'{stinger_html}'
             f'<div class="scrollcue">Scroll'
             f'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#dfa839" '
-            f'stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></div>'
+            f'stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div>'
             f'</div></div>'
             f'<div class="quick">'
             f'<a href="standings.html"><div class="qk">{NAV[1][1]} <span>&rarr;</span></div>'
             f'<div class="qd">The championship race, weekly results</div></a>'
             f'<a href="coaches.html"><div class="qk">Coaches <span>&rarr;</span></div>'
             f'<div class="qd">Profiles, rings, full game logs</div></a>'
-            f'<a href="rules.html"><div class="qk">{NAV[4][1]} <span>&rarr;</span></div>'
-            f'<div class="qd">Settings, bans, scheduling</div></a>'
+            f'<a href="records.html"><div class="qk">Records <span>&rarr;</span></div>'
+            f'<div class="qd">Blowouts, streaks, rivalries</div></a>'
             f'<a href="history.html"><div class="qk">History <span>&rarr;</span></div>'
             f'<div class="qd">Champions, brackets, moves</div></a>'
             f'</div>'
@@ -1344,37 +1602,15 @@ def build_index(league, all_seasons, content, pts, about, bug="",
                       for g in about["at_a_glance"])
             + "</div></div>")
 
+    rv = " data-rv" if MOTION else ""
 
-    # The league description leads the first section rather than crowding the
-    # hero, which stays headline-and-video only.
-    b = ['<div class="section"><h2 class="sec">Who we are</h2>'
-         f'<p class="secintro">{about["intro"]}</p><div class="pillars">'
-         + "".join(f"<div class='pillar'><div class='n'>{p['num']}</div>"
-                   f"<h3>{p['title']}</h3><p>{p['body']}</p></div>"
-                   for p in about["pillars"]) + "</div></div>"]
-
-    b.append('<div class="section"><h2 class="sec">How a week works</h2><div class="steps">'
-             + "".join(f"<div class='step'><div class='k'>{s['step']}</div>"
-                       f"<p>{s['text']}</p></div>" for s in about["how_it_works"])
-             + "</div></div>")
-
+    # ---- The Throne: reigning champion beside the belt race ----
     if belt:
         belt_names = " &middot; ".join(clink(league, r["coach"]) for r in belt)
-        _n = ("<span data-count='%d'>%d</span>" % (belt_titles, belt_titles)
-              if MOTION else str(belt_titles))
-        belt_line = "%s national championship%s" % (_n,
-                                                    "" if belt_titles == 1 else "s")
-        if len(belt) > 1:
-            belt_line += " each"
     else:
         belt_names = "Up for grabs"
-        belt_line = "No titles awarded yet"
     live_now = bool(s2.get("playoffs") or s2.get("playoff_seeds")) \
         and not bracket_is_final(s2)
-    pts_label = ("season one" if n_seasons == 1
-                 else "through %d seasons" % n_seasons)
-    if live_now:
-        pts_label += " &middot; season %d in progress" % season
 
     total = league["league"]["accredited_seasons"]
     live_ct = 1 if live_now else 0
@@ -1396,37 +1632,129 @@ def build_index(league, all_seasons, content, pts, about, bug="",
     else:
         beltbar_html = ""
 
-    b.append(f"""<div class="section"><h2 class="sec">The Campus King Belt</h2>
-<div class="belt"><div class="lbl">Current leader</div>
-<div class="who">{belt_names}</div>
-<div class="meta">{belt_line} &middot;
-The belt goes to the coach with the most titles across
-{league['league']['accredited_seasons']} accredited seasons. Rings matter most.</div>
-{beltbar_html}</div>
-<h2 class="sec" style="margin-top:36px">Playoff Points &middot; {pts_label}</h2>""")
+    # The title race, coach by coach -- everyone with at least one ring.
+    holders = [r for r in pts if r.get("titles")]
+    race_html = "".join(
+        "<div class='rc'><div class='n'%s>%d</div><div class='w'>%s</div></div>"
+        % ((" data-count='%d'" % r["titles"]) if MOTION else "",
+           r["titles"], clink(league, r["coach"]))
+        for r in holders)
+
+    if champ_info and champ_info["score"]:
+        ch_sub = ("Beat %s %d&ndash;%d%s" %
+                  (champ_info["runner"], champ_info["score"][0],
+                   champ_info["score"][1],
+                   (" in %s" % champ_info["site"]) if champ_info["site"] else ""))
+        champ_panel = (
+            f"<div class='belt'><div class='lbl'>Reigning national champion "
+            f"&middot; Season {season_word(champ_info['season'])}</div>"
+            f"<div class='who'>{champ_info['team']}</div>"
+            f"<div class='meta' style='font-size:14px'><b>"
+            f"{clink(league, champ_info['coach'])}</b> &middot; {ch_sub}</div></div>")
+    else:
+        champ_panel = ("<div class='belt'><div class='lbl'>National champion</div>"
+                       "<div class='who'>To be decided</div>"
+                       "<div class='meta'>The first title game hasn't been played "
+                       "yet.</div></div>")
+
+    if not race_html:
+        race_html = ("<div class='rc'><div class='n'>0</div>"
+                     "<div class='w'>No rings yet</div></div>")
+    lead_word = "leads" if belt and len(belt) == 1 else "lead"
+    belt_panel = (
+        f"<div class='belt'><div class='lbl'>The Campus King Belt</div>"
+        f"<div class='race'>{race_html}</div>"
+        f"<div class='meta'>Most national titles across {total} accredited "
+        f"seasons takes the belt. {belt_names} {lead_word} it today.</div>"
+        f"{beltbar_html}</div>")
+
+    dynasty_html = ""
+    if done:
+        chips = []
+        for sd in done:
+            nc = next(g for g in sd["playoffs"] if g["round"] == "NC")
+            t = sd.get("champion") or nc["winner"]
+            cid = coach_for(league, t, sd.get("season", 0))
+            chips.append("<a class='dyn' href='history.html'>"
+                         "<span class='s'>S%d</span><b>%s</b>"
+                         "<span class='c'>%s</span></a>"
+                         % (sd.get("season", 0), t,
+                            cname(league, cid) if cid else "CPU"))
+        dynasty_html = "<div class='dynasty'>%s</div>" % "".join(chips)
+
+    b = [f'<div class="section"{rv}><h2 class="sec">The Throne</h2>'
+         f'<div class="throne">{champ_panel}{belt_panel}</div>{dynasty_html}</div>']
+
+    # ---- Playoff Points ladder ----
+    pts_label = ("season one" if n_seasons == 1
+                 else "through %d seasons" % n_seasons)
+    if live_now:
+        pts_label += " &middot; season %d in progress" % season
+    b.append(f'<div class="section"{rv}>'
+             f'<h2 class="sec">Playoff Points &middot; {pts_label}</h2>')
+    top_pts = max((r["points"] for r in pts[:8]), default=0) or 1
     for r in pts[:8]:
-        b.append(f"""<div class="row"><span class="num">{r['rank']}</span><div class="bd">
+        bar = ("<i class='ptbar' style='--w:%d%%'></i>"
+               % round(100 * r["points"] / top_pts))
+        lead = " lead" if r.get("rank") == 1 else ""
+        b.append(f"""<div class="row{lead}">{bar}<span class="num">{r['rank']}</span><div class="bd">
 <span class="tm">{clink(league, r['coach'])}</span><span class="co">{r['team']}</span>
 <div class="dt">{career_line(r)}</div></div>
-<span class="rt">{r['points']} pts</span></div>""")
+<span class="rt">{r['points']}<small>pts</small></span></div>""")
     b.append('<div class="dt" style="padding-top:16px">'
              '<a href="standings.html" style="color:var(--gold)">Full standings &rarr;</a></div></div>')
 
-    b.append('<div class="section"><h2 class="sec">Latest content</h2><div class="grid">')
+    # ---- Record book teaser ----
+    if recs:
+        tiles = []
+        for key, label in (("blowouts", "Biggest beatdown"),
+                           ("shootouts", "Biggest shootout"),
+                           ("thrillers", "Closest finish")):
+            if recs[key]:
+                tiles.append(_rec_game(league, recs[key][0], label))
+        if recs["streaks"]:
+            s = recs["streaks"][0]
+            span = "%s &rarr; %s" % s["span"] if s["span"] else ""
+            live = " &middot; <b style='color:var(--gold)'>active</b>" if s["live"] else ""
+            tiles.append(f"<div class='rec'><div class='k'>Longest win streak</div>"
+                         f"<div class='v'>{s['n']} straight &middot; "
+                         f"{clink(league, s['coach'])}</div>"
+                         f"<div class='d'>{span}{live}</div></div>")
+        if tiles:
+            b.append(f'<div class="section"{rv}><h2 class="sec">From the record book</h2>'
+                     f'<div class="recgrid">{"".join(tiles)}</div>'
+                     '<div class="dt" style="padding-top:16px">'
+                     '<a href="records.html" style="color:var(--gold)">'
+                     'The full record book &rarr;</a></div></div>')
+
+    # ---- Latest content ----
+    b.append(f'<div class="section"{rv}><h2 class="sec">Latest content</h2><div class="grid">')
     for c in content["content"][:6]:
         b.append(content_card(c))
     b.append("</div>")
-    if len(content["content"]) > 4:
+    if len(content["content"]) > 6:
         b.append('<div class="dt" style="padding-top:18px">'
                  '<a href="content.html" style="color:var(--gold)">'
                  'Full archive &rarr;</a></div>')
     b.append("</div>")
 
-    b.append(f"""<div class="section"><h2 class="sec">{about['join']['title']}</h2>
-<p style="font-size:14.5px;color:var(--muted);line-height:1.7;max-width:660px;margin:0">
+    # ---- Who we are / how a week works / getting in ----
+    b.append(f'<div class="section"{rv}><h2 class="sec">Who we are</h2>'
+             f'<p class="secintro">{about["intro"]}</p><div class="pillars">'
+             + "".join(f"<div class='pillar'><div class='n'>{p['num']}</div>"
+                       f"<h3>{p['title']}</h3><p>{p['body']}</p></div>"
+                       for p in about["pillars"]) + "</div></div>")
+
+    b.append(f'<div class="section"{rv}><h2 class="sec">How a week works</h2><div class="steps">'
+             + "".join(f"<div class='step'><div class='k'>{s['step']}</div>"
+                       f"<p>{s['text']}</p></div>" for s in about["how_it_works"])
+             + "</div></div>")
+
+    b.append(f"""<div class="section"{rv}><h2 class="sec">{about['join']['title']}</h2>
+<p style="font-size:14.5px;color:var(--muted);line-height:1.7;max-width:680px;margin:0">
 {about['join']['body']}</p></div>""")
 
-    return shell("Overview", "index.html", "\n".join(b), hero, bug,
+    return shell("Home", "index.html", "\n".join(b), hero, bug,
                  desc=about.get("tagline"))
 
 
@@ -1448,10 +1776,8 @@ def build_content(content, bug=""):
     for c in items:
         by_season[c["season"]].append(c)
 
-    blurb = ("Everything we've published, newest first. Nothing falls off this page."
-             if PRESS else
-             "Every recap, power ranking, and graphic published so far &mdash; "
-             "%d in total, %d with a full write-up. Nothing falls off this page."
+    blurb = ("Every recap, ranking, and graphic ever published &mdash; %d and "
+             "counting, %d with a full write-up. Nothing falls off this page."
              % (len(items), sum(1 for c in items if c.get("article"))))
     b = [f"""<div class="pagehead"><h1 class="page">The <em>Archive</em></h1>
 <p class="psub">{blurb}</p></div>"""]
@@ -1905,8 +2231,11 @@ def main():
     profiles.clink = clink
     profiles.DYNAMIC = DYNAMIC
 
-    (SITE / "index.html").write_text(build_index(league, all_seasons, content, pts, about, bug, belt, belt_titles, len(seasons), clips), encoding="utf-8")
+    recs = compute_records(league, all_seasons, prof)
+
+    (SITE / "index.html").write_text(build_index(league, all_seasons, content, pts, about, bug, belt, belt_titles, len(seasons), clips, recs), encoding="utf-8")
     (SITE / "standings.html").write_text(build_standings(league, cur_season, pts, bug, len(seasons), belt, belt_titles), encoding="utf-8")
+    (SITE / "records.html").write_text(build_records(league, recs, bug), encoding="utf-8")
     (SITE / "rules.html").write_text(build_rules(rules, bug), encoding="utf-8")
     (SITE / "history.html").write_text(build_history(league, all_seasons, bug), encoding="utf-8")
     (SITE / "coaches.html").write_text(
@@ -1933,6 +2262,7 @@ def main():
         for href, label, sub in (
                 ("standings.html", "The Belt", "standings and weekly results"),
                 ("coaches.html", "Coaches", "every coach, rings, game logs"),
+                ("records.html", "The Record Book", "blowouts, streaks, rivalries"),
                 ("content.html", "The Archive", "every graphic and write-up"),
                 ("rules.html", "Rulebook", "settings, bans, scheduling"),
                 ("history.html", "History", "champions, brackets, moves")):
@@ -1987,8 +2317,8 @@ def main():
 
     # Sitemap + robots. Every page written above, absolute, stamped with the
     # build date -- crawlers find the coach pages and write-ups on their own.
-    pages = (["index.html", "standings.html", "rules.html", "history.html",
-              "coaches.html", "content.html"]
+    pages = (["index.html", "standings.html", "records.html", "rules.html",
+              "history.html", "coaches.html", "content.html"]
              + ["coach-%s.html" % cid for cid in roster]
              + [article_path(c) for c in content["content"] if c.get("article")])
     today = date.today().isoformat()
@@ -2005,7 +2335,7 @@ def main():
 
     n = len(roster)
     print("Built %d pages (%d coach profiles, %d write-ups), copied %d/%d media -> %s"
-          % (7 + n + posts, n, posts, copied, total, SITE))
+          % (8 + n + posts, n, posts, copied, total, SITE))
 
 
 if __name__ == "__main__":

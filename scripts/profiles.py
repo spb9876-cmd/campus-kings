@@ -184,8 +184,30 @@ def gather(league, seasons):
     return prof
 
 
+_PO_ORD = {"Round 1": 1, "Quarterfinal": 2, "Semifinal": 3, "Championship": 4}
+
+
+def _chrono_key(g):
+    """Sort a dossier game into the order the league actually played it."""
+    if g["kind"] == "playoff":
+        return (g["season"], 3, _PO_ORD.get(g["week"], 9))
+    if g["kind"] == "conf":
+        return (g["season"], 2, 0)
+    if g["kind"] == "bowl":
+        return (g["season"], 1, 0)
+    return (g["season"], 0, g["week"] if isinstance(g["week"], int) else 0)
+
+
+def form_dots(games, n=5):
+    """Last-n form as W/L dots, oldest to newest. Exempt games don't count."""
+    real = sorted((g for g in games if not g.get("exempt")), key=_chrono_key)[-n:]
+    if not real:
+        return ""
+    dots = "".join("<i class='%s'></i>" % ("w" if g["won"] else "l") for g in real)
+    return "<span class='form' title='Last %d games, oldest first'>%s</span>" % (len(real), dots)
+
+
 def index_page(league, prof, shell, bug, season):
-    legacy = league.get("legacy_championships", {})
     rows = []
     for c in league["coaches"]:
         cid = c["id"]
@@ -201,32 +223,34 @@ def index_page(league, prof, shell, bug, season):
             # page -- the Playoffs stat there is a breakout, not an exclusion
             "w": p.get("w", 0) + p.get("po_w", 0),
             "l": p.get("l", 0) + p.get("po_l", 0),
+            "games": p.get("games", []),
         })
     rows.sort(key=lambda r: (-r["rings"], -r["w"], r["name"]))
 
     search = ('<input class="searchbar" type="search" '
               'placeholder="Find a coach or team&hellip;" '
-              'data-filter="#coachtable tr:not(:first-child)" '
+              'data-filter=".ccard" '
               'aria-label="Find a coach or team">' if DYNAMIC else "")
-    table_open = ('<table id="coachtable" class="sortable">' if DYNAMIC
-                  else "<table>")
     b = ['<div class="pagehead"><h1 class="page">The <em>Coaches</em></h1>'
          '<p class="psub">Every coach, every game we have on record. Ring counts go '
          'all the way back; the Belt only counts the current 20-season run.</p></div>'
-         f'<div class="section">{search}{table_open}'
-         '<tr><th>Coach</th><th>Current team</th>'
-         '<th>Rings</th><th>League record</th></tr>']
+         f'<div class="section">{search}<div class="coachgrid">']
     for r in rows:
-        team = r["team"] or "<span style='color:var(--muted2)'>&mdash;</span>"
-        rings = ("<span class='s'>%d</span>" % r["rings"]) if r["rings"] else \
-                "<span style='color:var(--muted2)'>0</span>"
-        rec = "%d&ndash;%d" % (r["w"], r["l"]) if (r["w"] or r["l"]) else \
-              "<span style='color:var(--muted2)'>&mdash;</span>"
-        b.append(f"<tr><td class='w'><a href='coach-{r['id']}.html' "
-                 f"style='color:var(--gold)'>{r['name']}</a></td>"
-                 f"<td style='color:var(--muted)'>{team}</td>"
-                 f"<td class='s'>{rings}</td><td>{rec}</td></tr>")
-    b.append("</table></div>")
+        team = r["team"] or "Former coach"
+        rec = ("%d&ndash;%d" % (r["w"], r["l"])) if (r["w"] or r["l"]) else "&mdash;"
+        rings = "".join("<span class='ring' title='Ring'></span>" * min(r["rings"], 8))
+        if r["rings"] > 8:
+            rings += "<span style='color:var(--gold);font-size:11px'>+%d</span>" % (r["rings"] - 8)
+        form = form_dots(r["games"])
+        b.append(f"<a class='ccard' href='coach-{r['id']}.html'>"
+                 f"<div class='nm'>{r['name']}</div>"
+                 f"<div class='tmm'>{team}</div>"
+                 f"<div class='ringrow'>{rings}</div>"
+                 f"<div class='line'><span>Record <b>{rec}</b></span>"
+                 f"<span>Rings <b>{r['rings']}</b></span>"
+                 + (f"<span>{form}</span>" if form else "")
+                 + "</div></a>")
+    b.append("</div></div>")
     return shell("Coaches", "coaches.html", "\n".join(b), None, bug,
                  desc="Every Campus Kings coach — rings, records, and full "
                       "game logs.")
@@ -246,11 +270,26 @@ def coach_page(league, cid, prof, shell, bug, season):
         ("%d-%d" % (p["po_w"], p["po_l"]), "Playoffs"),
         (str(p["conf"]), "Conference titles"),
     ]
+    form = form_dots(p["games"])
+    if form:
+        stats.append((form, "Last five"))
+    ringrow = ""
+    if rings:
+        dots = "<span class='ring'></span>" * min(rings, 10)
+        if rings > 10:
+            dots += ("<span style='color:var(--gold);font-size:12px;"
+                     "font-weight:700'>+%d</span>" % (rings - 10))
+        ringrow = (f"<div class='ringrow' style='justify-content:center;"
+                   f"align-items:center;margin-top:18px'>{dots}</div>")
 
-    hero = (f'<div class="hero" style="padding:0">{"" }<div class="glow"></div>'
-            f'<div class="inner" style="padding:52px 24px 44px">'
-            f'<div class="eyebrow">{"Coach &middot; " + team if team else "Coach"}</div>'
-            f'<h1 style="font-size:clamp(34px,5.4vw,56px)">{name}</h1>'
+    hero = (f'<div class="hero" style="background:var(--turf)">'
+            f'<div class="scrim" style="background:radial-gradient(ellipse 760px 340px '
+            f'at 50% 0%,var(--glow),transparent 72%)"></div>'
+            f'<div class="inner" style="padding:56px 24px 48px;color:var(--ink)">'
+            f'<div class="eyebrow" style="color:var(--gold)">'
+            f'{"Coach &middot; " + team if team else "Coach"}</div>'
+            f'<h1 style="font-size:clamp(40px,6vw,72px);text-shadow:none;margin-top:14px">{name}</h1>'
+            f'{ringrow}'
             f'</div></div><div class="glance"><div class="inner">'
             + "".join(f"<div class='cell'><div class='fig'>{v}</div>"
                       f"<div class='lab'>{k}</div></div>" for v, k in stats)
@@ -267,6 +306,62 @@ def coach_page(league, cid, prof, shell, bug, season):
                  f'<div class="belt"><div class="lbl">Postseason</div>'
                  f'<div class="who" style="font-size:26px">{" &middot; ".join(bits)}</div>'
                  f'<div class="meta">Counted toward the Campus King Belt.</div></div></div>')
+
+    # ---- season by season ----
+    by_season = defaultdict(list)
+    for g in p["games"]:
+        by_season[g["season"]].append(g)
+    if by_season:
+        b.append('<div class="section"><h2 class="sec">Season by season</h2>'
+                 '<table><tr><th>Season</th><th>Team</th><th>W&ndash;L</th>'
+                 '<th>Postseason</th></tr>')
+        for sn in sorted(by_season, reverse=True):
+            gs = by_season[sn]
+            teams = " / ".join(dict.fromkeys(g["team"] for g in gs))
+            w = sum(1 for g in gs if g["won"] and not g.get("exempt"))
+            l = sum(1 for g in gs if not g["won"] and not g.get("exempt"))
+            notes = []
+            for g in gs:
+                if g["kind"] == "playoff" and g["week"] == "Championship":
+                    notes.append("Won the natty" if g["won"] else "Runner-up")
+                elif g["kind"] == "conf" and g["won"]:
+                    notes.append("%s champion" % g.get("conference", "Conference"))
+            if not notes and any(g["kind"] == "playoff" for g in gs):
+                notes.append("Made the playoffs")
+            note = " &middot; ".join(dict.fromkeys(notes)) or \
+                "<span style='color:var(--muted2)'>&mdash;</span>"
+            b.append(f"<tr><td class='s'>S{sn}</td><td class='w'>{teams}</td>"
+                     f"<td class='s'>{w}&ndash;{l}</td>"
+                     f"<td style='color:var(--muted)'>{note}</td></tr>")
+        b.append("</table></div>")
+
+    # ---- head-to-head vs every coach faced ----
+    h2h = defaultdict(lambda: {"w": 0, "l": 0, "name": None, "last": None})
+    for g in sorted(p["games"], key=_chrono_key):
+        if not g.get("opp_cid") or g.get("exempt"):
+            continue
+        r = h2h[g["opp_cid"]]
+        r["name"] = g["opp_coach"]
+        r["w" if g["won"] else "l"] += 1
+        if g["score"]:
+            sc = tuple(g["score"]) if g["won"] else tuple(reversed(g["score"]))
+            r["last"] = "%s %d&ndash;%d, S%d" % ("W" if g["won"] else "L",
+                                                sc[0], sc[1], g["season"])
+    if h2h:
+        b.append('<div class="section"><h2 class="sec">Head to head</h2>'
+                 '<p class="secintro" style="font-size:14px;margin-top:-8px">'
+                 'User-vs-user games only; forfeits and sims don\'t count.</p>'
+                 '<table><tr><th>Opponent</th><th>W&ndash;L</th><th>Last meeting</th></tr>')
+        for cid_o, r in sorted(h2h.items(),
+                               key=lambda kv: (-(kv[1]["w"] + kv[1]["l"]),
+                                               -kv[1]["w"], kv[0])):
+            who = clink(league, cid_o, r["name"]) if clink else r["name"]
+            edge = ("color:var(--gold)" if r["w"] > r["l"] else
+                    "color:var(--muted2)" if r["w"] < r["l"] else "")
+            b.append(f"<tr><td class='w'>{who}</td>"
+                     f"<td class='s' style='{edge}'>{r['w']}&ndash;{r['l']}</td>"
+                     f"<td style='color:var(--muted)'>{r['last'] or '&mdash;'}</td></tr>")
+        b.append("</table></div>")
 
     b.append('<div class="section"><h2 class="sec">Game log</h2>')
     if not p["games"]:
