@@ -1,0 +1,74 @@
+{
+  "season": 4,
+  "status": "in_progress",
+  "results": [
+    {
+      "week": 1,
+      "winner": "Texas A&M",
+      "loser": "Washington",
+      "score": [
+        52,
+        21
+      ],
+      "note": "FW"
+    },
+    {
+      "week": 1,
+      "winner": "South Carolina",
+      "loser": "USC",
+      "score": [
+        24,
+        13
+      ]
+    },
+    {
+      "week": 1,
+      "winner": "LSU",
+      "loser": "Indiana",
+      "score": [
+        31,
+        24
+      ],
+      "note": "FW"
+    },
+    {
+      "week": 1,
+      "winner": "Notre Dame",
+      "loser": "Alabama",
+      "score": [
+        45,
+        35
+      ],
+      "gotw": true
+    },
+    {
+      "week": 1,
+      "winner": "Miami",
+      "loser": "Arizona State",
+      "score": [
+        35,
+        14
+      ]
+    },
+    {
+      "week": 2,
+      "winner": "Nebraska",
+      "loser": "UCLA",
+      "score": [
+        31,
+        29
+      ]
+    },
+    {
+      "week": 2,
+      "winner": "Arizona State",
+      "loser": "LSU",
+      "score": [
+        37,
+        31
+      ],
+      "gotw": true
+    }
+  ],
+  "current_week": 2
+}
