@@ -1,6 +1,34 @@
 {
   "content": [
     {
+      "title": "Season Four: Weeks One and Two",
+      "kind": "Recap",
+      "season": 4,
+      "date": "2026-09-03",
+      "file": "campus_kings_s4_weeks_1_2_recap.png",
+      "blurb": "Tayne opens with a GOTW statement over top-5 Alabama, TBO answers a 21-point loss with a win for the alma mater, and JT gets Nebraska in the win column.",
+      "article": "s4-weeks-1-2-recap.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s4_weeks_1_2_recap.png",
+          "caption": "Weeks 1-2 — two Games of the Week, and the heavyweights haven't swung yet"
+        },
+        {
+          "file": "ck_biggame_s4w1_nd_bama.jpg",
+          "caption": "Irish start strong — Notre Dame 45, Alabama 35, via Bowzer in #big-games"
+        }
+      ]
+    },
+    {
+      "title": "Season Four Preview",
+      "kind": "Season Preview",
+      "season": 4,
+      "date": "2026-09-03",
+      "file": "campus_kings_s4_preview.png",
+      "blurb": "For the first time in the accredited era, the season opens without Stew on the throne. The belt race is 2-1, the champ is going for broke, and the king wants it back.",
+      "article": "s4-season-preview.md"
+    },
+    {
       "title": "Ole Miss 35, Oregon 34: Pat Wins It in Tampa",
       "kind": "Recap",
       "season": 3,
