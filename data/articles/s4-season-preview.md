@@ -1,6 +1,6 @@
 For the first time in the accredited era, a Campus Kings season opens without Stew as the reigning champion. Sit with that. Three seasons, three title games, and the trophy finally lives somewhere other than Norman — it's in Oxford, with Pat, who came back from fourteen down in Tampa to take it 35-34. The belt race reads **Stew 2, Pat 1**, seventeen seasons still to play, and the whole league spent the offseason talking like it knows exactly what happens next.
 
-The chat set the stakes before Week 0 even advanced. "Pat Next! Lmaoooooooooo," Curt declared. Stew's answer had all the warmth of a man who's been champion twice: "Pat gonna win the next 2 so def him I'm.here for the long haul." And the man himself? "lol Im goin for broke this season gunna see what happens." Bowzer's scouting report on the champ was one word: "Cheating."
+The chat set the stakes before Week 0 even advanced. "Pat Next! Lmaoooooooooo," Curt declared. Stew's answer had all the warmth of a man who's been champion twice: "Pat gonna win the next 2 so def him I'm.here for the long haul." And the man himself? "lol Im goin for broke this season gunna see what happens." Stew, meanwhile, was already back at the recruiting board stacking instant commits — a process Bowzer reviewed in one word: "Cheating."
 
 ## The five questions of Season Four
 
