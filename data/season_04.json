@@ -68,7 +68,16 @@
         31
       ],
       "gotw": true
+    },
+    {
+      "week": 3,
+      "winner": "Nebraska",
+      "loser": "Oklahoma",
+      "score": [
+        46,
+        28
+      ]
     }
   ],
-  "current_week": 2
+  "current_week": 3
 }
