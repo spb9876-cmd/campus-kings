@@ -77,6 +77,25 @@
         46,
         28
       ]
+    },
+    {
+      "week": 3,
+      "winner": "USC",
+      "loser": "LSU",
+      "score": [
+        31,
+        29
+      ],
+      "note": "FW"
+    },
+    {
+      "week": 3,
+      "winner": "UCLA",
+      "loser": "Auburn",
+      "score": [
+        27,
+        17
+      ]
     }
   ],
   "current_week": 3
