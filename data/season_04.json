@@ -96,7 +96,71 @@
         27,
         17
       ]
+    },
+    {
+      "week": 4,
+      "winner": "Florida State",
+      "loser": "SMU",
+      "score": [
+        47,
+        7
+      ]
+    },
+    {
+      "week": 4,
+      "winner": "Georgia",
+      "loser": "Baylor",
+      "score": [
+        45,
+        35
+      ],
+      "note": "FW"
+    },
+    {
+      "week": 4,
+      "winner": "Ohio State",
+      "loser": "UCLA",
+      "score": [
+        58,
+        31
+      ]
+    },
+    {
+      "week": 4,
+      "winner": "Notre Dame",
+      "loser": "Texas",
+      "score": [
+        41,
+        27
+      ]
+    },
+    {
+      "week": 4,
+      "winner": "Texas A&M",
+      "loser": "Florida",
+      "score": [
+        48,
+        28
+      ]
+    },
+    {
+      "week": 5,
+      "winner": "Penn State",
+      "loser": "Indiana",
+      "score": [
+        42,
+        6
+      ]
+    },
+    {
+      "week": 5,
+      "winner": "Ole Miss",
+      "loser": "Georgia",
+      "score": [
+        31,
+        23
+      ]
     }
   ],
-  "current_week": 3
+  "current_week": 5
 }
