@@ -199,6 +199,33 @@
         31,
         7
       ]
+    },
+    {
+      "week": 5,
+      "winner": "SMU",
+      "loser": "Cal",
+      "score": [
+        54,
+        34
+      ]
+    },
+    {
+      "week": 6,
+      "winner": "Ole Miss",
+      "loser": "BYU",
+      "score": [
+        42,
+        26
+      ]
+    },
+    {
+      "week": 6,
+      "winner": "Clemson",
+      "loser": "Georgia Tech",
+      "score": [
+        31,
+        7
+      ]
     }
   ],
   "current_week": 6
