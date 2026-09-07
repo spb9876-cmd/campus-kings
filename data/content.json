@@ -1,6 +1,38 @@
 {
   "content": [
     {
+      "title": "Season Four: Weeks Three Through Six",
+      "kind": "Recap",
+      "season": 4,
+      "date": "2026-09-07",
+      "file": "campus_kings_s4_weeks_3_6_recap.png",
+      "blurb": "JT walks into Norman for his GOTW debut and beats the two-time champ by eighteen, Tayne makes it back-to-back spotlight road wins, and Purp holds Curt to single digits under the Neyland lights.",
+      "article": "s4-weeks-3-6-recap.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s4_weeks_3_6_recap.png",
+          "caption": "Weeks 3-6 — the upset in Norman headlines the stretch"
+        },
+        {
+          "file": "ck_biggame_s4w3_upset_norman.jpg",
+          "caption": "Upset in Norman — Nebraska 46, Oklahoma 28, via Bowzer in #big-games"
+        },
+        {
+          "file": "ck_biggame_s4w4_irish_streaking.jpg",
+          "caption": "Irish streaking — Notre Dame 41, Texas 27, via Bowzer in #big-games"
+        }
+      ]
+    },
+    {
+      "title": "CK Rankings: The Norman Edition",
+      "kind": "CK Rankings",
+      "season": 4,
+      "date": "2026-09-07",
+      "file": "campus_kings_ck_rankings_norman.png",
+      "blurb": "The chair holds — two rings still end every argument — but Tayne surges to No. 3, JT makes the biggest single-edition jump in board history, and for the first time No. 1 is held by rule rather than by fear.",
+      "article": "ck-rankings-norman.md"
+    },
+    {
       "title": "Season Four: Weeks One and Two",
       "kind": "Recap",
       "season": 4,
