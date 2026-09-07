@@ -160,6 +160,15 @@
         31,
         23
       ]
+    },
+    {
+      "week": 5,
+      "winner": "Tennessee",
+      "loser": "Ohio State",
+      "score": [
+        35,
+        9
+      ]
     }
   ],
   "current_week": 5
