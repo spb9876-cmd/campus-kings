@@ -248,7 +248,8 @@
     },
     {
       "id": "tv",
-      "name": "TV"
+      "name": "TV",
+      "status": "departed"
     },
     {
       "id": "zbo",
@@ -299,6 +300,10 @@
     {
       "id": "lux",
       "name": "Lux"
+    },
+    {
+      "id": "harry",
+      "name": "Harry"
     }
   ],
   "tenures": [
@@ -488,7 +493,8 @@
       "team": "UCLA",
       "coach": "tv",
       "from": "S2W4",
-      "note": "previously CPU"
+      "to": "S4W5",
+      "note": "previously CPU; left the league after S4W4 — UCLA open"
     },
     {
       "team": "Utah",
@@ -526,6 +532,12 @@
       "coach": "lux",
       "from": "S3W10",
       "note": "joined league Season Three; Cal CPU-held since Quan left at S2W10"
+    },
+    {
+      "team": "Georgia Tech",
+      "coach": "harry",
+      "from": "S4W7",
+      "note": "joined league Season Four; Georgia Tech previously CPU"
     }
   ],
   "legacy_championships": {
