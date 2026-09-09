@@ -155,7 +155,8 @@
       "name": "Polo",
       "aliases": [
         "GOHPoloRed"
-      ]
+      ],
+      "status": "departed"
     },
     {
       "id": "bowzer",
@@ -184,7 +185,8 @@
       "name": "Cell",
       "aliases": [
         "Sickle Cell"
-      ]
+      ],
+      "status": "departed"
     },
     {
       "id": "frank",
@@ -291,7 +293,8 @@
     },
     {
       "id": "fields",
-      "name": "Fields Finest"
+      "name": "Fields Finest",
+      "status": "departed"
     },
     {
       "id": "jt",
@@ -345,7 +348,9 @@
     {
       "team": "Florida",
       "coach": "polo",
-      "from": "S1W0"
+      "from": "S1W0",
+      "to": "S4W7",
+      "note": "left the league in Season Four — Florida open"
     },
     {
       "team": "Oregon",
@@ -440,7 +445,8 @@
       "team": "LSU",
       "coach": "cell",
       "from": "S2W2",
-      "note": "won LSU auction, $250"
+      "to": "S4W7",
+      "note": "won LSU auction, $250; left the league in Season Four — LSU open"
     },
     {
       "team": "LSU",
@@ -519,7 +525,8 @@
       "team": "Auburn",
       "coach": "fields",
       "from": "S3W0",
-      "note": "hired for Season Three; Auburn CPU-held since S2W2"
+      "to": "S4W7",
+      "note": "hired for Season Three; left the league in Season Four — Auburn open"
     },
     {
       "team": "Nebraska",
