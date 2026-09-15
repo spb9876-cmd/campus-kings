@@ -1,6 +1,38 @@
 {
   "content": [
     {
+      "title": "Season Four: Weeks Seven Through Thirteen",
+      "kind": "Recap",
+      "season": 4,
+      "date": "2026-09-15",
+      "file": "campus_kings_s4_weeks_7_13_recap.png",
+      "blurb": "The king's answer: Stew takes the champ down 38-20 in Norman. Plus Rivalry Week's 103-point dawg fight, TCU alone atop the Big 12, and Dre shutting out The Game itself.",
+      "article": "s4-weeks-7-13-recap.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s4_weeks_7_13_recap.png",
+          "caption": "Weeks 7-13 — the king's answer headlines the stretch run"
+        },
+        {
+          "file": "ck_biggame_s4w7_rivalry_week.jpg",
+          "caption": "Rivalry Week results — via Bowzer in #big-games"
+        },
+        {
+          "file": "ck_biggame_s4w8_tcu_asu.jpg",
+          "caption": "Frogs take down the Sun Devils — TCU 38, Arizona State 27, via Bowzer in #big-games"
+        }
+      ]
+    },
+    {
+      "title": "CK Rankings: The Answer Edition",
+      "kind": "CK Rankings",
+      "season": 4,
+      "date": "2026-09-15",
+      "file": "campus_kings_ck_rankings_answer.png",
+      "blurb": "Held by rule, now held by receipts: Stew beats the champ by eighteen and removes the asterisk. Tayne stays perfect at No. 3, KJ and LT surge, and the top two are one apiece on the series that decides everything.",
+      "article": "ck-rankings-answer.md"
+    },
+    {
       "title": "Season Four: Weeks Three Through Six",
       "kind": "Recap",
       "season": 4,
