@@ -63,13 +63,11 @@ DYNAMIC = True
 # relative ones.
 SITE_URL = "https://spb9876-cmd.github.io/campus-kings/"
 
-# The league's gameday anthem, embedded on the homepage via Spotify's own
-# player (licensed playback stays on Spotify's side; we never host the audio).
-# Set to None to drop the section. The navbar sound toggle is separate -- it
-# plays the public-domain march we host ourselves.
-ANTHEM_TRACK = "5wWkJduZVohG8B8PoWrbkb"   # Seven Nation Army - Live
-ANTHEM_LABEL = ("Seven Nation Army (Live) &middot; The Ohio State University "
-                "Marching Band")
+# Optional homepage Spotify embed for a licensed anthem (playback stays on
+# Spotify's side). None drops the section; the navbar sound toggle plays the
+# royalty-free track we host at media_src/audio/gameday.mp3 instead.
+ANTHEM_TRACK = None
+ANTHEM_LABEL = ""
 
 # Runs synchronously in <head>, before anything paints, so the correct palette is
 # in place on the first frame -- set it from a deferred script and every visitor
@@ -1156,8 +1154,8 @@ def shell(title, active, body, hero=None, bug="", desc=None, path=None):
 <div class="fnav">{fnav}</div>
 <div class="fnote">CFB 27 online dynasty &middot; twenty seasons &middot; one belt<br>
 Updated {fmt_date(date.today().isoformat())}</div>
-<div class="fcredit">Gameday march: Sousa's &ldquo;The Thunderer&rdquo; &middot;
-&ldquo;The President's Own&rdquo; U.S. Marine Band &middot; public domain</div></footer>
+<div class="fcredit">Gameday audio: &ldquo;Epic Rock Anthem Stadium Energy&rdquo;
+&middot; ABSounds via Pixabay &middot; royalty-free</div></footer>
 {MOTION_JS if MOTION else ""}{DYNAMIC_JS if DYNAMIC else ""}</body></html>
 """
 
