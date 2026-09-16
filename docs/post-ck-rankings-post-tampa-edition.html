@@ -802,7 +802,7 @@ Updated Sept 16, 2026</div>
     var AKEY='ck-sound', tune=null;
     function ensure(){
       if(!tune){ tune=new Audio('media/audio/gameday.mp3');
-        tune.loop=true; tune.volume=.16; }
+        tune.loop=true; tune.volume=.10; }
       return tune;
     }
     function soundOn(){
@@ -818,8 +818,11 @@ Updated Sept 16, 2026</div>
         soundOn(); try{localStorage.setItem(AKEY,'on');}catch(e){}
       }
     });
+    /* Sound is ON by default: anyone who hasn't explicitly switched it off
+       gets the anthem at their first click or keypress (the earliest moment
+       browsers allow audio). An explicit "off" stays off. */
     var apref=null; try{apref=localStorage.getItem(AKEY);}catch(e){}
-    if(apref==='on'){
+    if(apref!=='off'){
       var kick=function(){
         soundOn();
         document.removeEventListener('click',kick,true);
