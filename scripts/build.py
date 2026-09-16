@@ -1147,7 +1147,7 @@ def shell(title, active, body, hero=None, bug="", desc=None, path=None):
 <div class="fnav">{fnav}</div>
 <div class="fnote">CFB 27 online dynasty &middot; twenty seasons &middot; one belt<br>
 Updated {fmt_date(date.today().isoformat())}</div>
-<div class="fcredit">Gameday march: Sousa's &ldquo;Semper Fidelis&rdquo; &middot;
+<div class="fcredit">Gameday march: Sousa's &ldquo;The Thunderer&rdquo; &middot;
 &ldquo;The President's Own&rdquo; U.S. Marine Band &middot; public domain</div></footer>
 {MOTION_JS if MOTION else ""}{DYNAMIC_JS if DYNAMIC else ""}</body></html>
 """
