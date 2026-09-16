@@ -299,6 +299,42 @@ DYNAMIC_JS = r"""<script>
     paint();
   }
 
+  /* ---- gameday music: off by default, one click on. Browsers refuse
+     unprompted audio, so a returning visitor who left it on gets the march
+     back at their first click or keypress anywhere on the page. ---- */
+  var abtn=document.querySelector('.soundbtn');
+  if(abtn){
+    var AKEY='ck-sound', tune=null;
+    function ensure(){
+      if(!tune){ tune=new Audio('media/audio/gameday.mp3');
+        tune.loop=true; tune.volume=.28; }
+      return tune;
+    }
+    function soundOn(){
+      ensure().play().then(function(){root.classList.add('sound');})
+        .catch(function(){});
+    }
+    function soundOff(){ if(tune) tune.pause(); root.classList.remove('sound'); }
+    abtn.addEventListener('click',function(ev){
+      ev.stopPropagation();
+      if(root.classList.contains('sound')){
+        soundOff(); try{localStorage.setItem(AKEY,'off');}catch(e){}
+      } else {
+        soundOn(); try{localStorage.setItem(AKEY,'on');}catch(e){}
+      }
+    });
+    var apref=null; try{apref=localStorage.getItem(AKEY);}catch(e){}
+    if(apref==='on'){
+      var kick=function(){
+        soundOn();
+        document.removeEventListener('click',kick,true);
+        document.removeEventListener('keydown',kick,true);
+      };
+      document.addEventListener('click',kick,true);
+      document.addEventListener('keydown',kick,true);
+    }
+  }
+
   /* ---- sortable tables: click a header to sort, click again to flip.
      Numbers sort numerically ("3-1" and "12 pts" read their leading number,
      blank em-dashes sink to the bottom); everything else sorts as text. ---- */
@@ -487,6 +523,16 @@ html.night .chip.on{color:#171204}
   align-items:center;justify-content:center;cursor:pointer;padding:0;
   transition:color .15s,border-color .15s}
 .searchbtn:hover{color:var(--gold);border-color:var(--golddim)}
+
+.soundbtn{background:none;border:1px solid var(--rule);border-radius:50%;
+  color:var(--muted);width:32px;height:32px;flex:0 0 auto;display:flex;
+  align-items:center;justify-content:center;cursor:pointer;padding:0;
+  transition:color .15s,border-color .15s}
+.soundbtn:hover{color:var(--gold);border-color:var(--golddim)}
+.soundbtn .spk-on{display:none}
+html.sound .soundbtn .spk-on{display:block}
+html.sound .soundbtn .spk-off{display:none}
+html.sound .soundbtn{color:var(--gold);border-color:var(--golddim)}
 .searchov{position:fixed;inset:0;background:rgba(5,5,8,.68);z-index:90;
   display:flex;align-items:flex-start;justify-content:center;padding:11vh 20px 0}
 .searchov[hidden]{display:none}
@@ -853,6 +899,8 @@ footer .fnav{display:flex;gap:8px 20px;justify-content:center;flex-wrap:wrap;mar
   font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
 footer .fnav a:hover{color:var(--gold)}
 footer .fnote{font-size:10.5px;color:var(--muted2);letter-spacing:1.6px;text-transform:uppercase;line-height:1.9}
+footer .fcredit{font-size:9.5px;color:var(--muted2);letter-spacing:.8px;margin-top:10px;
+  text-transform:none;opacity:.8}
 
 .ticker{position:relative;overflow:hidden;background:var(--card);border-bottom:1px solid var(--rule);
   height:46px;display:flex;align-items:center}
@@ -1045,6 +1093,11 @@ SEARCH_OV = """<div class="searchov" hidden><div class="searchpanel">
 <div class="searchhint">&uarr;&darr; to navigate &middot; Enter to open &middot; Esc to close</div>
 </div></div>"""
 
+SOUND_BTN = """<button class="soundbtn" type="button" aria-label="Toggle gameday music" title="Gameday music on/off">
+<svg class="spk-off" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>
+<svg class="spk-on" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14"/></svg>
+</button>"""
+
 MODE_BTN = """<button class="modebtn" type="button" aria-label="Switch color scheme">
 <svg class="sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
 <svg class="moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -1061,6 +1114,7 @@ def shell(title, active, body, hero=None, bug="", desc=None, path=None):
     page = path or active
     canonical = SITE_URL + ("" if page == "index.html" else page)
     mode_btn = MODE_BTN if DYNAMIC else ""
+    sound_btn = SOUND_BTN if DYNAMIC else ""
     search_ui = (SEARCH_BTN, SEARCH_OV) if DYNAMIC else ("", "")
     fnav = "".join("<a href='%s'>%s</a>" % (href, label) for href, label in NAV)
     return f"""<!DOCTYPE html>
@@ -1084,7 +1138,7 @@ def shell(title, active, body, hero=None, bug="", desc=None, path=None):
 <a class="skip" href="#main">Skip to content</a>
 <div class="navbar"><div class="inner">
 <a class="brand" href="index.html">{CROWN}<span class="name">Campus <span>Kings</span></span></a>
-<div class="navside"><nav>{nav}</nav>{search_ui[0]}{mode_btn}</div></div></div>
+<div class="navside"><nav>{nav}</nav>{search_ui[0]}{sound_btn}{mode_btn}</div></div></div>
 {search_ui[1]}
 {bug}
 {hero or ""}
@@ -1092,7 +1146,9 @@ def shell(title, active, body, hero=None, bug="", desc=None, path=None):
 <footer><div class="fbrand">Campus <span>Kings</span></div>
 <div class="fnav">{fnav}</div>
 <div class="fnote">CFB 27 online dynasty &middot; twenty seasons &middot; one belt<br>
-Updated {fmt_date(date.today().isoformat())}</div></footer>
+Updated {fmt_date(date.today().isoformat())}</div>
+<div class="fcredit">Gameday march: Sousa's &ldquo;Semper Fidelis&rdquo; &middot;
+&ldquo;The President's Own&rdquo; U.S. Marine Band &middot; public domain</div></footer>
 {MOTION_JS if MOTION else ""}{DYNAMIC_JS if DYNAMIC else ""}</body></html>
 """
 
@@ -2194,6 +2250,18 @@ def main():
             clips.append(sorted(groups[stem], key=lambda u: not u.endswith(".webm")))
         if clips:
             print("  %d hero clip(s)" % len(clips))
+
+    # Gameday music. Any mp3 in media_src/audio/ ships to the site; the
+    # navbar sound toggle plays media/audio/gameday.mp3.
+    asrc = next((d for d in MEDIA_SRC.iterdir()
+                 if d.is_dir() and d.name.lower() == "audio"),
+                MEDIA_SRC / "audio")
+    if asrc.is_dir():
+        (SITE / "media" / "audio").mkdir(exist_ok=True)
+        for f in sorted(asrc.iterdir()):
+            if f.suffix.lower() == ".mp3":
+                shutil.copy(f, SITE / "media" / "audio" / f.name)
+                print("  audio: %s" % f.name)
 
     copied = 0
     total = 0
