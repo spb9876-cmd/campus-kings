@@ -1996,8 +1996,9 @@ def build_standings(league, s2, pts, bug="", n_seasons=1,
 
     b = [f"""<div class="pagehead"><h1 class="page">The <em>Belt</em></h1>
 <p class="psub">The belt goes to whoever wins the most national championships across the
-20 accredited seasons. Playoff Points are a separate, cumulative ladder &mdash; they only
-move in the postseason, so the standings hold still until a bracket finishes.</p></div>"""]
+20 accredited seasons. Playoff Points are a separate, cumulative ladder that banks in
+real time &mdash; a conference crown scores the night it's won, and bracket points land
+round by round as results are entered.</p></div>"""]
 
     if belt:
         holder = " &middot; ".join(clink(league, r["coach"]) for r in belt)
@@ -2112,7 +2113,8 @@ move in the postseason, so the standings hold still until a bracket finishes.</p
                   "SF": "Semifinals", "NC": "National Championship"}
         b.append('<div class="section"><h2 class="sec">Playoff bracket &middot; in progress</h2>'
                  '<p class="dt" style="margin:-8px 0 16px">Rounds appear as results are '
-                 'entered. Playoff Points and the Belt update once the title game is in.</p>')
+                 'entered, and Playoff Points bank round by round as they land. The Belt '
+                 'line settles when the title game is in.</p>')
         for rnd in ("R1", "QF", "SF", "NC"):
             rows = [g for g in live if g.get("round") == rnd]
             if not rows:
