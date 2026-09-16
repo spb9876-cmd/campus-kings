@@ -63,6 +63,14 @@ DYNAMIC = True
 # relative ones.
 SITE_URL = "https://spb9876-cmd.github.io/campus-kings/"
 
+# The league's gameday anthem, embedded on the homepage via Spotify's own
+# player (licensed playback stays on Spotify's side; we never host the audio).
+# Set to None to drop the section. The navbar sound toggle is separate -- it
+# plays the public-domain march we host ourselves.
+ANTHEM_TRACK = "5wWkJduZVohG8B8PoWrbkb"   # Seven Nation Army - Live
+ANTHEM_LABEL = ("Seven Nation Army (Live) &middot; The Ohio State University "
+                "Marching Band")
+
 # Runs synchronously in <head>, before anything paints, so the correct palette is
 # in place on the first frame -- set it from a deferred script and every visitor
 # after 7pm sees a white flash first. Intl with an IANA zone is used rather than
@@ -836,6 +844,7 @@ a.clink:hover{color:var(--gold);border-bottom-color:var(--gold)}
 .ring{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--gold);
   background:radial-gradient(circle at 35% 30%,var(--gold2),var(--golddim));
   box-shadow:0 0 8px var(--glow)}
+.anthem{max-width:660px}
 .form{display:inline-flex;gap:4px;vertical-align:middle}
 .form i{width:9px;height:9px;border-radius:2px;background:var(--rule)}
 .form i.w{background:var(--gold)}
@@ -1797,6 +1806,18 @@ def build_index(league, all_seasons, content, pts, about, bug="",
                  '<a href="content.html" style="color:var(--gold)">'
                  'Full archive &rarr;</a></div>')
     b.append("</div>")
+
+    # ---- Gameday anthem: Spotify's own player, audio stays on their side ----
+    if ANTHEM_TRACK:
+        b.append(f'''<div class="section"{rv}><h2 class="sec">Gameday anthem</h2>
+<div class="anthem"><iframe title="Gameday anthem on Spotify" style="border-radius:12px"
+src="https://open.spotify.com/embed/track/{ANTHEM_TRACK}?utm_source=generator"
+width="100%" height="152" frameborder="0"
+allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+loading="lazy"></iframe>
+<div class="dt" style="margin-top:10px">{ANTHEM_LABEL} &middot; played loud in
+every stadium the league walks into. Full track with a Spotify login;
+everyone else gets the preview.</div></div></div>''')
 
     # ---- Who we are / how a week works / getting in ----
     b.append(f'<div class="section"{rv}><h2 class="sec">Who we are</h2>'
