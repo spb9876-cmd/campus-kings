@@ -3,10 +3,18 @@ name: announce-content
 # Fires only when a commit on main touches the content manifest -- which is
 # how content ships (a merged content PR or a manual post). The twice-daily
 # score auto-publish never edits content.json, so it can't trigger this.
+# The manual dispatch posts one custom message through the same webhook, so
+# site-feature announcements come from the usual announcer identity.
 on:
   push:
     branches: [main]
     paths: [data/content.json]
+  workflow_dispatch:
+    inputs:
+      message:
+        description: "Custom announcement to post to #website (posted verbatim)"
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -22,7 +30,32 @@ jobs:
       # Diff the manifest against the previous commit; every genuinely new
       # entry gets one @everyone post in the #website channel via webhook.
       # No webhook secret -> skip quietly rather than fail the pipeline.
+      - name: Post custom announcement to Discord
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          MESSAGE: ${{ inputs.message }}
+        run: |
+          if [ -z "$WEBHOOK" ]; then
+            echo "DISCORD_WEBHOOK_URL secret not set - skipping announcement."
+            exit 0
+          fi
+          python3 - <<'EOF'
+          import json, os, urllib.request
+          body = json.dumps({
+              "content": os.environ["MESSAGE"],
+              "allowed_mentions": {"parse": ["everyone"]},
+          }).encode()
+          req = urllib.request.Request(
+              os.environ["WEBHOOK"], data=body,
+              headers={"Content-Type": "application/json",
+                       "User-Agent": "campus-kings-announce"})
+          urllib.request.urlopen(req, timeout=20)
+          print("custom announcement posted")
+          EOF
+
       - name: Post new content to Discord
+        if: github.event_name == 'push'
         env:
           WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
