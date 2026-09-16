@@ -313,7 +313,7 @@ DYNAMIC_JS = r"""<script>
     var AKEY='ck-sound', tune=null;
     function ensure(){
       if(!tune){ tune=new Audio('media/audio/gameday.mp3');
-        tune.loop=true; tune.volume=.28; }
+        tune.loop=true; tune.volume=.16; }
       return tune;
     }
     function soundOn(){
@@ -1154,8 +1154,8 @@ def shell(title, active, body, hero=None, bug="", desc=None, path=None):
 <div class="fnav">{fnav}</div>
 <div class="fnote">CFB 27 online dynasty &middot; twenty seasons &middot; one belt<br>
 Updated {fmt_date(date.today().isoformat())}</div>
-<div class="fcredit">Gameday audio: &ldquo;Epic Rock Anthem Stadium Energy&rdquo;
-&middot; ABSounds via Pixabay &middot; royalty-free</div></footer>
+<div class="fcredit">Gameday audio: &ldquo;Rock Motivation&rdquo;
+&middot; AlexGrohl via Pixabay &middot; royalty-free</div></footer>
 {MOTION_JS if MOTION else ""}{DYNAMIC_JS if DYNAMIC else ""}</body></html>
 """
 
