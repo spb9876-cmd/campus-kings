@@ -102,9 +102,9 @@ nav a.on{color:var(--gold);border-bottom-color:var(--gold)}
   filter:blur(7px) saturate(1.05)}
 /* layer 2 - the scrim. without this the text is unreadable over the photo */
 .hero .scrim{position:absolute;inset:0;background:
-  linear-gradient(180deg,rgba(6,6,9,.62) 0%,rgba(6,6,9,.52) 42%,
-    rgba(6,6,9,.80) 80%,var(--bg) 100%),
-  radial-gradient(ellipse 900px 420px at 50% 0%,rgba(223,168,57,.20),transparent 70%)}
+  linear-gradient(180deg,rgba(6,6,9,.40) 0%,rgba(6,6,9,.28) 42%,
+    rgba(6,6,9,.62) 80%,var(--bg) 100%),
+  radial-gradient(ellipse 900px 420px at 50% 0%,rgba(223,168,57,.14),transparent 70%)}
 /* text hugs the top of the box; the fat bottom pad keeps the hero tall so the
    gameplay clip stays in view under the headline */
 .hero .inner{position:relative;z-index:2;max-width:1080px;margin:0 auto;
@@ -112,7 +112,10 @@ nav a.on{color:var(--gold);border-bottom-color:var(--gold)}
 /* only the homepage hero sits on the dark photo/video; the coach and article
    heroes have no .banner and keep page-colored text */
 .hero .banner ~ .inner{color:var(--onphoto)}
-.hero .banner ~ .inner h1{text-shadow:0 4px 44px rgba(0,0,0,.55)}
+/* the headline runs translucent so the gameplay reads through the letters */
+.hero .banner ~ .inner h1{color:rgba(246,243,232,.72);
+  text-shadow:0 3px 30px rgba(0,0,0,.38)}
+.hero .banner ~ .inner h1 em{color:rgba(233,181,69,.78)}
 .hero .crest{width:118px;height:118px;display:block;margin:0 auto 22px;border-radius:50%;
   box-shadow:0 0 44px rgba(223,168,57,.22)}
 .scrollcue{display:flex;flex-direction:column;align-items:center;gap:7px;margin-top:30px;
@@ -409,7 +412,7 @@ footer .fnote{font-size:10.5px;color:var(--muted2);letter-spacing:1.6px;text-tra
 .hero .herovid{position:absolute;inset:-2px;width:calc(100% + 4px);
   height:calc(100% + 4px);object-fit:cover;z-index:0;
   /* the banner still sits underneath as the paint-first layer */
-  filter:saturate(.92) contrast(1.04) brightness(.86);
+  filter:saturate(.98) contrast(1.03) brightness(1.02);
   /* the second JS-made layer crossfades clip-to-clip via inline opacity */
   transition:opacity .8s ease}
 .hero .scrim{z-index:1}
