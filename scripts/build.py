@@ -23,7 +23,7 @@ MEDIA_SRC = ROOT / "media_src"   # drop new recap PNGs here
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from points import (compute, compute_all, completed_seasons, belt_leaders,
-                    coach_for, live_bracket, bracket_is_final)
+                    coach_for, live_bracket, bracket_is_final, stamp)
 import profiles
 
 # ---------------------------------------------------------------------------
@@ -1531,6 +1531,26 @@ both sidelines.</p></div>"""]
                       "shootouts, streaks, rivalries, and every title game.")
 
 
+def race_team(league, cid, season):
+    """Where a points-race row's coach actually IS -- (team_html, active).
+
+    compute_all() labels rows with the team the points were earned with,
+    which goes stale the moment a coach moves or leaves. Active coaches show
+    their current program; departed coaches show the last one they held,
+    badged so nobody reads them as still seated.
+    """
+    team = profiles.current_team(league, cid, season)
+    if team:
+        return team, True
+    last = None
+    for t in league["tenures"]:
+        if t["coach"] == cid and (last is None
+                                  or stamp(t["from"]) > stamp(last["from"])):
+            last = t
+    name = last["team"] if last else "&mdash;"
+    return "%s <span class='tag'>Departed</span>" % name, False
+
+
 def career_line(r):
     """Short résumé under a coach's name on the points leaderboard."""
     bits = []
@@ -1767,8 +1787,9 @@ def build_index(league, all_seasons, content, pts, about, bug="",
         bar = ("<i class='ptbar' style='--w:%d%%'></i>"
                % round(100 * r["points"] / top_pts))
         lead = " lead" if r.get("rank") == 1 else ""
+        team_now, _ = race_team(league, r["coach"], season)
         b.append(f"""<div class="row{lead}">{bar}<span class="num">{r['rank']}</span><div class="bd">
-<span class="tm">{clink(league, r['coach'])}</span><span class="co">{r['team']}</span>
+<span class="tm">{clink(league, r['coach'])}</span><span class="co">{team_now}</span>
 <div class="dt">{career_line(r)}</div></div>
 <span class="rt">{r['points']}<small>pts</small></span></div>""")
     b.append('<div class="dt" style="padding-top:16px">'
@@ -2006,9 +2027,10 @@ move in the postseason, so the standings hold still until a bracket finishes.</p
         w, l = season_wl.get(r["coach"], (0, 0))
         dash = "<span style='color:var(--muted2)'>&mdash;</span>"
         wl = ("%d&ndash;%d" % (w, l)) if (w or l) else dash
+        team_now, _ = race_team(league, r["coach"], sn)
         b.append(f"<tr><td>{r.get('rank') or dash}</td>"
                  f"<td class='w'>{clink(league, r['coach'])}</td>"
-                 f"<td style='color:var(--muted)'>{r['team']}</td>"
+                 f"<td style='color:var(--muted)'>{team_now}</td>"
                  f"<td class='s'>{r['points']}</td>"
                  f"<td class='s'>{r['titles'] or dash}</td>"
                  f"<td class='tb' style='color:var(--muted)'>{r.get('nc_apps', 0) or dash}</td>"
