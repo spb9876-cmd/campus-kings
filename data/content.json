@@ -1,6 +1,25 @@
 {
   "content": [
     {
+      "title": "Conference Crowns and the Road to Miami",
+      "kind": "Playoff Preview",
+      "season": 4,
+      "date": "2026-09-15",
+      "file": "campus_kings_s4_crowns_and_field.png",
+      "blurb": "Stew survives Bawce by two for the SEC crown, Bowzer avenges 44-21 in a week, KJ goes back-to-back at 13-0 — and the bracket seeds the unbeaten Frogs NINTH, straight at the defending champ, with Stew-Pat III possible in the quarterfinal.",
+      "article": "s4-crowns-and-the-field.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s4_crowns_and_field.png",
+          "caption": "Four crowns and the field of twelve — the road runs through Miami"
+        },
+        {
+          "file": "ck_biggame_s4_playoff_bracket.jpg",
+          "caption": "The Season 4 playoff bracket — via Bowzer in the league chat"
+        }
+      ]
+    },
+    {
       "title": "Season Four: Weeks Seven Through Thirteen",
       "kind": "Recap",
       "season": 4,

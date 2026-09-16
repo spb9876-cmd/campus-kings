@@ -541,7 +541,75 @@
         42,
         39
       ]
+    },
+    {
+      "week": 13,
+      "winner": "Georgia",
+      "loser": "Georgia Tech",
+      "score": [
+        44,
+        16
+      ],
+      "note": "FW"
+    },
+    {
+      "week": 13,
+      "winner": "Penn State",
+      "loser": "Oregon",
+      "score": [
+        44,
+        21
+      ]
+    },
+    {
+      "week": 13,
+      "winner": "Clemson",
+      "loser": "South Carolina",
+      "score": [
+        35,
+        28
+      ],
+      "note": "FW"
     }
   ],
-  "current_week": 13
+  "current_week": 13,
+  "conference_championships": [
+    {
+      "conference": "SEC",
+      "winner": "Oklahoma",
+      "loser": "Texas A&M",
+      "score": [
+        23,
+        21
+      ]
+    },
+    {
+      "conference": "B1G",
+      "winner": "Oregon",
+      "loser": "Penn State",
+      "score": [
+        24,
+        14
+      ]
+    },
+    {
+      "conference": "ACC",
+      "winner": "Florida State",
+      "loser": "Clemson",
+      "score": [
+        45,
+        23
+      ],
+      "note": "FW"
+    },
+    {
+      "conference": "BIG12",
+      "winner": "TCU",
+      "loser": "Arizona State",
+      "score": [
+        45,
+        14
+      ]
+    }
+  ]
 }
