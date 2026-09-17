@@ -1,4 +1,4 @@
-"""CK Answer Desk -- the league's interactive content bot.
+"""CK Analyst -- the league's interactive content bot.
 
 Listens in Discord and answers league questions within seconds, grounded in
 the site's live data: "what happened in the Michigan game?", "predict Ole
@@ -45,7 +45,7 @@ SITE = "https://spb9876-cmd.github.io/campus-kings/"
 MAX_DISCORD = 1900                                     # under the 2000 cap
 DATA_TTL = 300                                         # refresh grounding every 5 min
 
-HOUSE_RULES = """You are the CK Answer Desk, the in-Discord voice of the
+HOUSE_RULES = """You are the CK Analyst, the in-Discord voice of the
 Campus Kings CFB 27 dynasty league site. Answer league questions fast, in
 the site's broadcast voice: confident, wry, a little theatrical, never
 mean-spirited. Keep answers SHORT for Discord: a few sentences, max ~150
@@ -126,7 +126,7 @@ busy = asyncio.Lock()
 
 @client.event
 async def on_ready():
-    print("CK Answer Desk online as %s (mode: %s)"
+    print("CK Analyst online as %s (mode: %s)"
           % (client.user, "API" if API_KEY else "Claude subscription"))
 
 
@@ -147,7 +147,7 @@ async def on_message(msg):
                 answer = await asyncio.to_thread(
                     ask_claude, question, msg.author.display_name)
             except Exception as e:
-                answer = ("The desk hit a technical timeout — try that "
+                answer = ("The Analyst hit a technical timeout — try that "
                           "one again in a minute. (%s)" % type(e).__name__)
             for i in range(0, len(answer), MAX_DISCORD):
                 await msg.reply(answer[i:i + MAX_DISCORD],
