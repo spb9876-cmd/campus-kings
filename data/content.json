@@ -1,6 +1,21 @@
 {
   "content": [
     {
+      "title": "Round One: Seventy-Seven",
+      "kind": "Recap",
+      "season": 4,
+      "date": "2026-09-16",
+      "file": "campus_kings_s4_round1_recap.png",
+      "blurb": "The unbeaten Frogs met the defending champ and lost by SEVENTY — a new league record — while Purp taught the giant-slayer a lesson and Dre filed a 27-7 business report. Stew-Pat III is officially on for the Cotton Bowl.",
+      "article": "s4-round-one-recap.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s4_round1_recap.png",
+          "caption": "Round One — the Record Book needed a new page"
+        }
+      ]
+    },
+    {
       "title": "Conference Crowns and the Road to Miami",
       "kind": "Playoff Preview",
       "season": 4,

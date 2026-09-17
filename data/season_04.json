@@ -611,5 +611,34 @@
         14
       ]
     }
+  ],
+  "playoffs": [
+    {
+      "round": "R1",
+      "winner": "Ole Miss",
+      "loser": "TCU",
+      "score": [
+        77,
+        7
+      ]
+    },
+    {
+      "round": "R1",
+      "winner": "Tennessee",
+      "loser": "Nebraska",
+      "score": [
+        56,
+        28
+      ]
+    },
+    {
+      "round": "R1",
+      "winner": "Michigan",
+      "loser": "Florida State",
+      "score": [
+        27,
+        7
+      ]
+    }
   ]
 }
