@@ -639,6 +639,24 @@
         27,
         7
       ]
+    },
+    {
+      "round": "QF",
+      "winner": "Tennessee",
+      "loser": "Notre Dame",
+      "score": [
+        27,
+        7
+      ]
+    },
+    {
+      "round": "QF",
+      "winner": "Ole Miss",
+      "loser": "Oklahoma",
+      "score": [
+        39,
+        36
+      ]
     }
   ]
 }
