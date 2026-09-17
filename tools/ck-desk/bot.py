@@ -201,15 +201,33 @@ async def on_ready():
           % (client.user, "API" if API_KEY else "Claude subscription"))
 
 
+def directed_at_bot(msg):
+    if client.user in msg.mentions:
+        return True
+    # Discord auto-creates a role named like the bot; many clients resolve
+    # "@CK Analyst" to that role instead of the user. Looks identical in chat.
+    me = msg.guild.me if msg.guild else None
+    if me and any(r in me.roles for r in msg.role_mentions):
+        return True
+    ref = getattr(msg.reference, "resolved", None)   # replying to the bot
+    return getattr(getattr(ref, "author", None), "id", None) == client.user.id
+
+
 @client.event
 async def on_message(msg):
     if msg.author.bot:
         return
     is_ask_channel = "ask" in getattr(msg.channel, "name", "")
-    mentioned = client.user in msg.mentions
-    if not (is_ask_channel or mentioned):
+    if not (is_ask_channel or directed_at_bot(msg)):
         return
-    question = msg.clean_content.replace("@" + client.user.name, "").strip()
+    question = msg.clean_content
+    names = {client.user.name}
+    if msg.guild and msg.guild.me:
+        names.add(msg.guild.me.display_name)
+    names.update(r.name for r in msg.role_mentions)
+    for n in names:
+        question = question.replace("@" + n, "")
+    question = question.strip()
     if not question:
         return
     async with busy:                      # one question at a time
