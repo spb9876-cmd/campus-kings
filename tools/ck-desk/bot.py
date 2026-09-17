@@ -46,10 +46,16 @@ MAX_DISCORD = 1900                                     # under the 2000 cap
 DATA_TTL = 300                                         # refresh grounding every 5 min
 
 HOUSE_RULES = """You are the CK Analyst, the in-Discord voice of the
-Campus Kings CFB 27 dynasty league site. Answer league questions fast, in
-the site's broadcast voice: confident, wry, a little theatrical, never
-mean-spirited. Keep answers SHORT for Discord: a few sentences, max ~150
-words, no headers. Never use @everyone or @here.
+Campus Kings CFB 27 dynasty league site -- and you carry yourself like a
+certain silver-tongued SEC talk-radio institution: the Paul
+Finebaum-school of analysis. That means: dry, withering, gleefully
+judgmental takes delivered with total certainty; you crown legends and
+bury pretenders in the same sentence; you treat every result as either a
+coronation or an indictment; you have a soft spot for the SEC and say so;
+you address coaches like callers to your show. Sharp, never cruel --
+roast the resume, not the person. Keep answers SHORT for Discord: a few
+punchy sentences, max ~150 words, no headers. Never use @everyone or
+@here.
 
 Hard rules, non-negotiable:
 - Facts come ONLY from the league data provided below. Scores, records,
@@ -76,8 +82,19 @@ def grounding():
     if time.time() - _cache["at"] < DATA_TTL and _cache["text"]:
         return _cache["text"]
     parts = []
-    for name in ("data/league.json", "data/season_04.json",
-                 "docs/search-index.json", "data/content.json"):
+    names = ["data/league.json", "data/season_04.json",
+             "docs/search-index.json", "data/content.json"]
+    # Owner notes carry bracket context (seeds, bowl names, storylines) that
+    # the raw results don't -- pull every note file that exists.
+    try:
+        req = urllib.request.Request(
+            "https://api.github.com/repos/spb9876-cmd/campus-kings/"
+            "contents/data/notes", headers={"User-Agent": "ck-desk"})
+        listing = json.loads(urllib.request.urlopen(req, timeout=15).read())
+        names += [f["path"] for f in listing if f["name"].endswith(".md")]
+    except Exception:
+        pass
+    for name in names:
         try:
             req = urllib.request.Request(RAW + name,
                                          headers={"User-Agent": "ck-desk"})
@@ -109,10 +126,26 @@ def ask_claude(question, asker):
                      "content-type": "application/json"})
         out = json.loads(urllib.request.urlopen(req, timeout=120).read())
         return out["content"][0]["text"].strip()
-    # Subscription mode: Claude Code CLI headless
-    r = subprocess.run(["claude", "-p", prompt, "--model", "sonnet"],
-                       capture_output=True, text=True, timeout=180,
-                       shell=os.name == "nt")
+    # Subscription mode: Claude Code CLI headless. The prompt goes in via
+    # stdin -- as an argument it would blow Windows' command-length limit.
+    import shutil
+    cli = shutil.which("claude")
+    if not cli:
+        # Fall back to the CLI bundled with the Claude desktop app -- the
+        # Store-packaged build keeps its "Roaming" under Packages\...
+        candidates = []
+        appdata = os.environ.get("APPDATA", "")
+        local = os.environ.get("LOCALAPPDATA", "")
+        candidates += Path(appdata, "Claude", "claude-code").glob("*/claude.exe")
+        candidates += Path(local, "Packages").glob(
+            "Claude_*/LocalCache/Roaming/Claude/claude-code/*/claude.exe")
+        versions = sorted(candidates)
+        cli = str(versions[-1]) if versions else None
+    if not cli:
+        raise RuntimeError("claude CLI not found on PATH or in the desktop app")
+    r = subprocess.run([cli, "-p", "--model", "sonnet"],
+                       input=prompt, capture_output=True, text=True,
+                       encoding="utf-8", errors="replace", timeout=180)
     if r.returncode != 0:
         raise RuntimeError(r.stderr.strip()[:300] or "claude CLI failed")
     return r.stdout.strip()
