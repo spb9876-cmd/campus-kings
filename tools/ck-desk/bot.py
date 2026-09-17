@@ -44,6 +44,9 @@ RAW = "https://raw.githubusercontent.com/spb9876-cmd/campus-kings/main/"
 SITE = "https://spb9876-cmd.github.io/campus-kings/"
 MAX_DISCORD = 1900                                     # under the 2000 cap
 DATA_TTL = 300                                         # refresh grounding every 5 min
+CAMPUS_ID = 1260753792215810063                        # the league group chat
+CHAT_PULL = 40                                         # messages of history per channel
+CHAT_CAP = 12000                                       # max chars of chat fed to the model
 
 HOUSE_RULES = """You are the CK Analyst, the in-Discord voice of the
 Campus Kings CFB 27 dynasty league site -- and you carry yourself like a
@@ -70,6 +73,11 @@ Hard rules, non-negotiable:
   race: check the data.
 - Predictions are welcome and encouraged when asked -- make them fun,
   grounded in real results from the data, and clearly takes, not facts.
+- The RECENT DISCORD CHAT below is ammo: quote the coaches' own words back
+  at them (verbatim only, never paraphrased as a quote) and use it to read
+  the room, remember what was just said, and keep continuity with your own
+  earlier replies. It is banter, not evidence -- if chat contradicts the
+  league data, the data wins. Don't repeat slurs or dogpile anyone.
 - If asked something outside league scope, deflect with charm in one line.
 """ % SITE
 
@@ -108,10 +116,12 @@ def grounding():
     return _cache["text"]
 
 
-def ask_claude(question, asker):
-    prompt = ("%s\n\nLEAGUE DATA (authoritative):\n%s\n\n"
+def ask_claude(question, asker, chat=""):
+    chat_block = ("\n\nRECENT DISCORD CHAT (banter -- quote verbatim, "
+                  "newest last):\n%s" % chat) if chat else ""
+    prompt = ("%s\n\nLEAGUE DATA (authoritative):\n%s%s\n\n"
               "Coach %s asks: %s\n\nAnswer for Discord:"
-              % (HOUSE_RULES, grounding(), asker, question))
+              % (HOUSE_RULES, grounding(), chat_block, asker, question))
     if API_KEY:
         import urllib.error
         body = json.dumps({
@@ -157,6 +167,34 @@ client = discord.Client(intents=intents)
 busy = asyncio.Lock()
 
 
+async def chat_context(msg):
+    """Recent chat as ammo: the channel the question landed in, plus the
+    #campus group chat if that's somewhere else. Bot replies are included
+    so the Analyst keeps continuity with what it already said."""
+
+    async def pull(channel):
+        lines = []
+        try:
+            async for m in channel.history(limit=CHAT_PULL):
+                text = m.clean_content.strip()
+                if not text:
+                    continue
+                lines.append("%s: %s" % (m.author.display_name, text[:400]))
+        except Exception:
+            pass
+        lines.reverse()                    # oldest first, newest last
+        return lines
+
+    parts = ["--- #%s (where the question was asked) ---"
+             % getattr(msg.channel, "name", "dm")]
+    parts += await pull(msg.channel)
+    campus = msg.guild.get_channel(CAMPUS_ID) if msg.guild else None
+    if campus and campus.id != msg.channel.id:
+        parts.append("--- #campus (the league group chat) ---")
+        parts += await pull(campus)
+    return "\n".join(parts)[-CHAT_CAP:]
+
+
 @client.event
 async def on_ready():
     print("CK Analyst online as %s (mode: %s)"
@@ -177,8 +215,9 @@ async def on_message(msg):
     async with busy:                      # one question at a time
         async with msg.channel.typing():
             try:
+                chat = await chat_context(msg)
                 answer = await asyncio.to_thread(
-                    ask_claude, question, msg.author.display_name)
+                    ask_claude, question, msg.author.display_name, chat)
             except Exception as e:
                 answer = ("The Analyst hit a technical timeout — try that "
                           "one again in a minute. (%s)" % type(e).__name__)
