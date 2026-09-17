@@ -450,6 +450,15 @@
     },
     {
       "week": 11,
+      "winner": "Texas Tech",
+      "loser": "BYU",
+      "score": [
+        59,
+        35
+      ]
+    },
+    {
+      "week": 11,
       "winner": "Texas",
       "loser": "Georgia",
       "score": [
