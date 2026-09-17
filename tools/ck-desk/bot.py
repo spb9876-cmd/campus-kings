@@ -4,8 +4,8 @@ Listens in Discord and answers league questions within seconds, grounded in
 the site's live data: "what happened in the Michigan game?", "predict Ole
 Miss vs Oklahoma", "who leads the belt race?".
 
-Triggers on any message that @mentions the bot, plus every message in
-channels whose name contains "ask" (e.g. #ask-ck).
+Triggers only when spoken to directly: an @mention of the bot (user or
+role) or a reply to one of its messages. Works in any channel.
 
 Brains: by default it shells out to the Claude Code CLI (`claude -p`), which
 uses the owner's existing Claude subscription -- no API key needed. If
@@ -217,8 +217,7 @@ def directed_at_bot(msg):
 async def on_message(msg):
     if msg.author.bot:
         return
-    is_ask_channel = "ask" in getattr(msg.channel, "name", "")
-    if not (is_ask_channel or directed_at_bot(msg)):
+    if not directed_at_bot(msg):
         return
     question = msg.clean_content
     names = {client.user.name}
