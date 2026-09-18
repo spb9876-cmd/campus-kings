@@ -666,6 +666,43 @@
         39,
         36
       ]
+    },
+    {
+      "round": "QF",
+      "winner": "Michigan",
+      "loser": "Clemson",
+      "score": [
+        35,
+        30
+      ]
+    },
+    {
+      "round": "QF",
+      "winner": "Oregon",
+      "loser": "Penn State",
+      "score": [
+        41,
+        10
+      ],
+      "note": "FW"
+    },
+    {
+      "round": "SF",
+      "winner": "Tennessee",
+      "loser": "Michigan",
+      "score": [
+        44,
+        10
+      ]
+    },
+    {
+      "round": "SF",
+      "winner": "Ole Miss",
+      "loser": "Oregon",
+      "score": [
+        28,
+        14
+      ]
     }
   ]
 }

@@ -1,6 +1,21 @@
 {
   "content": [
     {
+      "title": "Seven Meets Eight",
+      "kind": "Recap",
+      "season": 4,
+      "date": "2026-09-18",
+      "file": "campus_kings_s4_semis_title_preview.png",
+      "blurb": "Two rounds, six results, zero chalk left: Pat survives Stew-Pat III, Purp ends the unbeaten Irish and cracks the Michigan vault, and the committee’s 7 and 8 seeds meet for the title in Miami — pending a tee time.",
+      "article": "s4-semis-and-title-preview.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s4_semis_title_preview.png",
+          "caption": "Quarterfinals and semifinals — the road to Hard Rock"
+        }
+      ]
+    },
+    {
       "title": "Round One: Seventy-Seven",
       "kind": "Recap",
       "season": 4,
