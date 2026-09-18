@@ -40,10 +40,11 @@ except ImportError:
 
 TOKEN = os.environ.get("DISCORD_TOKEN")
 API_KEY = os.environ.get("ANTHROPIC_API_KEY")          # optional: cloud mode
+ROOT = Path(__file__).resolve().parents[2]             # the repo checkout
 RAW = "https://raw.githubusercontent.com/spb9876-cmd/campus-kings/main/"
 SITE = "https://spb9876-cmd.github.io/campus-kings/"
 MAX_DISCORD = 1900                                     # under the 2000 cap
-DATA_TTL = 300                                         # refresh grounding every 5 min
+DATA_TTL = 60                                          # local reads are cheap
 CAMPUS_ID = 1260753792215810063                        # the league group chat
 CHAT_PULL = 40                                         # messages of history per channel
 CHAT_CAP = 12000                                       # max chars of chat fed to the model
@@ -94,19 +95,29 @@ def grounding():
              "docs/search-index.json", "data/content.json"]
     # Owner notes carry bracket context (seeds, bowl names, storylines) that
     # the raw results don't -- pull every note file that exists.
-    try:
-        req = urllib.request.Request(
-            "https://api.github.com/repos/spb9876-cmd/campus-kings/"
-            "contents/data/notes", headers={"User-Agent": "ck-desk"})
-        listing = json.loads(urllib.request.urlopen(req, timeout=15).read())
-        names += [f["path"] for f in listing if f["name"].endswith(".md")]
-    except Exception:
-        pass
+    notes = ROOT / "data" / "notes"
+    if notes.is_dir():
+        names += sorted("data/notes/" + p.name for p in notes.glob("*.md"))
+    else:
+        try:
+            req = urllib.request.Request(
+                "https://api.github.com/repos/spb9876-cmd/campus-kings/"
+                "contents/data/notes", headers={"User-Agent": "ck-desk"})
+            listing = json.loads(urllib.request.urlopen(req, timeout=15).read())
+            names += [f["path"] for f in listing if f["name"].endswith(".md")]
+        except Exception:
+            pass
     for name in names:
         try:
-            req = urllib.request.Request(RAW + name,
-                                         headers={"User-Agent": "ck-desk"})
-            raw = urllib.request.urlopen(req, timeout=15).read().decode("utf-8")
+            local = ROOT / name
+            if local.is_file():
+                # Tier 1 runs on the PC the data is built on: the checkout
+                # beats the GitHub CDN, which lags pushes by minutes.
+                raw = local.read_text(encoding="utf-8")
+            else:
+                req = urllib.request.Request(RAW + name,
+                                             headers={"User-Agent": "ck-desk"})
+                raw = urllib.request.urlopen(req, timeout=15).read().decode("utf-8")
             # search-index carries every historical result compactly
             parts.append("=== %s ===\n%s" % (name, raw))
         except Exception as e:
