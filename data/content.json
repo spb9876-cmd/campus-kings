@@ -1,6 +1,40 @@
 {
   "content": [
     {
+      "title": "Back to Back",
+      "kind": "Recap",
+      "season": 4,
+      "date": "2026-09-20",
+      "file": "campus_kings_s4_natty_recap.png",
+      "blurb": "Ole Miss 31, Tennessee 10: all thirty-one before halftime, a 60-yard field goal at the horn, minus-2 Tennessee rushing yards, and a second straight ring — the belt race is tied 2-2 at the top with sixteen seasons to go.",
+      "article": "s4-natty-season-recap.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s4_natty_recap.png",
+          "caption": "Back to back — the night in one board"
+        },
+        {
+          "file": "campus_kings_s4_bracket_final.jpg",
+          "caption": "The completed Season Four bracket — Ole Miss, 2029 National Champions"
+        }
+      ]
+    },
+    {
+      "title": "CK Rankings: The Miami Edition",
+      "kind": "CK Rankings",
+      "season": 4,
+      "date": "2026-09-20",
+      "file": "campus_kings_ck_rankings_miami.png",
+      "blurb": "The final board of Season Four ranks all 28 chairs: the back-to-back champ takes the throne the rule held all year, the giant-slayer lands at two, and the king sits third with two rings and one recurring January problem.",
+      "article": "ck-rankings-miami.md",
+      "gallery": [
+        {
+          "file": "campus_kings_ck_rankings_miami.png",
+          "caption": "All 28 chairs — the final board of Season Four"
+        }
+      ]
+    },
+    {
       "title": "Seven Meets Eight",
       "kind": "Recap",
       "season": 4,

@@ -20,9 +20,9 @@
 
 Hard Rock Stadium gets an all-SEC title game — just not the SEC anybody planned. The conference's actual championship game was Oklahoma 23, Texas A&M 21, and neither of those teams survived to Miami. Instead it's the two SEC programs the committee stashed at seeds 7 and 8, meeting for the first time all season, in the last game of it.
 
-**The champ's case:** Pat's run has been a escalating argument — 77-7 on the unbeaten Frogs, 39-36 on the No. 1 seed, 28-14 on last year's title-game opponent. Win it and he goes back-to-back, banks his second ring of the accredited era, and takes sole possession of the belt lead. The Big League guy who pissed him off has a lot to answer for.
+**The champ's case:** Pat's run has been a escalating argument — 77-7 on the unbeaten Frogs, 39-36 on the No. 1 seed, 28-14 on last year's title-game opponent. Win it and he goes back-to-back, banks his second ring of the accredited era, and pulls level with Stew at two apiece atop the belt race. The Big League guy who pissed him off has a lot to answer for.
 
-**The challenger's case:** Purp has outscored three playoff opponents 127-45, ended the only unbeaten season in the field, and put 44 on the stingiest defense in the league. Win it and it's his first crown — and a three-way belt tie at the top with Stew and Pat, which the group chat will handle with its usual grace.
+**The challenger's case:** Purp has outscored three playoff opponents 127-45, ended the only unbeaten season in the field, and put 44 on the stingiest defense in the league. Win it and it's his first crown — level with Pat in the belt race, one behind Stew, and the group chat will handle the new math with its usual grace.
 
 **The scheduling:** in true Campus Kings fashion, the title game currently hinges on a tee time. "got an ETA tn?" asked Pat, noting Purp "got an early tee time so don't want to be up hella late but will if its the only way." Purp's counter: "Got a lot goin on Saturday." Pat's ruling: "But yea if we don't finish td it's gunna be Sunday fs." A championship, weather permitting, golf permitting.
 
