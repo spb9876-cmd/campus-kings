@@ -91,8 +91,13 @@ def grounding():
     if time.time() - _cache["at"] < DATA_TTL and _cache["text"]:
         return _cache["text"]
     parts = []
-    names = ["data/league.json", "data/season_04.json",
-             "docs/search-index.json", "data/content.json"]
+    names = ["data/league.json", "docs/search-index.json", "data/content.json"]
+    # Current season file, plus last season's for fresh-history questions.
+    seasons = sorted((ROOT / "data").glob("season_*.json"))
+    if seasons:
+        names[1:1] = ["data/" + p.name for p in seasons[-2:]]
+    else:
+        names.insert(1, "data/season_04.json")   # remote fallback
     # Owner notes carry bracket context (seeds, bowl names, storylines) that
     # the raw results don't -- pull every note file that exists.
     notes = ROOT / "data" / "notes"

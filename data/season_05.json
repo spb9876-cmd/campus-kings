@@ -1,0 +1,25 @@
+{
+  "season": 5,
+  "status": "in_progress",
+  "results": [
+    {
+      "week": 0,
+      "winner": "Penn State",
+      "loser": "Ole Miss",
+      "score": [
+        38,
+        28
+      ]
+    },
+    {
+      "week": 0,
+      "winner": "Oklahoma",
+      "loser": "Notre Dame",
+      "score": [
+        26,
+        0
+      ]
+    }
+  ],
+  "current_week": 0
+}
