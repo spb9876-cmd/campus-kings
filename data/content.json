@@ -1,6 +1,21 @@
 {
   "content": [
     {
+      "title": "Champs Hungover",
+      "kind": "Recap",
+      "season": 5,
+      "date": "2026-09-24",
+      "file": "campus_kings_s5_weeks_0_1_recap.png",
+      "blurb": "Penn State 38, Ole Miss 28: the defending back-to-back champ opens Season Five 0-1, Stew answers 26-0 and 35-7 to start 2-0, and the belt race — tied 2-2 — already has a tilt.",
+      "article": "s5-weeks-0-1-recap.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s5_weeks_0_1_recap.png",
+          "caption": "Weeks Zero and One — the champ stumbles, Stew doesn't"
+        }
+      ]
+    },
+    {
       "title": "Back to Back",
       "kind": "Recap",
       "season": 4,
