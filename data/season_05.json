@@ -19,7 +19,43 @@
         26,
         0
       ]
+    },
+    {
+      "week": 1,
+      "winner": "Ohio State",
+      "loser": "Texas A&M",
+      "score": [
+        33,
+        14
+      ]
+    },
+    {
+      "week": 1,
+      "winner": "Oklahoma",
+      "loser": "Oregon",
+      "score": [
+        35,
+        7
+      ]
+    },
+    {
+      "week": 1,
+      "winner": "Michigan",
+      "loser": "Georgia",
+      "score": [
+        29,
+        10
+      ]
+    },
+    {
+      "week": 1,
+      "winner": "Nebraska",
+      "loser": "Texas",
+      "score": [
+        28,
+        24
+      ]
     }
   ],
-  "current_week": 0
+  "current_week": 1
 }
