@@ -1,2 +1,3 @@
 ﻿scripts/.claude/
 tools/ck-desk/.env
+__pycache__/
