@@ -1,9 +1,9 @@
 name: build
 
 on:
-  # Pull the Sheet twice a day: 9am and 9pm Central (14:00 / 02:00 UTC)
-  schedule: [{ cron: "0 2,14 * * *" }]
-  # "Run workflow" button in the Actions tab fires it on demand
+  # Manual only: "Run workflow" button in the Actions tab pulls the Sheet,
+  # rebuilds, and publishes. (The twice-daily cron was retired 2026-09-28 --
+  # it kept colliding with content drops pushed from the desk.)
   workflow_dispatch:
   # Validate every push
   push:

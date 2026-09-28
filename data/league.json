@@ -248,7 +248,8 @@
     },
     {
       "id": "gooch",
-      "name": "Gooch"
+      "name": "Gooch",
+      "status": "departed"
     },
     {
       "id": "tv",
@@ -410,7 +411,9 @@
     {
       "team": "Indiana",
       "coach": "gooch",
-      "from": "S1W0"
+      "from": "S1W0",
+      "to": "S5W5",
+      "note": "left the league in Season Five — Indiana open"
     },
     {
       "team": "SMU",

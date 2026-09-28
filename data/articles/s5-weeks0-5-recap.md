@@ -24,7 +24,7 @@ Last postseason States was eliminated by his own job. This season he's eliminati
 
 ## Front-office wire
 
-The offseason purge continues: **Lux (Cal), Cozy (Baylor), and Frank (Washington)** have left the league, joining the S4 departures. Per the commissioner's desk, open programs are up for grabs, inactives are being removed weekly, and — new to the bylaws, in all caps — **"FISHING FOR FW OR FAIR SIMS WILL NOT BE TOLERATED!"** The Bowzer Rule has a name now.
+The offseason purge continues: **Lux (Cal), Cozy (Baylor), Frank (Washington), and Gooch (Indiana)** have left the league, joining the S4 departures. Per the commissioner's desk, open programs are up for grabs, inactives are being removed weekly, and — new to the bylaws, in all caps — **"FISHING FOR FW OR FAIR SIMS WILL NOT BE TOLERATED!"** The Bowzer Rule has a name now.
 
 And the move of the offseason: **Purp bought the rights to LSU** while still coaching out his Tennessee tenure — "He is still playing with Tennessee and has the rights to LSU," per the commissioner. The S4 runner-up is playing this season with a moving truck idling outside Neyland. Death Valley is loading.
 

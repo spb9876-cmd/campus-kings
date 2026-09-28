@@ -1,4 +1,4 @@
-First board of Season Five, and the full league is on it — all twenty-five active chairs. The Miami Edition ended with the champ on the throne and the belt tied. Five weeks later the throne has a repossession notice on it.
+First board of Season Five, and the full league is on it — all twenty-four active chairs. The Miami Edition ended with the champ on the throne and the belt tied. Five weeks later the throne has a repossession notice on it.
 
 ## No. 1 — Stew, Oklahoma (4-0)
 
@@ -96,10 +96,6 @@ Took a 51-20 from the Frogs, fought the front office to a draw, and delivered th
 
 52-7 in Happy Valley. The rebuild continues to rebuild.
 
-## No. 25 — Gooch, Indiana (0-0)
-
-No games logged this season. The board notes the commissioner's open-teams announcement listed Indiana and awaits official word from the front office.
-
 ---
 
-*First board of Season Five, through Week 5. Departures this cycle: Lux (Cal), Cozy (Baylor), Frank (Washington) — open programs available at the commissioner's desk. The belt: still 2-2. The collision: Norman vs Happy Valley, whenever the schedule finds the nerve.*
+*First board of Season Five, through Week 5. Departures this cycle: Lux (Cal), Cozy (Baylor), Frank (Washington), Gooch (Indiana) — open programs available at the commissioner's desk. The belt: still 2-2. The collision: Norman vs Happy Valley, whenever the schedule finds the nerve.*
