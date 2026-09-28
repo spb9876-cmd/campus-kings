@@ -194,7 +194,8 @@
       "aliases": [
         "BFW",
         "blkfrankwhite"
-      ]
+      ],
+      "status": "departed"
     },
     {
       "id": "iceman",
@@ -218,7 +219,8 @@
     },
     {
       "id": "cozy",
-      "name": "Cozy"
+      "name": "Cozy",
+      "status": "departed"
     },
     {
       "id": "work",
@@ -302,7 +304,8 @@
     },
     {
       "id": "lux",
-      "name": "Lux"
+      "name": "Lux",
+      "status": "departed"
     },
     {
       "id": "harry",
@@ -370,7 +373,9 @@
     {
       "team": "Washington",
       "coach": "frank",
-      "from": "S1W0"
+      "from": "S1W0",
+      "to": "S5W5",
+      "note": "left the league in Season Five — Washington open"
     },
     {
       "team": "USC",
@@ -519,7 +524,9 @@
     {
       "team": "Baylor",
       "coach": "cozy",
-      "from": "S2W6"
+      "from": "S2W6",
+      "to": "S5W5",
+      "note": "left the league in Season Five — Baylor open"
     },
     {
       "team": "Auburn",
@@ -538,7 +545,8 @@
       "team": "Cal",
       "coach": "lux",
       "from": "S3W10",
-      "note": "joined league Season Three; Cal CPU-held since Quan left at S2W10"
+      "note": "left the league in Season Five — Cal open",
+      "to": "S5W5"
     },
     {
       "team": "Georgia Tech",

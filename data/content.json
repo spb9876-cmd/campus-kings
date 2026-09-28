@@ -1,6 +1,36 @@
 {
   "content": [
     {
+      "title": "Weeks 0-5: The Collections Tour",
+      "kind": "Recap",
+      "season": 5,
+      "date": "2026-09-28",
+      "file": "campus_kings_s5_w5_recap.png",
+      "blurb": "The belt tied in Miami and Norman came to collect: Stew opens 4-0 with the Norman receipt and a 42-41 escape, States rides a 3-0 start built on the champ’s scalp, Tayne survives his own self-scout, and Purp buys LSU with Tennessee still on his calendar.",
+      "article": "s5-weeks0-5-recap.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s5_w5_recap.png",
+          "caption": "Season Five, Weeks 0-5 — the Collections Tour"
+        }
+      ]
+    },
+    {
+      "title": "CK Power Rankings: The Collections Edition",
+      "kind": "CK Rankings",
+      "season": 5,
+      "date": "2026-09-28",
+      "file": "campus_kings_ck_rankings_collections.png",
+      "blurb": "The first board of Season Five ranks all 25 chairs, and it opens with a repossession notice: Stew takes the throne back at 4-0, States rides the champ’s scalp to No. 2, and the back-to-back king holds third on two rings and one quiet month.",
+      "article": "ck-rankings-collections.md",
+      "gallery": [
+        {
+          "file": "campus_kings_ck_rankings_collections.png",
+          "caption": "All 25 chairs — the Collections Edition"
+        }
+      ]
+    },
+    {
       "title": "Back to Back",
       "kind": "Recap",
       "season": 4,
