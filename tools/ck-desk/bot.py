@@ -173,7 +173,12 @@ def ask_claude(question, asker, chat=""):
                        input=prompt, capture_output=True, text=True,
                        encoding="utf-8", errors="replace", timeout=180)
     if r.returncode != 0:
-        raise RuntimeError(r.stderr.strip()[:300] or "claude CLI failed")
+        err = r.stderr.strip()
+        if "authenticate" in err.lower() or "login" in err.lower() \
+                or "log in" in err.lower():
+            raise RuntimeError("the desk's Claude login expired — "
+                               "Pat has to run /login on the CLI")
+        raise RuntimeError(err[:300] or "claude CLI failed")
     return r.stdout.strip()
 
 
@@ -252,8 +257,9 @@ async def on_message(msg):
                 answer = await asyncio.to_thread(
                     ask_claude, question, msg.author.display_name, chat)
             except Exception as e:
+                detail = str(e).strip()[:140] or type(e).__name__
                 answer = ("The Analyst hit a technical timeout — try that "
-                          "one again in a minute. (%s)" % type(e).__name__)
+                          "one again in a minute. (%s)" % detail)
             for i in range(0, len(answer), MAX_DISCORD):
                 await msg.reply(answer[i:i + MAX_DISCORD],
                                 mention_author=False,
