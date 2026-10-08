@@ -1,6 +1,25 @@
 {
   "content": [
     {
+      "title": "Three Unbeatens, One Bracket",
+      "kind": "Recap",
+      "season": 5,
+      "date": "2026-10-07",
+      "file": "campus_kings_s5_conf_playoff_preview.png",
+      "blurb": "Championship week delivers four crowns and a first: Clemson, Penn State and Oklahoma arrive in the bracket 13-0 apiece — while the back-to-back champ draws the ELEVEN seed, a road date with the Michigan vault, and Stew-Pat IV looming in the Fiesta. Atlanta only has room for one.",
+      "article": "s5-conf-champs-playoff-preview.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s5_conf_playoff_preview.png",
+          "caption": "Championship week and the road to Atlanta"
+        },
+        {
+          "file": "campus_kings_s5_bracket.jpg",
+          "caption": "The Season Five bracket — three unbeatens, the champ at 11"
+        }
+      ]
+    },
+    {
       "title": "Weeks 6-10: The Bot Will Decide",
       "kind": "Recap",
       "season": 5,
