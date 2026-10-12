@@ -75,8 +75,15 @@ once rows land; records shown are in-game (they include forfeits). Title game:
   over wit bro"; "i fought i lost"; "now i have 1 finals app credited").
 - Belt after S5: **Stew 3 (S1, S2, S5), Pat 2 (S3, S4)** — 5 of 20 decided.
   Playoff Points: Stew 69, Pat 42, LT 33, Purp 26, Tayne 23, Bowzer 22.
-- Offseason chatter (NOT official until the front office confirms; do not
-  state as fact): Purp to LSU, JT to Tennessee, Quan leaving FSU, Lux
-  returning, a new coach "Zoe" joining, Bhog eyeing Alabama, Jason's status
-  unclear. End of Season Recap listed open: BYU, Florida State, Washington,
-  Indiana, UCLA, Auburn, Baylor.
+## Season Six roster — OFFICIAL (Pat, 2026-10-12; league.json updated)
+
+- Moves: LT Clemson → FAU; Purp Tennessee → LSU; JT Nebraska → Tennessee;
+  Quan Florida State → Florida; Jason Alabama → Memphis.
+- New coaches: Zoe (Florida State), Roy (Nebraska), Brendan (Alabama).
+- Returning: Lux (Clemson).
+- Departed after Season Five: Ice Man (Georgia), Bhog (BYU), ZBO (SMU),
+  Harry (Georgia Tech).
+- Unchanged: Curt Ohio State, Bawce Texas A&M, Stew Oklahoma, Tayne Notre
+  Dame, States Penn State, Work Texas, Lute Miami, Silingi Texas Tech, Pat
+  Ole Miss, Dre Michigan, Thrash South Carolina, Teeric USC, Bowzer Oregon,
+  KJ TCU, TBO Arizona State. 24 active coaches.

@@ -3,7 +3,7 @@
     "name": "Campus Kings",
     "game": "CFB 27",
     "accredited_seasons": 20,
-    "current_season": 5
+    "current_season": 6
   },
   "rules": {
     "playoff_points": {
@@ -109,7 +109,8 @@
     ],
     "INDEPENDENT": [
       "Notre Dame",
-      "Memphis"
+      "Memphis",
+      "FAU"
     ]
   },
   "coaches": [
@@ -199,7 +200,8 @@
     },
     {
       "id": "iceman",
-      "name": "Ice Man"
+      "name": "Ice Man",
+      "status": "departed"
     },
     {
       "id": "teeric",
@@ -210,7 +212,8 @@
       "name": "Bhog",
       "aliases": [
         "Bdhogan0980"
-      ]
+      ],
+      "status": "departed"
     },
     {
       "id": "pat",
@@ -258,7 +261,8 @@
     },
     {
       "id": "zbo",
-      "name": "ZBO"
+      "name": "ZBO",
+      "status": "departed"
     },
     {
       "id": "thrash",
@@ -305,19 +309,33 @@
     },
     {
       "id": "lux",
-      "name": "Lux",
-      "status": "departed"
+      "name": "Lux"
     },
     {
       "id": "harry",
-      "name": "Harry"
+      "name": "Harry",
+      "status": "departed"
+    },
+    {
+      "id": "zoe",
+      "name": "Zoe"
+    },
+    {
+      "id": "roy",
+      "name": "Roy"
+    },
+    {
+      "id": "brendan",
+      "name": "Brendan"
     }
   ],
   "tenures": [
     {
       "team": "Clemson",
       "coach": "lt",
-      "from": "S1W0"
+      "from": "S1W0",
+      "to": "S6W0",
+      "note": "moved to FAU for Season Six"
     },
     {
       "team": "Ohio State",
@@ -342,7 +360,9 @@
     {
       "team": "Alabama",
       "coach": "jason",
-      "from": "S1W0"
+      "from": "S1W0",
+      "to": "S6W0",
+      "note": "moved to Memphis for Season Six"
     },
     {
       "team": "Miami",
@@ -369,7 +389,9 @@
     {
       "team": "Tennessee",
       "coach": "purp",
-      "from": "S1W0"
+      "from": "S1W0",
+      "to": "S6W0",
+      "note": "moved to LSU for Season Six"
     },
     {
       "team": "Washington",
@@ -386,7 +408,9 @@
     {
       "team": "BYU",
       "coach": "bhog",
-      "from": "S1W0"
+      "from": "S1W0",
+      "to": "S6W0",
+      "note": "left the league after Season Five — BYU open"
     },
     {
       "team": "Ole Miss",
@@ -418,7 +442,9 @@
     {
       "team": "SMU",
       "coach": "zbo",
-      "from": "S1W0"
+      "from": "S1W0",
+      "to": "S6W0",
+      "note": "left the league after Season Five — SMU open"
     },
     {
       "team": "South Carolina",
@@ -440,7 +466,9 @@
     {
       "team": "Georgia",
       "coach": "iceman",
-      "from": "S2W0"
+      "from": "S2W0",
+      "to": "S6W0",
+      "note": "left the league after Season Five — Georgia open"
     },
     {
       "team": "Auburn",
@@ -474,7 +502,8 @@
       "team": "Florida State",
       "coach": "quan",
       "from": "S2W10",
-      "note": "won Florida State auction, $175"
+      "note": "moved to Florida for Season Six",
+      "to": "S6W0"
     },
     {
       "team": "Kansas",
@@ -542,7 +571,8 @@
       "team": "Nebraska",
       "coach": "jt",
       "from": "S3W3",
-      "note": "joined league Season Three; takes Nebraska from Jarvis"
+      "note": "moved to Tennessee for Season Six",
+      "to": "S6W0"
     },
     {
       "team": "Cal",
@@ -555,7 +585,62 @@
       "team": "Georgia Tech",
       "coach": "harry",
       "from": "S4W7",
-      "note": "joined league Season Four; Georgia Tech previously CPU"
+      "note": "left the league after Season Five — Georgia Tech open",
+      "to": "S6W0"
+    },
+    {
+      "team": "FAU",
+      "coach": "lt",
+      "from": "S6W0",
+      "note": "takes FAU for Season Six after five seasons at Clemson"
+    },
+    {
+      "team": "Memphis",
+      "coach": "jason",
+      "from": "S6W0",
+      "note": "takes Memphis for Season Six"
+    },
+    {
+      "team": "LSU",
+      "coach": "purp",
+      "from": "S6W0",
+      "note": "takes LSU for Season Six after five seasons at Tennessee"
+    },
+    {
+      "team": "Florida",
+      "coach": "quan",
+      "from": "S6W0",
+      "note": "takes Florida for Season Six"
+    },
+    {
+      "team": "Tennessee",
+      "coach": "jt",
+      "from": "S6W0",
+      "note": "takes Tennessee for Season Six"
+    },
+    {
+      "team": "Clemson",
+      "coach": "lux",
+      "from": "S6W0",
+      "note": "returns to the league for Season Six; takes Clemson from LT"
+    },
+    {
+      "team": "Florida State",
+      "coach": "zoe",
+      "from": "S6W0",
+      "note": "joined league Season Six; takes Florida State from Quan"
+    },
+    {
+      "team": "Nebraska",
+      "coach": "roy",
+      "from": "S6W0",
+      "note": "joined league Season Six; takes Nebraska from JT"
+    },
+    {
+      "team": "Alabama",
+      "coach": "brendan",
+      "from": "S6W0",
+      "note": "joined league Season Six; takes Alabama from Jason"
     }
   ],
   "legacy_championships": {
