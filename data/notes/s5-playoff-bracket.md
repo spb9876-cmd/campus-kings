@@ -59,3 +59,24 @@ once rows land; records shown are in-game (they include forfeits). Title game:
   "releasing the best teams available soon." LT exported 103 Campus Kings
   players into a Madden 2028 draft class ("CAMPUS KINGS → MADDEN KINGS").
 - Do NOT invent playoff results; take them from the Sheet or #big-games only.
+
+## FINAL — bracket complete (Sheet, 2026-10-12)
+
+- R1: Notre Dame 49-28 Miami; Michigan 26-21 Ole Miss (the back-to-back champ
+  eliminated in round one); Arizona State 16-7 Oregon. TCU advanced past CPU
+  UAB (no Sheet row, per league practice).
+- QF: Oklahoma 40-30 Michigan; Arizona State 27-24 Penn State (the 10-seed
+  ends the unbeaten 2-seed); Notre Dame 42-21 Clemson (the unbeaten 1-seed
+  falls); Tennessee 38-24 TCU.
+- SF: Notre Dame 42-31 Tennessee; Oklahoma 33-26 Arizona State.
+- **National Championship (Atlanta): Oklahoma 37, Notre Dame 21.** Stew's
+  third ring of the accredited era; Oklahoma finished 15-0 in-game. Tayne's
+  first title-game appearance (conceded in the fourth quarter: "4th qtr its
+  over wit bro"; "i fought i lost"; "now i have 1 finals app credited").
+- Belt after S5: **Stew 3 (S1, S2, S5), Pat 2 (S3, S4)** — 5 of 20 decided.
+  Playoff Points: Stew 69, Pat 42, LT 33, Purp 26, Tayne 23, Bowzer 22.
+- Offseason chatter (NOT official until the front office confirms; do not
+  state as fact): Purp to LSU, JT to Tennessee, Quan leaving FSU, Lux
+  returning, a new coach "Zoe" joining, Bhog eyeing Alabama, Jason's status
+  unclear. End of Season Recap listed open: BYU, Florida State, Washington,
+  Indiana, UCLA, Auburn, Baylor.

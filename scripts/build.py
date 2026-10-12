@@ -572,6 +572,7 @@ HEAD_JS = CLOCK_JS if SCHEME == "clock" else ""
 FONT_QUERY = "family=Anton&family=Inter:wght@400;500;600;700"
 
 NAV = [("index.html", "Home"), ("standings.html", "The Belt"),
+       ("rankings.html", "Rankings"),
        ("coaches.html", "Coaches"), ("records.html", "Records"),
        ("content.html", "Archive"), ("rules.html", "Rulebook"),
        ("history.html", "History")]
@@ -1531,6 +1532,112 @@ both sidelines.</p></div>"""]
                       "shootouts, streaks, rivalries, and every title game.")
 
 
+def build_rankings(league, rankings, content, bug=""):
+    """CK Power Rankings as a living page: the current board with movement
+    against the previous edition, every coach's trajectory across editions,
+    and each past board in full. Driven entirely by data/rankings.json."""
+    eds = rankings.get("editions") or []
+    rv = " data-rv" if MOTION else ""
+    b = ["""<div class="pagehead"><h1 class="page">CK Power <em>Rankings</em></h1>
+<p class="psub">The desk's board, every edition, in one place. Each edition is the
+full write-up's order; movement is measured against the edition before it.
+Rankings are editorial &mdash; the resume, the tape, and the receipts &mdash; not
+a formula. The Belt page is the formula.</p></div>"""]
+    if not eds:
+        b.append('<div class="section"><p class="secintro">No editions yet.</p></div>')
+        return shell("CK Power Rankings", "rankings.html", "\n".join(b), None, bug)
+
+    def art_href(ed):
+        for c in content["content"]:
+            if ed.get("article") and c.get("article") == ed["article"]:
+                return article_path(c)
+        return None
+
+    def positions(ed):
+        return {e["coach"]: i + 1 for i, e in enumerate(ed["board"])}
+
+    cur, prev = eds[0], (eds[1] if len(eds) > 1 else None)
+    prev_pos = positions(prev) if prev else {}
+
+    def move_cell(cid, rank):
+        if not prev:
+            return "<td class='s' style='color:var(--muted2)'>&mdash;</td>"
+        p = prev_pos.get(cid)
+        if p is None:
+            return "<td class='s' style='color:var(--gold);font-weight:700'>NEW</td>"
+        d = p - rank
+        if d > 0:
+            return "<td class='s' style='color:#2f9e57;font-weight:700'>&#9650;%d</td>" % d
+        if d < 0:
+            return "<td class='s' style='color:#c23b3b;font-weight:700'>&#9660;%d</td>" % -d
+        return "<td class='s' style='color:var(--muted2)'>&ndash;</td>"
+
+    # ---- current board ----
+    href = art_href(cur)
+    link = (f' &middot; <a href="{href}" style="color:var(--gold)">Read the edition &rarr;</a>'
+            if href else "")
+    prev_note = (f"Movement vs. {prev['title']} ({fmt_date(prev['date'])})."
+                 if prev else "First edition on record.")
+    b.append(f'<div class="section"{rv}><h2 class="sec">{cur["title"]}</h2>'
+             f'<p class="secintro" style="font-size:14px;margin-top:-8px">'
+             f'{cur["label"]} &middot; {fmt_date(cur["date"])}{link}<br>{prev_note}</p>'
+             f'<table><tr><th>#</th><th>Move</th><th>Coach</th><th>Team</th>'
+             f'<th class="tb">The file</th></tr>')
+    for i, e in enumerate(cur["board"]):
+        rank = i + 1
+        b.append(f"<tr><td class='s'>{rank}</td>{move_cell(e['coach'], rank)}"
+                 f"<td class='w'>{clink(league, e['coach'])}</td>"
+                 f"<td style='color:var(--muted)'>{e.get('team', '')}</td>"
+                 f"<td class='tb' style='color:var(--muted)'>{e.get('note', '')}</td></tr>")
+    b.append("</table></div>")
+
+    # ---- trajectory: coach x edition ----
+    if len(eds) > 1:
+        cols = list(reversed(eds))                      # oldest -> newest
+        pos = [positions(ed) for ed in cols]
+        b.append(f'<div class="section"{rv}><h2 class="sec">Trajectories</h2>'
+                 f'<p class="secintro" style="font-size:14px;margin-top:-8px">'
+                 f'Where every coach has sat on each edition, oldest to newest. '
+                 f'A dash means they weren\'t on that board.</p>'
+                 f'<table><tr><th>Coach</th>'
+                 + "".join(f'<th class="s" title="{html.escape(ed["label"], quote=True)}">'
+                           f'{html.escape(ed["title"].replace("The ", "").replace(" Edition", ""))}</th>'
+                           for ed in cols)
+                 + "</tr>")
+        for e in cur["board"]:
+            cid = e["coach"]
+            cells = ""
+            for p in pos:
+                r = p.get(cid)
+                cells += (f"<td class='s'>{r}</td>" if r
+                          else "<td class='s' style='color:var(--muted2)'>&ndash;</td>")
+            b.append(f"<tr><td class='w'>{clink(league, cid)}</td>{cells}</tr>")
+        b.append("</table></div>")
+
+    # ---- past editions ----
+    if len(eds) > 1:
+        b.append(f'<div class="section"{rv}><h2 class="sec">Past editions</h2>')
+        for ed in eds[1:]:
+            href = art_href(ed)
+            link = (f' &middot; <a href="{href}" style="color:var(--gold)">Read &rarr;</a>'
+                    if href else "")
+            b.append(f'<details style="margin-bottom:18px"><summary style="cursor:pointer;'
+                     f'font-weight:700;padding:10px 0">{ed["title"]} '
+                     f'<span style="color:var(--muted);font-weight:400">&middot; {ed["label"]} '
+                     f'&middot; {fmt_date(ed["date"])}</span>{link}</summary>'
+                     f'<table><tr><th>#</th><th>Coach</th><th>Team</th><th class="tb">The file</th></tr>')
+            for i, e in enumerate(ed["board"]):
+                b.append(f"<tr><td class='s'>{i + 1}</td><td class='w'>{clink(league, e['coach'])}</td>"
+                         f"<td style='color:var(--muted)'>{e.get('team', '')}</td>"
+                         f"<td class='tb' style='color:var(--muted)'>{e.get('note', '')}</td></tr>")
+            b.append("</table></details>")
+        b.append("</div>")
+
+    return shell("CK Power Rankings", "rankings.html", "\n".join(b), None, bug,
+                 desc="CK Power Rankings — the current board with movement, every "
+                      "coach's trajectory, and every past edition.")
+
+
 def race_team(league, cid, season):
     """Where a points-race row's coach actually IS -- (team_html, active).
 
@@ -2254,6 +2361,7 @@ def load_all_seasons(league):
 def main():
     league = load("league.json")
     content, about, rules = load("content.json"), load("about.json"), load("rules.json")
+    rankings = load("rankings.json") if (DATA / "rankings.json").exists() else {"editions": []}
     all_seasons = load_all_seasons(league)
     cur_season = all_seasons[-1]          # newest file drives the live pages
     seasons = completed_seasons(league)
@@ -2354,6 +2462,7 @@ def main():
     (SITE / "index.html").write_text(build_index(league, all_seasons, content, pts, about, bug, belt, belt_titles, len(seasons), clips, recs), encoding="utf-8")
     (SITE / "standings.html").write_text(build_standings(league, cur_season, pts, bug, len(seasons), belt, belt_titles), encoding="utf-8")
     (SITE / "records.html").write_text(build_records(league, recs, bug), encoding="utf-8")
+    (SITE / "rankings.html").write_text(build_rankings(league, rankings, content, bug), encoding="utf-8")
     (SITE / "rules.html").write_text(build_rules(rules, bug), encoding="utf-8")
     (SITE / "history.html").write_text(build_history(league, all_seasons, bug), encoding="utf-8")
     (SITE / "coaches.html").write_text(
@@ -2379,6 +2488,7 @@ def main():
         ix = []
         for href, label, sub in (
                 ("standings.html", "The Belt", "standings and weekly results"),
+                ("rankings.html", "CK Power Rankings", "the board, movement, every edition"),
                 ("coaches.html", "Coaches", "every coach, rings, game logs"),
                 ("records.html", "The Record Book", "blowouts, streaks, rivalries"),
                 ("content.html", "The Archive", "every graphic and write-up"),
@@ -2435,8 +2545,8 @@ def main():
 
     # Sitemap + robots. Every page written above, absolute, stamped with the
     # build date -- crawlers find the coach pages and write-ups on their own.
-    pages = (["index.html", "standings.html", "records.html", "rules.html",
-              "history.html", "coaches.html", "content.html"]
+    pages = (["index.html", "standings.html", "rankings.html", "records.html",
+              "rules.html", "history.html", "coaches.html", "content.html"]
              + ["coach-%s.html" % cid for cid in roster]
              + [article_path(c) for c in content["content"] if c.get("article")])
     today = date.today().isoformat()

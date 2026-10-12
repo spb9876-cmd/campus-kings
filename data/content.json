@@ -1,6 +1,36 @@
 {
   "content": [
     {
+      "title": "Fifteen and Oh",
+      "kind": "Recap",
+      "season": 5,
+      "date": "2026-10-12",
+      "file": "campus_kings_s5_natty_recap.png",
+      "blurb": "Oklahoma 37, Notre Dame 21 in Atlanta: Stew finishes 15-0, takes ring number three, and breaks the belt tie. Dre ended the champ’s defense in round one, TBO ran from the 10-seed to the semis through unbeaten Penn State, Tayne beat unbeaten Clemson and the Vols for his first final — and conceded the fourth quarter to the guru.",
+      "article": "s5-natty-season-recap.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s5_natty_recap.png",
+          "caption": "Season Five, decided — the king’s third ring"
+        }
+      ]
+    },
+    {
+      "title": "CK Power Rankings: The Atlanta Edition",
+      "kind": "CK Rankings",
+      "season": 5,
+      "date": "2026-10-12",
+      "file": "campus_kings_ck_rankings_atlanta.png",
+      "blurb": "The final board of Season Five, all 24 chairs, and for the first time No. 1 needs no qualifier: Stew went 15-0 and took the belt alone. Tayne arrives at two, TBO’s Cinderella run lands at four, and the back-to-back champ drops to nine. The board now lives on the site as a living page.",
+      "article": "ck-rankings-atlanta.md",
+      "gallery": [
+        {
+          "file": "campus_kings_ck_rankings_atlanta.png",
+          "caption": "All 24 chairs — the Atlanta Edition"
+        }
+      ]
+    },
+    {
       "title": "Three Unbeatens, One Bracket",
       "kind": "Recap",
       "season": 5,

@@ -1,6 +1,6 @@
 {
   "season": 5,
-  "status": "in_progress",
+  "status": "complete",
   "results": [
     {
       "week": 0,
@@ -486,6 +486,98 @@
       "score": [
         40,
         38
+      ]
+    }
+  ],
+  "playoffs": [
+    {
+      "round": "R1",
+      "winner": "Notre Dame",
+      "loser": "Miami",
+      "score": [
+        49,
+        28
+      ]
+    },
+    {
+      "round": "R1",
+      "winner": "Michigan",
+      "loser": "Ole Miss",
+      "score": [
+        26,
+        21
+      ]
+    },
+    {
+      "round": "R1",
+      "winner": "Arizona State",
+      "loser": "Oregon",
+      "score": [
+        16,
+        7
+      ]
+    },
+    {
+      "round": "QF",
+      "winner": "Oklahoma",
+      "loser": "Michigan",
+      "score": [
+        40,
+        30
+      ]
+    },
+    {
+      "round": "QF",
+      "winner": "Arizona State",
+      "loser": "Penn State",
+      "score": [
+        27,
+        24
+      ]
+    },
+    {
+      "round": "QF",
+      "winner": "Notre Dame",
+      "loser": "Clemson",
+      "score": [
+        42,
+        21
+      ]
+    },
+    {
+      "round": "QF",
+      "winner": "Tennessee",
+      "loser": "TCU",
+      "score": [
+        38,
+        24
+      ]
+    },
+    {
+      "round": "SF",
+      "winner": "Notre Dame",
+      "loser": "Tennessee",
+      "score": [
+        42,
+        31
+      ]
+    },
+    {
+      "round": "SF",
+      "winner": "Oklahoma",
+      "loser": "Arizona State",
+      "score": [
+        33,
+        26
+      ]
+    },
+    {
+      "round": "NC",
+      "winner": "Oklahoma",
+      "loser": "Notre Dame",
+      "score": [
+        37,
+        21
       ]
     }
   ]
