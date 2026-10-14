@@ -104,6 +104,7 @@ def grounding():
     import time
     if time.time() - _cache["at"] < DATA_TTL and _cache["text"]:
         return _cache["text"]
+    sync_checkout()                        # cheap no-op when nothing changed
     parts = []
     names = ["data/league.json", "docs/search-index.json", "data/content.json",
              "data/rankings.json", "data/rules.json"]
@@ -197,6 +198,35 @@ def ask_claude(question, asker, chat=""):
     return r.stdout.strip()
 
 
+SYNC_EVERY = 300                                       # seconds between git pulls
+
+
+def sync_checkout():
+    """Fast-forward the local checkout so a Sheet ingest published from the
+    GitHub Actions button reaches the bot without anyone touching the PC.
+    Local edits are never clobbered: --ff-only refuses anything but a clean
+    fast-forward, and a refusal just means we answer from what's on disk."""
+    import shutil
+    git = shutil.which("git")
+    if not git:
+        return False
+    try:
+        before = subprocess.run([git, "-C", str(ROOT), "rev-parse", "HEAD"],
+                                capture_output=True, text=True, timeout=20).stdout.strip()
+        subprocess.run([git, "-C", str(ROOT), "pull", "--ff-only", "-q"],
+                       capture_output=True, text=True, timeout=90)
+        after = subprocess.run([git, "-C", str(ROOT), "rev-parse", "HEAD"],
+                               capture_output=True, text=True, timeout=20).stdout.strip()
+    except Exception as e:
+        print("sync: skipped (%s)" % e)
+        return False
+    if after != before:
+        _cache["at"] = 0.0                 # new data on disk -- reread next question
+        print("sync: checkout updated %s -> %s" % (before[:7], after[:7]))
+        return True
+    return False
+
+
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
@@ -231,10 +261,19 @@ async def chat_context(msg):
     return "\n".join(parts)[-CHAT_CAP:]
 
 
+async def sync_loop():
+    while True:
+        await asyncio.to_thread(sync_checkout)
+        await asyncio.sleep(SYNC_EVERY)
+
+
 @client.event
 async def on_ready():
     print("CK Analyst online as %s (mode: %s)"
           % (client.user, "API" if API_KEY else "Claude subscription"))
+    if not getattr(client, "_sync_started", False):
+        client._sync_started = True
+        asyncio.get_running_loop().create_task(sync_loop())
 
 
 def directed_at_bot(msg):
