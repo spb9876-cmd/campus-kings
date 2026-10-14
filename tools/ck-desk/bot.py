@@ -106,7 +106,7 @@ def grounding():
         return _cache["text"]
     parts = []
     names = ["data/league.json", "docs/search-index.json", "data/content.json",
-             "data/rankings.json"]
+             "data/rankings.json", "data/rules.json"]
     # Current season file, plus last season's for fresh-history questions.
     seasons = sorted((ROOT / "data").glob("season_*.json"))
     if seasons:
