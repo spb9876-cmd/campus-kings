@@ -175,13 +175,24 @@ def ask_claude(question, asker, chat=""):
     if not cli:
         # Fall back to the CLI bundled with the Claude desktop app -- the
         # Store-packaged build keeps its "Roaming" under Packages\...
+        # Newer builds nest the exe one level deeper (version/<hash>/claude.exe),
+        # so look at both depths and pick the highest version number.
         candidates = []
         appdata = os.environ.get("APPDATA", "")
         local = os.environ.get("LOCALAPPDATA", "")
-        candidates += Path(appdata, "Claude", "claude-code").glob("*/claude.exe")
-        candidates += Path(local, "Packages").glob(
-            "Claude_*/LocalCache/Roaming/Claude/claude-code/*/claude.exe")
-        versions = sorted(candidates)
+        for base in (Path(appdata, "Claude", "claude-code"),
+                     *Path(local, "Packages").glob(
+                         "Claude_*/LocalCache/Roaming/Claude/claude-code")):
+            candidates += base.glob("*/claude.exe")
+            candidates += base.glob("*/*/claude.exe")
+
+        def version_key(path):
+            folder = path.parent if path.parent.name[:1].isdigit() else path.parent.parent
+            try:
+                return tuple(int(x) for x in folder.name.split("."))
+            except ValueError:
+                return (0,)
+        versions = sorted(set(candidates), key=version_key)
         cli = str(versions[-1]) if versions else None
     if not cli:
         raise RuntimeError("claude CLI not found on PATH or in the desktop app")
