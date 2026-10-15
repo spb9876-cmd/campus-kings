@@ -211,9 +211,9 @@
       "id": "bhog",
       "name": "Bhog",
       "aliases": [
-        "Bdhogan0980"
-      ],
-      "status": "departed"
+        "Bdhogan0980",
+        "Brendan"
+      ]
     },
     {
       "id": "pat",
@@ -323,10 +323,6 @@
     {
       "id": "roy",
       "name": "Roy"
-    },
-    {
-      "id": "brendan",
-      "name": "Brendan"
     }
   ],
   "tenures": [
@@ -410,7 +406,7 @@
       "coach": "bhog",
       "from": "S1W0",
       "to": "S6W0",
-      "note": "left the league after Season Five — BYU open"
+      "note": "moved to Alabama for Season Six"
     },
     {
       "team": "Ole Miss",
@@ -638,9 +634,9 @@
     },
     {
       "team": "Alabama",
-      "coach": "brendan",
+      "coach": "bhog",
       "from": "S6W0",
-      "note": "joined league Season Six; takes Alabama from Jason"
+      "note": "takes Alabama for Season Six after BYU; replaces Jason"
     }
   ],
   "legacy_championships": {

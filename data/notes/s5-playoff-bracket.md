@@ -79,10 +79,10 @@ once rows land; records shown are in-game (they include forfeits). Title game:
 
 - Moves: LT Clemson → FAU; Purp Tennessee → LSU; JT Nebraska → Tennessee;
   Quan Florida State → Florida; Jason Alabama → Memphis.
-- New coaches: Zoe (Florida State), Roy (Nebraska), Brendan (Alabama).
+- New coaches: Zoe (Florida State), Roy (Nebraska). Bhog (real name Brendan)
+  moves BYU → Alabama — he did NOT leave.
 - Returning: Lux (Clemson).
-- Departed after Season Five: Ice Man (Georgia), Bhog (BYU), ZBO (SMU),
-  Harry (Georgia Tech).
+- Departed after Season Five: Ice Man (Georgia), ZBO (SMU), Harry (Georgia Tech).
 - Unchanged: Curt Ohio State, Bawce Texas A&M, Stew Oklahoma, Tayne Notre
   Dame, States Penn State, Work Texas, Lute Miami, Silingi Texas Tech, Pat
   Ole Miss, Dre Michigan, Thrash South Carolina, Teeric USC, Bowzer Oregon,
