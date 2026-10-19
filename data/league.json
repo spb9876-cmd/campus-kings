@@ -213,7 +213,8 @@
       "aliases": [
         "Bdhogan0980",
         "Brendan"
-      ]
+      ],
+      "status": "departed"
     },
     {
       "id": "pat",
@@ -231,7 +232,8 @@
       "aliases": [
         "TakeThisWork",
         "imxwork"
-      ]
+      ],
+      "status": "departed"
     },
     {
       "id": "nas",
@@ -363,7 +365,9 @@
     {
       "team": "Miami",
       "coach": "lute",
-      "from": "S1W0"
+      "from": "S1W0",
+      "to": "S6W5",
+      "note": "moved to Texas in Season Six Week 5 — Miami open"
     },
     {
       "team": "Florida",
@@ -416,7 +420,9 @@
     {
       "team": "Texas",
       "coach": "work",
-      "from": "S1W0"
+      "from": "S1W0",
+      "to": "S6W5",
+      "note": "left the league in Season Six — Texas to Lute"
     },
     {
       "team": "Texas Tech",
@@ -636,7 +642,14 @@
       "team": "Alabama",
       "coach": "bhog",
       "from": "S6W0",
-      "note": "takes Alabama for Season Six after BYU; replaces Jason"
+      "note": "left the league in Season Six after Week 5 — Alabama open",
+      "to": "S6W6"
+    },
+    {
+      "team": "Texas",
+      "coach": "lute",
+      "from": "S6W5",
+      "note": "takes Texas from Work in Season Six Week 5"
     }
   ],
   "legacy_championships": {

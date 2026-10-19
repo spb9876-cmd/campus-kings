@@ -1,6 +1,36 @@
 {
   "content": [
     {
+      "title": "Weeks 0-5: The Wrong QB",
+      "kind": "Recap",
+      "season": 6,
+      "date": "2026-10-19",
+      "file": "campus_kings_s6_w5_recap.png",
+      "blurb": "The champ is 3-0 with the backup under center by accident, Dre ends the king’s 17-game streak in the Buddy Bowl and then forfeits the next one, a rookie goes 2-0 off a game JT quit, and the front office loses Work and Bhog while Lute moves to Texas.",
+      "article": "s6-weeks0-5-recap.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s6_w5_recap.png",
+          "caption": "Season Six, Weeks 0-5 — the Buddy Bowl and the backup"
+        }
+      ]
+    },
+    {
+      "title": "CK Power Rankings: The Buddy Bowl Edition",
+      "kind": "CK Rankings",
+      "season": 6,
+      "date": "2026-10-19",
+      "file": "campus_kings_ck_rankings_buddy_bowl.png",
+      "blurb": "First board of Season Six, all 22 chairs: the champ takes the chair at 3-0 with the wrong quarterback, Dre sits second after the Buddy Bowl and a forfeit, the king drops to third with a loss, and the rookie at Nebraska debuts in the top five.",
+      "article": "ck-rankings-buddy-bowl.md",
+      "gallery": [
+        {
+          "file": "campus_kings_ck_rankings_buddy_bowl.png",
+          "caption": "All 22 chairs — the Buddy Bowl Edition"
+        }
+      ]
+    },
+    {
       "title": "Fifteen and Oh",
       "kind": "Recap",
       "season": 5,
