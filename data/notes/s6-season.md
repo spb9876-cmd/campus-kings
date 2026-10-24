@@ -28,3 +28,18 @@
 - #big-games (Bowzer) runs an "SEC vs BIG10 CHALLENGE" series — B1G led 2-0
   entering part 3.
 - Do NOT invent results; take them from the Sheet or #big-games only.
+
+## Update through Week 11 (2026-10-24)
+- DEPARTED: Tayne (quit a CPU game after 6 plays; kicked; Notre Dame open) and JT
+  (Tennessee open). With Odini in and Ice Man confirmed active: 22 active coaches.
+- NEW: Odini (OdiniTheGoat) coaches ALABAMA from Week 6 — debut 47-13 loss to
+  Bawce (W7), first win 38-30 over Quan's Florida (W9).
+- Ice Man IS coaching Georgia this season ("This my last ride this year"); he says
+  he's leaving after S6. Georgia W7 49-10 over Thrash, W10 34-26 loss to Quan.
+- Unconfirmed chatter (do not state as fact): Lux "taking Notre dame, Clemson is
+  open" (10-23); LT "im retired.. im leaving FAU" (10-21). Polo visited chat and
+  was told he's not in the league.
+- Stew 5-1 after 32-14 Georgia, 44-16 Texas, 20-0 Florida. Dre 59-7 USC (W9).
+  KJ 31-3 TBO (W8). States 35-34 Roy (W10) — rookie's first loss. Lute's first
+  Texas win 28-7 Thrash (W11).
+- Curt forgot the Week 10 advance ("I was locked in on some other shit and forgot").

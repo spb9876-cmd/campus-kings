@@ -121,15 +121,6 @@
     },
     {
       "week": 3,
-      "winner": "Arizona State",
-      "loser": "Clemson",
-      "score": [
-        31,
-        6
-      ]
-    },
-    {
-      "week": 3,
       "winner": "Oklahoma",
       "loser": "TCU",
       "score": [
@@ -184,6 +175,15 @@
       ]
     },
     {
+      "week": 3,
+      "winner": "Arizona State",
+      "loser": "Clemson",
+      "score": [
+        31,
+        6
+      ]
+    },
+    {
       "week": 4,
       "winner": "TCU",
       "loser": "Michigan",
@@ -230,7 +230,106 @@
         28,
         10
       ]
+    },
+    {
+      "week": 6,
+      "winner": "Oklahoma",
+      "loser": "Georgia",
+      "score": [
+        32,
+        14
+      ]
+    },
+    {
+      "week": 7,
+      "winner": "Oklahoma",
+      "loser": "Texas",
+      "score": [
+        44,
+        16
+      ]
+    },
+    {
+      "week": 7,
+      "winner": "Texas A&M",
+      "loser": "Alabama",
+      "score": [
+        47,
+        13
+      ]
+    },
+    {
+      "week": 7,
+      "winner": "Georgia",
+      "loser": "South Carolina",
+      "score": [
+        49,
+        10
+      ]
+    },
+    {
+      "week": 8,
+      "winner": "TCU",
+      "loser": "Arizona State",
+      "score": [
+        31,
+        3
+      ]
+    },
+    {
+      "week": 8,
+      "winner": "Oklahoma",
+      "loser": "Florida",
+      "score": [
+        20,
+        0
+      ]
+    },
+    {
+      "week": 9,
+      "winner": "Alabama",
+      "loser": "Florida",
+      "score": [
+        38,
+        30
+      ]
+    },
+    {
+      "week": 9,
+      "winner": "Michigan",
+      "loser": "USC",
+      "score": [
+        59,
+        7
+      ]
+    },
+    {
+      "week": 10,
+      "winner": "Florida",
+      "loser": "Georgia",
+      "score": [
+        34,
+        26
+      ]
+    },
+    {
+      "week": 10,
+      "winner": "Penn State",
+      "loser": "Nebraska",
+      "score": [
+        35,
+        34
+      ]
+    },
+    {
+      "week": 11,
+      "winner": "Texas",
+      "loser": "South Carolina",
+      "score": [
+        28,
+        7
+      ]
     }
   ],
-  "current_week": 5
+  "current_week": 11
 }

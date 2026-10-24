@@ -1,6 +1,21 @@
 {
   "content": [
     {
+      "title": "Weeks 6-11: Nobody Scores on Norman",
+      "kind": "Recap",
+      "season": 6,
+      "date": "2026-10-24",
+      "file": "campus_kings_s6_w11_recap.png",
+      "blurb": "The king answers the Buddy Bowl with a 96-30 stretch and a shutout, Dre hangs 59, the rookie loses by one, Alabama gets a coach and a 99-overall roster with one star on the line, and the league loses Tayne and JT in the same week.",
+      "article": "s6-weeks6-11-recap.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s6_w11_recap.png",
+          "caption": "Season Six, Weeks 6-11 — the king allows nothing"
+        }
+      ]
+    },
+    {
       "title": "Weeks 0-5: The Wrong QB",
       "kind": "Recap",
       "season": 6,

@@ -134,7 +134,8 @@
     },
     {
       "id": "tayne",
-      "name": "Tayne"
+      "name": "Tayne",
+      "status": "departed"
     },
     {
       "id": "states",
@@ -200,8 +201,7 @@
     },
     {
       "id": "iceman",
-      "name": "Ice Man",
-      "status": "departed"
+      "name": "Ice Man"
     },
     {
       "id": "teeric",
@@ -307,7 +307,8 @@
     },
     {
       "id": "jt",
-      "name": "JT"
+      "name": "JT",
+      "status": "departed"
     },
     {
       "id": "lux",
@@ -325,6 +326,13 @@
     {
       "id": "roy",
       "name": "Roy"
+    },
+    {
+      "id": "odini",
+      "name": "Odini",
+      "aliases": [
+        "OdiniTheGoat"
+      ]
     }
   ],
   "tenures": [
@@ -348,7 +356,9 @@
     {
       "team": "Notre Dame",
       "coach": "tayne",
-      "from": "S1W0"
+      "from": "S1W0",
+      "to": "S6W11",
+      "note": "left the league in Season Six — Notre Dame open"
     },
     {
       "team": "Penn State",
@@ -469,8 +479,7 @@
       "team": "Georgia",
       "coach": "iceman",
       "from": "S2W0",
-      "to": "S6W0",
-      "note": "left the league after Season Five — Georgia open"
+      "note": "Season Six is his announced last ride"
     },
     {
       "team": "Auburn",
@@ -618,7 +627,8 @@
       "team": "Tennessee",
       "coach": "jt",
       "from": "S6W0",
-      "note": "takes Tennessee for Season Six"
+      "note": "left the league in Season Six — Tennessee open",
+      "to": "S6W11"
     },
     {
       "team": "Clemson",
@@ -650,6 +660,12 @@
       "coach": "lute",
       "from": "S6W5",
       "note": "takes Texas from Work in Season Six Week 5"
+    },
+    {
+      "team": "Alabama",
+      "coach": "odini",
+      "from": "S6W6",
+      "note": "joined league Season Six Week 6; takes Alabama after Bhog"
     }
   ],
   "legacy_championships": {
