@@ -1,6 +1,25 @@
 {
   "content": [
     {
+      "title": "Two Unbeatens, Neither of Them the King",
+      "kind": "Recap",
+      "season": 6,
+      "date": "2026-10-29",
+      "file": "campus_kings_s6_conf_playoff_preview.png",
+      "blurb": "Championship week and the full playoff preview: Stew takes Stew-Pat V 24-14 for a third straight SEC crown, Bowzer hangs 51 on the vault and grabs his first 1-seed at 13-0, rookie Zoe’s Florida State is 13-0 at the 2, KJ three-peats the Big 12 — and the belt holders can only meet in Glendale.",
+      "article": "s6-conf-champs-playoff-preview.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s6_conf_playoff_preview.png",
+          "caption": "Championship week and the road to Glendale"
+        },
+        {
+          "file": "campus_kings_s6_bracket.jpg",
+          "caption": "The Season Six bracket — two unbeatens, the king at 3, the champ at 4"
+        }
+      ]
+    },
+    {
       "title": "Weeks 6-11: Nobody Scores on Norman",
       "kind": "Recap",
       "season": 6,

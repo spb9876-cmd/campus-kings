@@ -310,6 +310,16 @@
       "score": [
         34,
         26
+      ],
+      "note": "FW"
+    },
+    {
+      "week": 10,
+      "winner": "Texas",
+      "loser": "Notre Dame",
+      "score": [
+        38,
+        14
       ]
     },
     {
@@ -329,7 +339,178 @@
         28,
         7
       ]
+    },
+    {
+      "week": 11,
+      "winner": "Ohio State",
+      "loser": "Penn State",
+      "score": [
+        27,
+        21
+      ],
+      "gotw": true
+    },
+    {
+      "week": 12,
+      "winner": "Oregon",
+      "loser": "USC",
+      "score": [
+        61,
+        7
+      ]
+    },
+    {
+      "week": 12,
+      "winner": "TCU",
+      "loser": "Texas Tech",
+      "score": [
+        28,
+        7
+      ]
+    },
+    {
+      "week": 12,
+      "winner": "Michigan",
+      "loser": "Nebraska",
+      "score": [
+        56,
+        7
+      ]
+    },
+    {
+      "week": 12,
+      "winner": "Florida State",
+      "loser": "Clemson",
+      "score": [
+        35,
+        28
+      ]
+    },
+    {
+      "week": 12,
+      "winner": "Ole Miss",
+      "loser": "Texas A&M",
+      "score": [
+        49,
+        47
+      ],
+      "note": "FW"
+    },
+    {
+      "week": 13,
+      "winner": "Ole Miss",
+      "loser": "Alabama",
+      "score": [
+        63,
+        21
+      ]
+    },
+    {
+      "week": 13,
+      "winner": "LSU",
+      "loser": "Georgia",
+      "score": [
+        34,
+        24
+      ],
+      "note": "FW"
+    },
+    {
+      "week": 13,
+      "winner": "Nebraska",
+      "loser": "USC",
+      "score": [
+        44,
+        7
+      ],
+      "note": "FW"
+    },
+    {
+      "week": 14,
+      "winner": "Michigan",
+      "loser": "Ohio State",
+      "score": [
+        27,
+        13
+      ]
+    },
+    {
+      "week": 14,
+      "winner": "Oklahoma",
+      "loser": "Texas A&M",
+      "score": [
+        76,
+        55
+      ]
+    },
+    {
+      "week": 14,
+      "winner": "LSU",
+      "loser": "Texas",
+      "score": [
+        31,
+        30
+      ]
+    },
+    {
+      "week": 14,
+      "winner": "Florida State",
+      "loser": "Florida",
+      "score": [
+        48,
+        24
+      ],
+      "note": "FW"
+    },
+    {
+      "week": 14,
+      "winner": "Oregon",
+      "loser": "Penn State",
+      "score": [
+        24,
+        17
+      ],
+      "note": "FW"
     }
   ],
-  "current_week": 11
+  "current_week": 14,
+  "conference_championships": [
+    {
+      "conference": "SEC",
+      "winner": "Oklahoma",
+      "loser": "Ole Miss",
+      "score": [
+        24,
+        14
+      ]
+    },
+    {
+      "conference": "BIG 12",
+      "winner": "TCU",
+      "loser": "Arizona State",
+      "score": [
+        28,
+        24
+      ]
+    },
+    {
+      "conference": "BIG 10",
+      "winner": "Oregon",
+      "loser": "Michigan",
+      "score": [
+        51,
+        31
+      ]
+    },
+    {
+      "conference": "ACC",
+      "winner": "Florida State",
+      "loser": "Clemson",
+      "score": [
+        38,
+        14
+      ],
+      "note": "FW"
+    }
+  ]
 }
