@@ -1,6 +1,21 @@
 {
   "content": [
     {
+      "title": "Round One: The Legacy Point",
+      "kind": "Recap",
+      "season": 6,
+      "date": "2026-10-30",
+      "file": "campus_kings_s6_round1_recap.png",
+      "blurb": "Three road teams, zero chalk: Lux hangs 45 on the three-time Big 12 champ and draws the king, Purp avenges Week 1 on the founder, the rookie beats last year’s Cinderella by four, and Dre advances to a Cotton Bowl date with the champ. Round Two is set.",
+      "article": "s6-round-one-recap.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s6_round1_recap.png",
+          "caption": "Round One — the legacy point and the road to Glendale"
+        }
+      ]
+    },
+    {
       "title": "Two Unbeatens, Neither of Them the King",
       "kind": "Recap",
       "season": 6,

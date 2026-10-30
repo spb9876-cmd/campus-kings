@@ -45,4 +45,13 @@ once rows land; records shown are in-game (they include forfeits). Title game:
   Stew vs Pat", "BIG12 KJ vs TBO", "BIG10 Bowzer vs Dre") — posted in chat.
 - Stew named his "Stew Crew": Stew, Dre, KJ, Zoe. "Rest of the players are
   frauds and bad ppl."
+## Round One — results (Sheet, 2026-10-30)
+- LSU 21-10 Ohio State (Purp avenges the Week 1 OT loss; Curt out).
+- Clemson 45-31 TCU (Lux, the 11-seed, over the three-time Big 12 champ; KJ:
+  "lmao watching this back I handed the game away"; Lux: "Gonna enjoy this
+  legacy point", "Might retire on top so ck analyst doesn't shit on me").
+- Nebraska 24-20 Arizona State (rookie Roy over last year's Cinderella).
+- Michigan advanced past CPU UAB (no Sheet row).
+- QUARTERFINALS: Cotton — Michigan vs Ole Miss; Rose — Nebraska vs Oregon;
+  Sugar — Clemson vs Oklahoma; Orange — LSU vs Florida State.
 - Do NOT invent playoff results; take them from the Sheet or #big-games only.

@@ -512,5 +512,34 @@
       ],
       "note": "FW"
     }
+  ],
+  "playoffs": [
+    {
+      "round": "R1",
+      "winner": "LSU",
+      "loser": "Ohio State",
+      "score": [
+        21,
+        10
+      ]
+    },
+    {
+      "round": "R1",
+      "winner": "Clemson",
+      "loser": "TCU",
+      "score": [
+        45,
+        31
+      ]
+    },
+    {
+      "round": "R1",
+      "winner": "Nebraska",
+      "loser": "Arizona State",
+      "score": [
+        24,
+        20
+      ]
+    }
   ]
 }
