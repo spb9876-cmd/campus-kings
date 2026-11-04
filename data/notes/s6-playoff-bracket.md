@@ -54,4 +54,19 @@ once rows land; records shown are in-game (they include forfeits). Title game:
 - Michigan advanced past CPU UAB (no Sheet row).
 - QUARTERFINALS: Cotton — Michigan vs Ole Miss; Rose — Nebraska vs Oregon;
   Sugar — Clemson vs Oklahoma; Orange — LSU vs Florida State.
+## FINAL — bracket complete (Sheet, 2026-11-04)
+- QF: Oklahoma 35-0 Clemson; Oregon 70-14 Nebraska; Florida State 49-38 LSU;
+  Michigan over Ole Miss BY FORFEIT (ledger 41-31 FW — Pat: "Nah it was FW";
+  the Cotton Bowl was never played).
+- SF: Oregon 28-20 Michigan; Oklahoma 56-14 Florida State.
+- **National Championship (Glendale): Oklahoma 34, Oregon 13.** Stew's FOURTH
+  ring of the accredited era (S1, S2, S5, S6), back-to-back. Oregon finished
+  13-0 in-game before the final; Bowzer's second title-game loss (S3, S6).
+- Belt after S6: **Stew 4, Pat 2** — 6 of 20 decided. Points: Stew 89, Pat 45,
+  LT 33, Bowzer 32, Purp 29, Dre 28.
+- Chat: KJ "damn 2 nattys in 2 days" / "mane the goat"; Bowzer "All the mfs who
+  beat him have moved on and retired to bigger shit"; Stew "I'm just a regular
+  dude with 3 jobs", "I love you all @everyone no need for hate or dislike";
+  Lux "I beat him a couple times but ck analyst says im a bitch". LT produced a
+  14-minute "Season 48 Playoff Recap" movie.
 - Do NOT invent playoff results; take them from the Sheet or #big-games only.

@@ -1,6 +1,6 @@
 {
   "season": 6,
-  "status": "in_progress",
+  "status": "complete",
   "results": [
     {
       "week": 0,
@@ -539,6 +539,70 @@
       "score": [
         24,
         20
+      ]
+    },
+    {
+      "round": "QF",
+      "winner": "Oklahoma",
+      "loser": "Clemson",
+      "score": [
+        35,
+        0
+      ]
+    },
+    {
+      "round": "QF",
+      "winner": "Oregon",
+      "loser": "Nebraska",
+      "score": [
+        70,
+        14
+      ]
+    },
+    {
+      "round": "QF",
+      "winner": "Florida State",
+      "loser": "LSU",
+      "score": [
+        49,
+        38
+      ]
+    },
+    {
+      "round": "QF",
+      "winner": "Michigan",
+      "loser": "Ole Miss",
+      "score": [
+        41,
+        31
+      ],
+      "note": "FW"
+    },
+    {
+      "round": "SF",
+      "winner": "Oregon",
+      "loser": "Michigan",
+      "score": [
+        28,
+        20
+      ]
+    },
+    {
+      "round": "SF",
+      "winner": "Oklahoma",
+      "loser": "Florida State",
+      "score": [
+        56,
+        14
+      ]
+    },
+    {
+      "round": "NC",
+      "winner": "Oklahoma",
+      "loser": "Oregon",
+      "score": [
+        34,
+        13
       ]
     }
   ]

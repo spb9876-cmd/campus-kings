@@ -2,6 +2,126 @@
   "_note": "CK Power Rankings editions, newest first. rank = position in board. coach = id from league.json. build.py renders rankings.html from this: the current board with movement vs the previous edition, every coach's trajectory, and each past edition. Add a new edition at the TOP when a rankings article ships; 'article' is the data/articles filename so the page can link the write-up.",
   "editions": [
     {
+      "id": "s6-glendale",
+      "title": "The Glendale Edition",
+      "season": 6,
+      "date": "2026-11-04",
+      "label": "Season Six final — after the national championship",
+      "article": "ck-rankings-glendale.md",
+      "board": [
+        {
+          "coach": "stew",
+          "team": "Oklahoma",
+          "note": "10-1; back-to-back, four rings in six seasons, 89 points to the next man's 45"
+        },
+        {
+          "coach": "bowzer",
+          "team": "Oregon",
+          "note": "6-1; 13-0 in-game, B1G crown, 70 on the rookie, a second title-game appearance"
+        },
+        {
+          "coach": "dre",
+          "team": "Michigan",
+          "note": "5-2 played; the only coach to beat the king; a forfeit and a forfeit win on the ledger"
+        },
+        {
+          "coach": "zoe",
+          "team": "Florida State",
+          "note": "13-0 rookie season, ACC crown, beat Purp, then 56-14 to the king"
+        },
+        {
+          "coach": "pat",
+          "team": "Ole Miss",
+          "note": "12-1 in-game, the SEC final, and a Cotton Bowl forfeit that ended the defense"
+        },
+        {
+          "coach": "purp",
+          "team": "LSU",
+          "note": "3-2; avenged Week 1 on Curt, lost a 49-38 shootout to the unbeaten rookie"
+        },
+        {
+          "coach": "lux",
+          "team": "Clemson",
+          "note": "3-3; the 45-31 upset of the three-time Big 12 champ, then 35-0 to the king"
+        },
+        {
+          "coach": "roy",
+          "team": "Nebraska",
+          "note": "3-3; two bracket scalps as a rookie, then seventy from Oregon"
+        },
+        {
+          "coach": "curt",
+          "team": "Ohio State",
+          "note": "3-2; 11-1 in-game, lost The Game and the first round to Purp"
+        },
+        {
+          "coach": "kj",
+          "team": "TCU",
+          "note": "3-3; three straight Big 12 crowns, three straight playoff exits"
+        },
+        {
+          "coach": "tbo",
+          "team": "Arizona State",
+          "note": "2-3; two losses to KJ and a four-point first-round loss to the rookie"
+        },
+        {
+          "coach": "lute",
+          "team": "Texas",
+          "note": "2-5 across two programs; both wins came at Texas"
+        },
+        {
+          "coach": "states",
+          "team": "Penn State",
+          "note": "1-3 played; a year after 13-0, one win by a point"
+        },
+        {
+          "coach": "quan",
+          "team": "Florida",
+          "note": "1-3 played; the Florida move hasn't found the ACC-champion version yet"
+        },
+        {
+          "coach": "bawce",
+          "team": "Texas A&M",
+          "note": "1-1 played; beat Odini 47-13, lost the record 76-55"
+        },
+        {
+          "coach": "odini",
+          "team": "Alabama",
+          "note": "1-2; inherited a 99-overall roster with one star on the line, beat Florida"
+        },
+        {
+          "coach": "iceman",
+          "team": "Georgia",
+          "note": "1-2 played; the announced last ride ends with a 49-10 and three forfeits"
+        },
+        {
+          "coach": "silingi",
+          "team": "Texas Tech",
+          "note": "0-3; 'Who has been kicking my XP?'"
+        },
+        {
+          "coach": "thrash",
+          "team": "South Carolina",
+          "note": "0-3; allowed 42, 49, and 28"
+        },
+        {
+          "coach": "teeric",
+          "team": "USC",
+          "note": "0-2 played; 59 from Dre and 61 from Bowzer"
+        },
+        {
+          "coach": "lt",
+          "team": "FAU",
+          "note": "No league games at FAU; the video department went 13-0"
+        },
+        {
+          "coach": "jason",
+          "team": "Memphis",
+          "note": "No league games at Memphis; two seasons without a played snap"
+        }
+      ]
+    },
+    {
       "id": "s6-buddy-bowl",
       "title": "The Buddy Bowl Edition",
       "season": 6,

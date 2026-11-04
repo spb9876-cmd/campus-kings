@@ -1,6 +1,36 @@
 {
   "content": [
     {
+      "title": "Four Rings",
+      "kind": "Recap",
+      "season": 6,
+      "date": "2026-11-04",
+      "file": "campus_kings_s6_natty_recap.png",
+      "blurb": "Oklahoma 34, Oregon 13 in Glendale: Stew goes back-to-back, takes ring number four, and widens the belt to 4-2. Bowzer’s 13-0 season ends one game short again, the unbeaten rookie takes 56 from the king, and the champ’s defense ends on a Cotton Bowl forfeit.",
+      "article": "s6-natty-season-recap.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s6_natty_recap.png",
+          "caption": "Season Six, decided — the king’s fourth ring"
+        }
+      ]
+    },
+    {
+      "title": "CK Power Rankings: The Glendale Edition",
+      "kind": "CK Rankings",
+      "season": 6,
+      "date": "2026-11-04",
+      "file": "campus_kings_ck_rankings_glendale.png",
+      "blurb": "The final board of Season Six, all 22 chairs: the king at one with four rings and twelve straight wins, Bowzer’s 13-0 runner-up season at two, the only man who beat Stew at three, the 13-0 rookie at four, and the champ at five after a Cotton Bowl forfeit.",
+      "article": "ck-rankings-glendale.md",
+      "gallery": [
+        {
+          "file": "campus_kings_ck_rankings_glendale.png",
+          "caption": "All 22 chairs — the Glendale Edition"
+        }
+      ]
+    },
+    {
       "title": "Round One: The Legacy Point",
       "kind": "Recap",
       "season": 6,

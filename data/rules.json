@@ -18,13 +18,15 @@
     {
       "id": "banned",
       "title": "Banned formations and tactics",
-      "flag": "Revised October 14, 2026 — effective immediately",
+      "flag": "Revised November 3, 2026 — effective immediately",
       "items": [
         "All Hulk plays — banned everywhere except inside the red zone",
         "Gun Power I Tight",
         "All Wildcat formations outside the red zone — Wildcat may only be used inside your opponent's 20-yard line",
         "All direct-snap plays, anywhere on the field including the red zone",
-        "Calling defensive-line stunts from Field Goal Block"
+        "Calling defensive-line stunts from Field Goal Block",
+        "QB RPO plays — no RPO Power, no QB read-pass-option packages",
+        "HB Pass (the halfback pass)"
       ],
       "footer": "Adjust your custom playbooks and play-calling before your next game. If anyone violates these rules: stop the game, record it, and alert an admin. If you continue to play, don't cry later."
     },

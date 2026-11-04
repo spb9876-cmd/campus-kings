@@ -3,7 +3,7 @@
     "name": "Campus Kings",
     "game": "CFB 27",
     "accredited_seasons": 20,
-    "current_season": 6
+    "current_season": 7
   },
   "rules": {
     "playoff_points": {
@@ -175,8 +175,7 @@
     },
     {
       "id": "jarvis",
-      "name": "Jarvis",
-      "status": "departed"
+      "name": "Jarvis"
     },
     {
       "id": "kj",
@@ -201,7 +200,8 @@
     },
     {
       "id": "iceman",
-      "name": "Ice Man"
+      "name": "Ice Man",
+      "status": "departed"
     },
     {
       "id": "teeric",
@@ -232,8 +232,7 @@
       "aliases": [
         "TakeThisWork",
         "imxwork"
-      ],
-      "status": "departed"
+      ]
     },
     {
       "id": "nas",
@@ -325,13 +324,23 @@
     },
     {
       "id": "roy",
-      "name": "Roy"
+      "name": "Roy",
+      "aliases": [
+        "Mojolion11"
+      ]
     },
     {
       "id": "odini",
       "name": "Odini",
       "aliases": [
         "OdiniTheGoat"
+      ]
+    },
+    {
+      "id": "jordan",
+      "name": "Jordan",
+      "aliases": [
+        "NoLzJordan"
       ]
     }
   ],
@@ -479,7 +488,8 @@
       "team": "Georgia",
       "coach": "iceman",
       "from": "S2W0",
-      "note": "Season Six is his announced last ride"
+      "note": "left the league after Season Six — his announced last ride",
+      "to": "S7W0"
     },
     {
       "team": "Auburn",
@@ -603,13 +613,15 @@
       "team": "FAU",
       "coach": "lt",
       "from": "S6W0",
-      "note": "takes FAU for Season Six after five seasons at Clemson"
+      "note": "moved to Notre Dame for Season Seven",
+      "to": "S7W0"
     },
     {
       "team": "Memphis",
       "coach": "jason",
       "from": "S6W0",
-      "note": "takes Memphis for Season Six"
+      "note": "moved to Georgia for Season Seven",
+      "to": "S7W0"
     },
     {
       "team": "LSU",
@@ -666,6 +678,36 @@
       "coach": "odini",
       "from": "S6W6",
       "note": "joined league Season Six Week 6; takes Alabama after Bhog"
+    },
+    {
+      "team": "Notre Dame",
+      "coach": "lt",
+      "from": "S7W0",
+      "note": "takes Notre Dame for Season Seven after one season at FAU"
+    },
+    {
+      "team": "Georgia",
+      "coach": "jason",
+      "from": "S7W0",
+      "note": "takes Georgia for Season Seven after one season at Memphis"
+    },
+    {
+      "team": "Tennessee",
+      "coach": "work",
+      "from": "S7W0",
+      "note": "returns for Season Seven at Tennessee after six seasons at Texas"
+    },
+    {
+      "team": "Miami",
+      "coach": "jarvis",
+      "from": "S7W0",
+      "note": "returns for Season Seven at Miami; coached Nebraska in Seasons Two and Three"
+    },
+    {
+      "team": "Washington",
+      "coach": "jordan",
+      "from": "S7W0",
+      "note": "joined league Season Seven; played the previous game cycle"
     }
   ],
   "legacy_championships": {
