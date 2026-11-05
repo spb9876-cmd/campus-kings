@@ -345,8 +345,11 @@
       ]
     },
     {
-      "id": "alwayslivid",
-      "name": "AlwaysLivid"
+      "id": "livid",
+      "name": "Livid",
+      "aliases": [
+        "AlwaysLivid"
+      ]
     },
     {
       "id": "cobo",
@@ -728,7 +731,7 @@
     },
     {
       "team": "Louisville",
-      "coach": "alwayslivid",
+      "coach": "livid",
       "from": "S7W0",
       "note": "joined league Season Seven"
     },

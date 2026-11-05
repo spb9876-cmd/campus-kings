@@ -6,7 +6,7 @@
   the original Jarvis, Nebraska S2-S3, 4 legacy titles).
 - New: Jordan (Florida; handle NoLzJordan — played the previous game cycle,
   first season in the accredited era; was listed at Washington on Nov 4 but
-  never played a game there), AlwaysLivid (Louisville), Cobo (Washington).
+  never played a game there), Livid (Louisville; handle AlwaysLivid), Cobo (Washington).
   Roy is now listed as "Mojolion11" (same person; alias added).
 - Departed after S6: Ice Man (Georgia, last ride complete), Odini (Alabama,
   joined S6W6).
