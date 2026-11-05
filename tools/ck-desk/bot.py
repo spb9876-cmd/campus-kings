@@ -180,18 +180,31 @@ def ask_claude(question, asker, chat=""):
         candidates = []
         appdata = os.environ.get("APPDATA", "")
         local = os.environ.get("LOCALAPPDATA", "")
+        # The app has relocated this folder three times (Roaming, then
+        # Packages\...\LocalCache\Roaming, then Local\Claude-Data), so every
+        # known base is searched and the highest version wins.
         for base in (Path(appdata, "Claude", "claude-code"),
                      *Path(local, "Packages").glob(
-                         "Claude_*/LocalCache/Roaming/Claude/claude-code")):
+                         "Claude_*/LocalCache/Roaming/Claude/claude-code"),
+                     *Path(local, "Claude-Data").glob("*/claude-code")):
             candidates += base.glob("*/claude.exe")
             candidates += base.glob("*/*/claude.exe")
+        # Standalone installer drops an unversioned exe here; used only if
+        # no app-bundled build exists, since the version key sorts it last.
+        standalone = Path(os.path.expanduser("~"), ".local", "bin", "claude.exe")
+        if standalone.exists():
+            candidates.append(standalone)
 
         def version_key(path):
-            folder = path.parent if path.parent.name[:1].isdigit() else path.parent.parent
-            try:
-                return tuple(int(x) for x in folder.name.split("."))
-            except ValueError:
-                return (0,)
+            # version/claude.exe or version/<hash>/claude.exe -- whichever
+            # ancestor parses as a dotted number is the version. (A hash
+            # that happens to start with a digit used to fool this.)
+            for folder in (path.parent, path.parent.parent):
+                try:
+                    return tuple(int(x) for x in folder.name.split("."))
+                except ValueError:
+                    continue
+            return (0,)
         versions = sorted(set(candidates), key=version_key)
         cli = str(versions[-1]) if versions else None
     if not cli:
