@@ -334,7 +334,8 @@
       "name": "Odini",
       "aliases": [
         "OdiniTheGoat"
-      ]
+      ],
+      "status": "departed"
     },
     {
       "id": "jordan",
@@ -342,6 +343,14 @@
       "aliases": [
         "NoLzJordan"
       ]
+    },
+    {
+      "id": "alwayslivid",
+      "name": "AlwaysLivid"
+    },
+    {
+      "id": "cobo",
+      "name": "Cobo"
     }
   ],
   "tenures": [
@@ -633,7 +642,8 @@
       "team": "Florida",
       "coach": "quan",
       "from": "S6W0",
-      "note": "takes Florida for Season Six"
+      "note": "moved to Alabama for Season Seven",
+      "to": "S7W0"
     },
     {
       "team": "Tennessee",
@@ -677,7 +687,8 @@
       "team": "Alabama",
       "coach": "odini",
       "from": "S6W6",
-      "note": "joined league Season Six Week 6; takes Alabama after Bhog"
+      "note": "left the league after Season Six",
+      "to": "S7W0"
     },
     {
       "team": "Notre Dame",
@@ -704,10 +715,28 @@
       "note": "returns for Season Seven at Miami; coached Nebraska in Seasons Two and Three"
     },
     {
-      "team": "Washington",
+      "team": "Florida",
       "coach": "jordan",
       "from": "S7W0",
-      "note": "joined league Season Seven; played the previous game cycle"
+      "note": "joined league Season Seven at Florida; played the previous game cycle"
+    },
+    {
+      "team": "Alabama",
+      "coach": "quan",
+      "from": "S7W0",
+      "note": "takes Alabama for Season Seven after one season at Florida"
+    },
+    {
+      "team": "Louisville",
+      "coach": "alwayslivid",
+      "from": "S7W0",
+      "note": "joined league Season Seven"
+    },
+    {
+      "team": "Washington",
+      "coach": "cobo",
+      "from": "S7W0",
+      "note": "joined league Season Seven"
     }
   ],
   "legacy_championships": {
