@@ -2,6 +2,141 @@
   "_note": "CK Power Rankings editions, newest first. rank = position in board. coach = id from league.json. build.py renders rankings.html from this: the current board with movement vs the previous edition, every coach's trajectory, and each past edition. Add a new edition at the TOP when a rankings article ships; 'article' is the data/articles filename so the page can link the write-up.",
   "editions": [
     {
+      "id": "s7-shoe",
+      "title": "The Shoe Edition",
+      "season": 7,
+      "date": "2026-11-09",
+      "label": "Season Seven, first board — after Week 5",
+      "article": "ck-rankings-shoe.md",
+      "board": [
+        {
+          "coach": "stew",
+          "team": "Oklahoma",
+          "note": "3-0; the Battle of the Champions, the Bro Bowl, 50-7 on Alabama; 'go get my belt'"
+        },
+        {
+          "coach": "curt",
+          "team": "Ohio State",
+          "note": "2-0; two Games of the Week, first-ever win over KJ, Oregon in the rain"
+        },
+        {
+          "coach": "bawce",
+          "team": "Texas A&M",
+          "note": "3-0; 50 on Zoe, 49 on Thrash, a forfeit over Roy; 99 points in two played"
+        },
+        {
+          "coach": "lux",
+          "team": "Clemson",
+          "note": "2-0; shut out Jason, won The Rematch in Tempe 31-29 without the banned play"
+        },
+        {
+          "coach": "purp",
+          "team": "LSU",
+          "note": "2-0; 70 on Louisville, 35 on Florida; averaging 52"
+        },
+        {
+          "coach": "dre",
+          "team": "Michigan",
+          "note": "1-0; beat the two-time champ 35-21 in Week 1; no forfeits yet"
+        },
+        {
+          "coach": "jarvis",
+          "team": "Miami",
+          "note": "2-1; lost to the king, beat States and Zoe; the original Jarvis is back"
+        },
+        {
+          "coach": "bowzer",
+          "team": "Oregon",
+          "note": "0-1; a four-point loss in the rain at the Shoe; still the top contender outside Norman"
+        },
+        {
+          "coach": "pat",
+          "team": "Ole Miss",
+          "note": "1-1; lost to Dre, 62 on TBO; Gainesville next"
+        },
+        {
+          "coach": "lt",
+          "team": "Notre Dame",
+          "note": "1-0; 37-0 over Roy in the South Bend debut"
+        },
+        {
+          "coach": "work",
+          "team": "Tennessee",
+          "note": "1-0; back after a year away, beat the rookie at Washington 31-28"
+        },
+        {
+          "coach": "states",
+          "team": "Penn State",
+          "note": "1-1; lost to Jarvis, 44 on USC"
+        },
+        {
+          "coach": "tbo",
+          "team": "Arizona State",
+          "note": "2-2; beat Roy and Silingi, gave up 62 to Pat, lost The Rematch by two"
+        },
+        {
+          "coach": "kj",
+          "team": "TCU",
+          "note": "1-2; a forfeit win, then by two to Stew and by 17 to Curt; 'can't win outside my conference'"
+        },
+        {
+          "coach": "cobo",
+          "team": "Washington",
+          "note": "1-1; lost by three to Work, beat Teeric by four; a rookie win in Week 2"
+        },
+        {
+          "coach": "jason",
+          "team": "Georgia",
+          "note": "0-1; shut out by Lux in the Georgia debut"
+        },
+        {
+          "coach": "quan",
+          "team": "Alabama",
+          "note": "0-1; drew the king in the Alabama debut, lost 50-7"
+        },
+        {
+          "coach": "jordan",
+          "team": "Florida",
+          "note": "0-1; 35-10 to Purp; the champ visits in Week 6"
+        },
+        {
+          "coach": "livid",
+          "team": "Louisville",
+          "note": "0-1; allowed 70 to LSU and scored 44 doing it"
+        },
+        {
+          "coach": "zoe",
+          "team": "Florida State",
+          "note": "0-2; by 36 and by 14; 'FSU gone be open after this season'"
+        },
+        {
+          "coach": "silingi",
+          "team": "Texas Tech",
+          "note": "0-2; a forfeit to KJ and 48 allowed to TBO"
+        },
+        {
+          "coach": "thrash",
+          "team": "South Carolina",
+          "note": "0-1; allowed 49 to Bawce"
+        },
+        {
+          "coach": "teeric",
+          "team": "USC",
+          "note": "0-2; lost to the rookie at Washington, then 44-13 to States"
+        },
+        {
+          "coach": "roy",
+          "team": "Nebraska",
+          "note": "0-3; allowed 38, 37, and forfeited the third"
+        },
+        {
+          "coach": "lute",
+          "team": "Texas",
+          "note": "0-0; no league game at Texas through five weeks"
+        }
+      ]
+    },
+    {
       "id": "s6-glendale",
       "title": "The Glendale Edition",
       "season": 6,

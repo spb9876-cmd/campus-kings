@@ -1,6 +1,36 @@
 {
   "content": [
     {
+      "title": "Weeks 0-5: Old Man Curt",
+      "kind": "Recap",
+      "season": 7,
+      "date": "2026-11-09",
+      "file": "campus_kings_s7_w5_recap.png",
+      "blurb": "The founder wins two Games of the Week — his first-ever over KJ, then Oregon in a rainstorm at the Shoe — while the king goes 3-0 through two Bro Bowls, Dre opens on the champ again, Lux wins The Rematch without the play the rulebook took, and Jarvis, Work, and three rookies make their debuts.",
+      "article": "s7-weeks0-5-recap.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s7_w5_recap.png",
+          "caption": "Season Seven, Weeks 0-5 — Old Man Curt"
+        }
+      ]
+    },
+    {
+      "title": "CK Power Rankings: The Shoe Edition",
+      "kind": "CK Rankings",
+      "season": 7,
+      "date": "2026-11-09",
+      "file": "campus_kings_ck_rankings_shoe.png",
+      "blurb": "First board of Season Seven, all 25 chairs: the king stays at one, Curt climbs seven to second on two GOTW wins, Bawce and Lux crack the top four, the two returning coaches and three rookies debut, and Zoe and Roy each fall sixteen.",
+      "article": "ck-rankings-shoe.md",
+      "gallery": [
+        {
+          "file": "campus_kings_ck_rankings_shoe.png",
+          "caption": "All 25 chairs — the Shoe Edition"
+        }
+      ]
+    },
+    {
       "title": "Four Rings",
       "kind": "Recap",
       "season": 6,
