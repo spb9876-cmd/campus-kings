@@ -18,6 +18,11 @@ Setup (one time):
      Privileged Gateway Intents.
   2. Put the token in tools/ck-desk/.env as:  DISCORD_TOKEN=xxxxx
      (.env is gitignored -- never commit it)
+     The desk's Claude sign-in has a hard time limit and cannot be renewed
+     in place. Either sign the CLI back in interactively (`claude auth
+     login`) or, for unattended use, run `claude setup-token` once and add
+     the result to the same .env as CLAUDE_CODE_OAUTH_TOKEN=... -- the bot
+     loads .env into its environment, so the CLI subprocess picks it up.
   3. Invite the bot: OAuth2 -> URL Generator -> scope "bot" -> permissions
      View Channels, Send Messages, Read Message History -> open the URL.
   4. pip install discord.py python-dotenv
@@ -213,11 +218,14 @@ def ask_claude(question, asker, chat=""):
                        input=prompt, capture_output=True, text=True,
                        encoding="utf-8", errors="replace", timeout=180)
     if r.returncode != 0:
-        err = r.stderr.strip()
-        if "authenticate" in err.lower() or "login" in err.lower() \
-                or "log in" in err.lower():
+        # Newer CLIs print the auth failure on stdout, not stderr, so check
+        # both before deciding what kind of outage this is.
+        err = r.stderr.strip() or r.stdout.strip()
+        blob = (r.stderr + r.stdout).lower()
+        if "authenticate" in blob or "login" in blob or "log in" in blob \
+                or ("auth" in blob and "token" in blob):
             raise RuntimeError("the desk's Claude login expired — "
-                               "Pat has to run /login on the CLI")
+                               "Pat has to sign the CLI back in")
         raise RuntimeError(err[:300] or "claude CLI failed")
     return r.stdout.strip()
 
