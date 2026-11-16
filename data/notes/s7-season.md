@@ -45,3 +45,26 @@ banned, effective immediately — added to the bans list on the site.
   upcoming season." Custom conferences floated for next offseason (Quan, KJ).
 - Sheet typo fixed locally: 'Louisvile' (W1, LSU 70-44) — Pat should correct
   the cell.
+
+## Weeks 6-10 (Sheet, 2026-11-15; content: "Seven and Oh" + Autzen Edition)
+- 27 league games, 14 forfeits. Sheet A1 header cell had been overwritten with
+  "7" (restored locally as "season"); the Louisville typo is now fixed in the Sheet.
+- GOTWs: W6 Ole Miss 31-10 Florida — the desk published a box score (Crum
+  29/38 336 3 TD) but the SHEET SAYS FW; logged as forfeit, flagged to Pat.
+  W6 Notre Dame 42-14 Miami ("Catholics vs Convicts"; Tukuafu 13/19 286 4 TD,
+  Brink 4-110-2). W8 Oregon 17-15 Michigan at Autzen, light rain (Price 16/24
+  235 TD; Tupa 10 tkl).
+- Played results of note: Oklahoma 50-38 Texas, 29-14 Ole Miss, 37-30
+  Tennessee; Florida 31-7 Texas A&M (Jordan over Bawce); Tennessee 17-7
+  Alabama; Oregon 47-21 Washington; Ohio State 49-21 USC; LSU 28-7 Texas
+  Tech; TCU 42-9 South Carolina; Alabama 45-21 South Carolina.
+- Forfeits: W6 OleMiss>Florida, Michigan>FSU; W7 Georgia>Tennessee,
+  Clemson>Louisville, Michigan>PSU; W8 OleMiss>Georgia, Texas>Florida,
+  OhioSt>Nebraska, Clemson>FSU; W9 LSU>SC, Texas>Georgia; W10 LSU>A&M,
+  Florida>Georgia. TBO played no league game W6-10.
+- Commissioner (Curt) 11/14: extended an advance for an unplayed game,
+  apologized, "I will no longer do that"; new rule: only CC and playoff holds;
+  no response the night of advance = no fair sim.
+- Chat: Stew "Ole miss is dog shit" / Pat "Indeed" (after 29-14). In-game
+  playoff expands to 24 next year (Lux "absurd", Curt "crazy"). A new handle
+  "49ners/ole miss" said "Gimme a year I'll be able to compete" — unidentified.

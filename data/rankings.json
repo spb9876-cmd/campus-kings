@@ -2,6 +2,141 @@
   "_note": "CK Power Rankings editions, newest first. rank = position in board. coach = id from league.json. build.py renders rankings.html from this: the current board with movement vs the previous edition, every coach's trajectory, and each past edition. Add a new edition at the TOP when a rankings article ships; 'article' is the data/articles filename so the page can link the write-up.",
   "editions": [
     {
+      "id": "s7-autzen",
+      "title": "The Autzen Edition",
+      "season": 7,
+      "date": "2026-11-15",
+      "label": "Season Seven, second board — after Week 10",
+      "article": "ck-rankings-autzen.md",
+      "board": [
+        {
+          "coach": "stew",
+          "team": "Oklahoma",
+          "note": "7-0; seven played, seven won; 29-14 over the champ, 37-30 over Work"
+        },
+        {
+          "coach": "curt",
+          "team": "Ohio State",
+          "note": "4-0; three played wins incl. KJ and Bowzer, a Roy forfeit; unbeaten in-game"
+        },
+        {
+          "coach": "purp",
+          "team": "LSU",
+          "note": "5-0; two of the last three by forfeit; played résumé is Livid, Jordan, Silingi"
+        },
+        {
+          "coach": "bowzer",
+          "team": "Oregon",
+          "note": "3-1; three straight played wins, Dre by two at Autzen, 47 on the rookie"
+        },
+        {
+          "coach": "lux",
+          "team": "Clemson",
+          "note": "4-0; last two by forfeit, hasn't played since The Rematch"
+        },
+        {
+          "coach": "dre",
+          "team": "Michigan",
+          "note": "3-1; two forfeit wins, then 17-15 at Oregon; one played win all year"
+        },
+        {
+          "coach": "lt",
+          "team": "Notre Dame",
+          "note": "2-0; 37-0 and a 42-14 GOTW over Jarvis; 79-14 combined"
+        },
+        {
+          "coach": "pat",
+          "team": "Ole Miss",
+          "note": "3-2; one played win, two forfeit wins, lost 29-14 to the king"
+        },
+        {
+          "coach": "bawce",
+          "team": "Texas A&M",
+          "note": "3-2; 31-7 to the rookie at Florida, then forfeited to LSU"
+        },
+        {
+          "coach": "work",
+          "team": "Tennessee",
+          "note": "2-2; forfeited to Jason, beat Quan, pushed the king to 37-30"
+        },
+        {
+          "coach": "jarvis",
+          "team": "Miami",
+          "note": "2-2; 42-14 to LT in the GOTW; wins over States and Zoe"
+        },
+        {
+          "coach": "kj",
+          "team": "TCU",
+          "note": "2-2; 42-9 over Thrash; the two losses were to the top two"
+        },
+        {
+          "coach": "jordan",
+          "team": "Florida",
+          "note": "2-3; held the 3-0 Aggies to seven; the upset of the stretch"
+        },
+        {
+          "coach": "tbo",
+          "team": "Arizona State",
+          "note": "2-2; no league game between Weeks 6 and 10"
+        },
+        {
+          "coach": "lute",
+          "team": "Texas",
+          "note": "2-1; two forfeit wins and 38 on the king in a 50-38 loss"
+        },
+        {
+          "coach": "states",
+          "team": "Penn State",
+          "note": "1-2; forfeited to Dre in Week 7"
+        },
+        {
+          "coach": "quan",
+          "team": "Alabama",
+          "note": "1-2; lost 17-7 to Work, beat Thrash 45-21 for Alabama's first"
+        },
+        {
+          "coach": "cobo",
+          "team": "Washington",
+          "note": "1-2; allowed 47 to Oregon in the only game of the stretch"
+        },
+        {
+          "coach": "jason",
+          "team": "Georgia",
+          "note": "1-4; a forfeit win over Work, then three forfeit losses"
+        },
+        {
+          "coach": "silingi",
+          "team": "Texas Tech",
+          "note": "0-3; 28-7 to Purp; 'no advance has me'"
+        },
+        {
+          "coach": "teeric",
+          "team": "USC",
+          "note": "0-3; 49-21 to the founder"
+        },
+        {
+          "coach": "zoe",
+          "team": "Florida State",
+          "note": "0-4; three of the four by forfeit; hasn't shown since Week 5"
+        },
+        {
+          "coach": "livid",
+          "team": "Louisville",
+          "note": "0-2; forfeited to Lux"
+        },
+        {
+          "coach": "thrash",
+          "team": "South Carolina",
+          "note": "0-5; allowed 213 points in five weeks"
+        },
+        {
+          "coach": "roy",
+          "team": "Nebraska",
+          "note": "0-5; four points from Bowzer, a forfeit to Curt"
+        }
+      ]
+    },
+    {
       "id": "s7-shoe",
       "title": "The Shoe Edition",
       "season": 7,

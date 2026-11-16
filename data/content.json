@@ -1,6 +1,36 @@
 {
   "content": [
     {
+      "title": "Weeks 6-10: Seven and Oh",
+      "kind": "Recap",
+      "season": 7,
+      "date": "2026-11-15",
+      "file": "campus_kings_s7_w10_recap.png",
+      "blurb": "The king plays every week and wins every week — 29-14 over the champ, 37-30 over Work — while Bowzer edges Dre 17-15 at Autzen, LT's Irish rout Miami in the GOTW, a rookie holds Bawce to seven, and fourteen of the stretch's twenty-seven games go down as forfeits.",
+      "article": "s7-weeks6-10-recap.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s7_w10_recap.png",
+          "caption": "Season Seven, Weeks 6-10 — Seven and Oh"
+        }
+      ]
+    },
+    {
+      "title": "CK Power Rankings: The Autzen Edition",
+      "kind": "CK Rankings",
+      "season": 7,
+      "date": "2026-11-15",
+      "file": "campus_kings_ck_rankings_autzen.png",
+      "blurb": "Second board of Season Seven, all 25 chairs: Stew and Curt hold one and two, Purp to third unbeaten, Bowzer up four after three straight played wins, Bawce down six after the rookie upset, Lute up ten, and the board says which wins were forfeits.",
+      "article": "ck-rankings-autzen.md",
+      "gallery": [
+        {
+          "file": "campus_kings_ck_rankings_autzen.png",
+          "caption": "All 25 chairs — the Autzen Edition"
+        }
+      ]
+    },
+    {
       "title": "Weeks 0-5: Old Man Curt",
       "kind": "Recap",
       "season": 7,
