@@ -42,3 +42,5 @@ The played game of the stretch nobody saw coming: **Florida 31, Texas A&M 7** in
 ## Front office
 
 Lux's bowling update: he beat the first-place team ("we're in 29th place") after telling his squad "don't worry I'm gonna strike out rest of the game. Then did." The in-game playoff expands to 24 next year, which Lux called "absurd" and Curt called "crazy." Week 11 chats are open. The belt is Stew 4, Pat 2. The second board of Season Seven, all twenty-five chairs, is up now.
+
+*Correction, Nov. 19: the Sheet has since moved Oklahoma's 37-30 win over Tennessee from Week 10 to Week 11. Through Week 10, Stew was 6-0, every game played.*

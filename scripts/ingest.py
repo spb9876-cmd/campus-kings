@@ -14,6 +14,7 @@ import csv
 import io
 import json
 import os
+import re
 import sys
 import urllib.request
 from collections import defaultdict
@@ -21,6 +22,15 @@ from difflib import get_close_matches
 from pathlib import Path
 
 DATA = Path(__file__).resolve().parent.parent / "data"
+
+# Every spelling of a conference the Sheet has used, keyed with spaces and
+# punctuation stripped, mapped to the key the points rules use.
+CONF_ALIASES = {
+    "SEC": "SEC",
+    "ACC": "ACC",
+    "B1G": "B1G", "B10": "B1G", "BIG10": "B1G", "BIGTEN": "B1G",
+    "BIG12": "BIG12", "B12": "BIG12", "BIGXII": "BIG12", "BIGTWELVE": "BIG12",
+}
 
 # Postseason stage labels for the Sheet's optional "stage" column.
 #   blank      -> regular season, week must be a number
@@ -237,6 +247,16 @@ def main():
                 errors.append("line %d: conference title needs a conference, "
                               "e.g. CONF:SEC" % i)
                 continue
+            # The Sheet has spelled the same conference several ways over the
+            # seasons (B1G / B10 / BIG 10, BIG12 / BIG 12). The points rules key
+            # off exactly SEC, B1G, BIG12, ACC, so a stray spelling silently
+            # scored zero. Normalise here; reject anything unrecognised.
+            canon = CONF_ALIASES.get(re.sub(r"[^A-Z0-9]", "", conf.upper()))
+            if not canon:
+                errors.append("line %d: unknown conference %r — use SEC, B1G, "
+                              "BIG12, or ACC" % (i, conf))
+                continue
+            conf = canon
             entry = {"conference": conf, "winner": w, "loser": l, "score": score}
             if note:
                 entry["note"] = note

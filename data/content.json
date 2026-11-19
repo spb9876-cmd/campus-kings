@@ -1,6 +1,25 @@
 {
   "content": [
     {
+      "title": "Round One: The Stew, Jarvis and Pat League",
+      "kind": "Recap",
+      "season": 7,
+      "date": "2026-11-19",
+      "file": "campus_kings_s7_round1_recap.png",
+      "blurb": "The king finishes 13-0 and takes the SEC by 42, Bowzer repeats in the Big Ten, KJ makes it four straight in the Big 12, Jarvis wins the ACC in his first year back, and the champ wins in Columbus to set up Stew-Pat IV in the Peach Bowl. Plus a points correction: Bowzer passes LT for third all-time.",
+      "article": "s7-round-one-recap.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s7_round1_recap.png",
+          "caption": "Season Seven, Weeks 11-13, conference titles, and Round One"
+        },
+        {
+          "file": "campus_kings_s7_bracket.jpg",
+          "caption": "The Season Seven bracket, from the in-game screen"
+        }
+      ]
+    },
+    {
       "title": "Weeks 6-10: Seven and Oh",
       "kind": "Recap",
       "season": 7,
