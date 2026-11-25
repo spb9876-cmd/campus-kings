@@ -1,0 +1,53 @@
+{
+  "season": 8,
+  "status": "in_progress",
+  "results": [
+    {
+      "week": 1,
+      "winner": "Ohio State",
+      "loser": "TCU",
+      "score": [
+        38,
+        13
+      ]
+    },
+    {
+      "week": 1,
+      "winner": "Texas",
+      "loser": "Texas Tech",
+      "score": [
+        45,
+        28
+      ]
+    },
+    {
+      "week": 1,
+      "winner": "Arizona State",
+      "loser": "Miami",
+      "score": [
+        40,
+        21
+      ],
+      "note": "FW"
+    },
+    {
+      "week": 1,
+      "winner": "Tennessee",
+      "loser": "Oregon",
+      "score": [
+        24,
+        16
+      ]
+    },
+    {
+      "week": 1,
+      "winner": "Georgia",
+      "loser": "Michigan",
+      "score": [
+        42,
+        7
+      ]
+    }
+  ],
+  "current_week": 1
+}

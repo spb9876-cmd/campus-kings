@@ -3,7 +3,7 @@
     "name": "Campus Kings",
     "game": "CFB 27",
     "accredited_seasons": 20,
-    "current_season": 7
+    "current_season": 8
   },
   "rules": {
     "playoff_points": {
@@ -434,7 +434,9 @@
     {
       "team": "USC",
       "coach": "teeric",
-      "from": "S1W0"
+      "from": "S1W0",
+      "to": "S8W0",
+      "note": "moved to Georgia for Season Eight"
     },
     {
       "team": "BYU",
@@ -703,7 +705,8 @@
       "team": "Georgia",
       "coach": "jason",
       "from": "S7W0",
-      "note": "takes Georgia for Season Seven after one season at Memphis"
+      "note": "left Georgia after Season Seven; Georgia to Teeric",
+      "to": "S8W0"
     },
     {
       "team": "Tennessee",
@@ -740,6 +743,12 @@
       "coach": "cobo",
       "from": "S7W0",
       "note": "joined league Season Seven"
+    },
+    {
+      "team": "Georgia",
+      "coach": "teeric",
+      "from": "S8W0",
+      "note": "takes Georgia for Season Eight after USC"
     }
   ],
   "legacy_championships": {

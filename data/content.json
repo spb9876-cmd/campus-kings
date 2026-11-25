@@ -1,6 +1,36 @@
 {
   "content": [
     {
+      "title": "Season Eight: Thirteen Seasons Left",
+      "kind": "Season Preview",
+      "season": 8,
+      "date": "2026-11-24",
+      "file": "campus_kings_s8_intro.png",
+      "blurb": "Season Eight opens with Stew at five rings and 109 points, Teeric putting 42 on Dre in his Georgia debut, the runner-up losing his opener to Work, Curt beating KJ again, and a list of open jobs that isn't official yet.",
+      "article": "s8-season-intro.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s8_intro.png",
+          "caption": "Season Eight — where things stand after Week 1"
+        }
+      ]
+    },
+    {
+      "title": "The Three-Peat: Season Seven Playoffs and National Championship",
+      "kind": "Recap",
+      "season": 7,
+      "date": "2026-11-24",
+      "file": "campus_kings_s7_natty_recap.png",
+      "blurb": "Stew beats the champ in the Peach, gets the Notre Dame semifinal set through the commissioners, and beats Bowzer 35-7 in Inglewood for a third straight title and a fifth ring. KJ breaks the Dre curse and reaches his first Final Four, and Bowzer loses his third title game.",
+      "article": "s7-natty-season-recap.md",
+      "gallery": [
+        {
+          "file": "campus_kings_s7_natty_recap.png",
+          "caption": "Season Seven — the three-peat"
+        }
+      ]
+    },
+    {
       "title": "Round One: The Stew, Jarvis and Pat League",
       "kind": "Recap",
       "season": 7,

@@ -45,3 +45,18 @@ forfeits). Cross-check every result against the Sheet.
 - Curt (11/16): "Georgia and Nebraska Open next season ... Penn State maybe
   open as well" (Jason, Roy, States) — not applied; roster changes need Pat.
 - Do NOT invent playoff results; take them from the Sheet or #big-games only.
+
+## FINAL — bracket complete (Sheet, 2026-11-24)
+
+- QF: Oklahoma 28-18 Ole Miss (played; Pat: "every time i play you that mf
+  guaranteed to be put on the ground"); TCU 48-34 Michigan (KJ's first played
+  win over Dre); Notre Dame 28-3 Clemson; Oregon 40-35 Miami.
+- SF: Oregon 42-24 TCU; Oklahoma 42-39 Notre Dame. The SF went in through the
+  commissioners: Stew asked them to "set my win and advance" and posted "Lost 3
+  players to sim". DO NOT narrate it as a played game.
+- **National Championship (Inglewood, SoFi): Oklahoma 35, Oregon 7.** Played
+  ("Gg lil bow wow" / "gg"). Stew's third straight, fifth ring. Bowzer 0-3 in
+  title games (S3, S6, S7).
+- Belt after S7: **Stew 5 (S1, S2, S5, S6, S7), Pat 2 (S3, S4)**, 7 of 20.
+  Playoff Points: Stew 109, Pat 48, Bowzer 46, LT 39, Dre 31, Purp 29,
+  Tayne 23, KJ 22, States 20.
